@@ -30,47 +30,39 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 curl_setopt($curl, CURLOPT_USERPWD,"$login:$pass");
 $data  = curl_exec ($curl);
-$fl = fopen('MsgOut.json','w');
-{      fwrite($fl, $data);
-       fclose($fl);
-}
-
 curl_close($curl);
 
 print "データ取得成功しました...データを抜き出しています..." . "\n";
 
 //JSONデコード
-$filePass = "MsgOut.json";
-$jsonGet = file_get_contents($filePass);
-$jsonGet = mb_convert_encoding($jsonGet, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
-$Jdata = json_decode($jsonGet, true);
+$data = json_decode($data, true);
 
 //取得結果出力
 print "------------直近1件目-----------" . "\n" . "\n";
 print "UNIX時間:";
-print $Jdata['data'][0]['time'] . "\n";
+print $data['data'][0]['time'] . "\n";
 print "センサ値:";
-print $Jdata['data'][0]['data'] .  "\n" . "\n";
+print $data['data'][0]['data'] .  "\n" . "\n";
 
 print "------------直近2件目-----------" . "\n" . "\n";
 print "UNIX時間:";
-print $Jdata['data'][1]['time'] . "\n";
+print $data['data'][1]['time'] . "\n";
 print "センサ値:";
-print $Jdata['data'][1]['data'] .  "\n" . "\n";
+print $data['data'][1]['data'] .  "\n" . "\n";
 
 print "------------直近3件目-----------" . "\n" . "\n";
 print "UNIX時間:";
-print $Jdata['data'][2]['time'] . "\n";
+print $data['data'][2]['time'] . "\n";
 print "センサ値:";
-print $Jdata['data'][2]['data'] .  "\n" . "\n";
+print $data['data'][2]['data'] .  "\n" . "\n";
 
 $query = "INSERT INTO History (DeviceID, Time, Sensor, Sensor1, Sensor2, Sensor3, Sensor4, Sensor5, Sensor6) VALUES (:deviceid, :intime, :sensor, :sensor1, :sensor2, :sensor3, :sensor4, :sensor5, :sensor6)";
 
-$deviceid = $Jdata['data'][0]['device'];
-$Intime = intval($Jdata['data'][0]['time']);
+$deviceid = $data['data'][0]['device'];
+$Intime = intval($data['data'][0]['time']);
 
-$sensorAll = $Jdata['data'][0]['data'];
-$sensor = str_split($Jdata['data'][0]['data'], 4);
+$sensorAll = $data['data'][0]['data'];
+$sensor = str_split($data['data'][0]['data'], 4);
 
 $Intime = date('Y-m-d H:i:s', $Intime);
 
