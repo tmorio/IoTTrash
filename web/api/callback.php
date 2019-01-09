@@ -1,6 +1,5 @@
 <?php
 require_once('./myid.php');
-
 //文字コード設定(絵文字対策のためにUTF8MB4)
 $strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
 //DB接続試行
@@ -16,9 +15,9 @@ $data = json_decode($json_string, true);
 
 $deviceid = $data['device'];
 
-if (empty($deviceid) || $data['data'] == "b051d200ad22f800") {
-        header('HTTP/1.1 403 アクセス権限がありません．');
-        die('[403] アクセス権限がありません．');
+if (empty($deviceid)) {
+	header('HTTP/1.1 403 アクセス権限がありません．');
+	die('[403] アクセス権限がありません．');
         exit(0);
 }
 
@@ -30,7 +29,12 @@ $Intime = date('Y-m-d H:i:s', $data['time']);
 
 $sensor = str_split($data['data'], 4);
 for ($i = 0; $i < 3; $i++){
-        $sensor[$i] = hexdec($sensor[$i]);
+	$sensor[$i] = hexdec($sensor[$i]);
+}
+
+$fl = fopen('sigfoxMsg.json','w'); // write json file sigfoxMsg.json for test
+{      fwrite($fl, $json_string);
+       fclose($fl);
 }
 
 $query = "INSERT INTO History (DeviceID, Time, Sensor, Temp, Hum, Dis) VALUES (:deviceid, :intime, :sensor, :sensor1, :sensor2, :sensor3)";
@@ -39,13 +43,19 @@ $stmt = $dbh->prepare($query);
 $stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 $stmt->bindParam(':intime', $Intime, PDO::PARAM_STR);
 $stmt->bindParam(':sensor', $sensorAll, PDO::PARAM_STR);
-$stmt->bindParam(':sensor1', $sensor[0], PDO::PARAM_STR);
-$stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_STR);
-$stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_STR);
+$stmt->bindParam(':sensor1', $sensor[0], PDO::PARAM_INT);
+$stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_INT);
+$stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_INT);
+$stmt->execute();
 
-try{
-        $stmt->execute();
-} catch (PDOException $e){
-}
+$query = "UPDATE StatusData SET Time = :intime, Sensor = :sensor, Temp = :sensor1, Hum = :sensor2, Dis = :sensor3 WHERE DeviceID = :deviceid";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
+$stmt->bindParam(':intime', $Intime, PDO::PARAM_STR);
+$stmt->bindParam(':sensor', $sensorAll, PDO::PARAM_STR);
+$stmt->bindParam(':sensor1', $sensor[0], PDO::PARAM_INT);
+$stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_INT);
+$stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_INT);
+$stmt->execute();
 
 ?>

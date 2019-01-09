@@ -1,0 +1,150 @@
+nav {
+	background-color: #cfd8dc;
+}
+
+img.logo-image {
+	height: 58px;
+}
+
+.footer {
+	background-color: #263238;
+	color: #ccccdd;
+}
+
+@media only screen and (min-width: 601px) {
+	img.logo-image {
+		height: 66px;
+	}
+}
+.menu-card {
+	padding-bottom: 10px;
+}
+.menu-content {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	max-height: 200px;
+	max-width: 200px;
+	padding: 25px;
+}
+
+#boxMap {
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+}
+
+#deviceArea {
+    width: 100%;
+    height: 35vh;
+}
+
+#mapSetting {
+    width: 100%;
+    height: 65vh;
+}
+
+.dashboardTitle {
+    font-family: arial,sans-serif;
+    font-size: 3em;
+    font-weight: bolder;
+    color: #ffffff;
+    width: 100%;
+    margin: 5% auto;
+    max-width: 100vw;
+    text-align: center;
+}
+
+.mapBoard {
+     display:grid;
+     grid-template-columns: 1.0fr 1.8fr ;
+}
+
+.settingBoard {
+     display:grid;
+     grid-template-columns: 1.0fr 3.5fr ;
+}
+
+.deviceAdd {
+     display:grid;
+     grid-template-columns: 1.0fr 3.0fr ;
+}
+
+.infoTitle {
+    font-size: 1.5em;
+}
+
+.trashList {
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.trashList.collection {
+	margin: 0 0 0 0;
+	overflow-y: auto;
+}
+
+.settingList {
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y: scroll;
+    -ms-overflow-style:none;
+}
+
+.settingList.collection {
+        margin: 0 0 0 0;
+}
+
+.settingList::-webkit-scrollbar{
+    display:none;
+}
+
+.wizardInfo {
+    padding: 10px;
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y: scroll;
+    -ms-overflow-style:none;
+}
+
+.wizardInfo::-webkit-scrollbar{
+    display:none;
+}
+
+.AdminDisplay {
+    padding: 1%;
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y:auto;
+    -ms-overflow-style:none;
+}
+
+.AdminDisplay::-webkit-scrollbar{
+    display:none;
+}
+
+.dashDisplay { 
+    padding: 3%;
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y:auto;
+    -ms-overflow-style:none;
+    background: #1e5799;
+    background: -moz-linear-gradient(left, #1e5799 0%, #2989d8 100%, #207cca 100%, #7db9e8 100%, #2989d8 100%);
+    background: -webkit-linear-gradient(left, #1e5799 0%,#2989d8 100%,#7db9e8 100%,#207cca 100%,#2989d8 100%);
+    background: linear-gradient(to right, #1e5799 0%,#2989d8 100%,#7db9e8 100%,#207cca 100%,#2989d8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#2989d8',GradientType=1 );
+}
+
+.dashDisplay::-webkit-scrollbar{
+    display:none;
+}
+
+.adminTitle {
+    font-size: 2em;
+}
+
+.menuIcon {
+    font-size: 30px;
+}
