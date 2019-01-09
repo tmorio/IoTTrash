@@ -63,6 +63,9 @@ $stmt->execute();
                 <a class="waves-effect waves-light btn" href="./addDevice.php">
                         <i class="material-icons left">add</i>デバイス追加
                 </a>
+                <a class="waves-effect waves-light btn" href="./deleteDevice.php">
+			<i class="material-icons left">highlight_off</i>デバイス削除
+		</a>
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">search</i>検索
                 </a>
