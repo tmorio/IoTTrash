@@ -71,9 +71,10 @@ $stmt->execute();
                 </a>
 
 		<div class="listOutput">
-
+		<ul class="collapsible">
 		<?php
 			foreach($stmt as $data){
+				echo '<li><div class="collapsible-header">';
 				echo "デバイス名: " .  $data['NickName'] ;
 				echo "&nbsp;(" .  $data['DeviceID'] . ")";
 
@@ -83,10 +84,10 @@ $stmt->execute();
 					echo "更新日時: " . $data['Time'];
 				}
                                 echo '&nbsp;<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">timeline</i>グラフ表示</a>';
-				echo '<hr size="1" color="#37474f" noshade>';
+				echo '</div></li>';
 			}
 		?>
-
+		</ul>
 		</div>
 
 	</div>

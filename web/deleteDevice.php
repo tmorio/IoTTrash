@@ -67,24 +67,25 @@ $stmt->execute();
                         <i class="material-icons left">search</i>検索
                 </a>
 
-		<div class="listOutput">
+                <div class="listOutput">
+                <ul class="collapsible">
+                <?php
+                        foreach($stmt as $data){
+                                echo '<li><div class="collapsible-header">';
+                                echo "デバイス名: " .  $data['NickName'] ;
+                                echo "&nbsp;(" .  $data['DeviceID'] . ")";
 
-		<?php
-			foreach($stmt as $data){
-				echo "デバイス名: " .  $data['NickName'] ;
-				echo "&nbsp;(" .  $data['DeviceID'] . ")";
-
-				if(empty($data['Time'])){
-					echo "更新日時: 未取得";
-				}else{
-					echo "更新日時: " . $data['Time'];
-				}
+                                if(empty($data['Time'])){
+                                        echo "更新日時: 未取得";
+                                }else{
+                                        echo "更新日時: " . $data['Time'];
+                                }
                                 echo '&nbsp;<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">highlight_off</i>削除</a>';
-				echo '<hr size="1" color="#37474f" noshade>';
-			}
-		?>
-
-		</div>
+                                echo '</div></li>';
+                        }
+                ?>
+                </ul>
+                </div>
 
 	</div>
 		<!-- フッター -->
