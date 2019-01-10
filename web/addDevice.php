@@ -14,7 +14,7 @@ require_once('./siteInfo.php');
 		<meta charset="UTF-8">
 		<title>MyBox Cloud - BoxMap</title>
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css?">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
@@ -55,22 +55,16 @@ require_once('./siteInfo.php');
                         </a>
 			<hr>
 			<a href="?step=1">
-				<i class="material-icons left">cloud</i>2. Sigfox Cloudにデバイスを登録</a>
+				<i class="material-icons left">cloud</i>2. 位置情報の登録</a>
 			</a>
 			<br>
 			<hr>
 			<a href="?step=2">
-                        	<i class="material-icons left">swap_horiz</i>3. Callbackの設定</a>
+                        	<i class="material-icons left">swap_horiz</i>3. デバイス情報の登録</a>
 			</a>
 			<br>
 			<hr>
-                        <i class="material-icons left">edit_location</i>4. 位置情報の登録</a>
-			<br>
-			<hr>
-                        <i class="material-icons left">edit</i>5. デバイス情報の登録</a>
-			<br>
-			<hr>
-                        <i class="material-icons left">done</i>6. 完了</a>
+                        <i class="material-icons left">edit_location</i>4. 登録完了</a>
 			<br>
 			<hr>
 
@@ -102,219 +96,165 @@ require_once('./siteInfo.php');
 						';
                                                 break;
 					case 1:
+                                                $_SESSION['getStatus'] = 0;
 						echo '
-							<h3>2. Sigfox Cloudにデバイスを登録</h3>
+                                                        <h3>2. 位置情報の登録</h3>
 
-							<br>
-                                                	<a class="waves-effect waves-light btn" href="?step=0">
-								<i class="material-icons left">keyboard_arrow_left</i>
-								前に戻る
-							</a>
-							<a class="waves-effect waves-light btn" href="?step=2">
-								<i class="material-icons right">keyboard_arrow_right</i>
-								次に進む
-							</a>
-						';
-						break;
-					case 2:
-						echo '
-							<h3>3. Callbackの設定</h3>
-							<script>
-							function textareaResize(event) {
-								try {
-									elem_id = event.srcElement.id;
-								} catch ( e ) {
-									elem_id = event.target.id;
-								}
-								var keycode = event.keyCode;
-								if (keycode == 13) {
-									var m = document.getElementById(elem_id);
-									var r = m.getAttribute("rows");
-									m.setAttribute("rows", parseInt(r)+1);
-								}
-							}
-							</script>
-
-<textarea name="Callback Body" cols="80" rows="10" readonly>{
-  "APIKEY":"heUf6abf1ljkn42UYbwq8Uebgfa7",
-  "APISECRET":"82774653491-bU6Her9yEVk833nLedakB14UebhgnczByh126",
-  "device":"{device}",
-  "data":"{data}",
-  "time":"{time}",
-  "temp":"{customData#temp}",
-  "hum":"{customData#hum}",
-  "distance":"{customData#Dis}"
-}</textarea>
-							<br>
-                                                	<a class="waves-effect waves-light btn" href="?step=1">
-								<i class="material-icons left">keyboard_arrow_left</i>
-								前に戻る
-							</a>
-                                                	<a class="waves-effect waves-light btn" href="?step=3">
-								<i class="material-icons right">keyboard_arrow_right</i>
-								次に進む
-							</a>
-							';
-						break;
-                                        case 3:
-						$_SESSION['getStatus'] = 0;
-                                                echo '
-							<h3>4. 位置情報の登録</h3>
-
-							<script>
-								if (navigator.geolocation) {
-									document.write("端末の位置情報サービスを利用してデバイスの位置情報を登録します。<br>そのため、位置情報の取得の許可をお願い致します。<br>");
-								} else {
-									document.write("この端末では位置情報の取得ができません");
-								}
-								function getPosition() {
-									document.getElementById("geoNotice").innerHTML = "取得中...しばらくお待ちください...";
-									navigator.geolocation.getCurrentPosition(
-										function(position) {
-											document.location.href = "?step=4&lat=" + position.coords.latitude + "&lng=" + position.coords.longitude;
-										},
-										function(error) {
-											switch(error.code) {
-												case 1:
-													alert("位置情報の利用が許可されていません。\n権限をご確認下さい。");
-													break;
-												case 2:
-													alert("現在位置が取得できませんでした。\n時間を空けてから再度お試し下さい。");
-													break;
-												case 3:
-													alert("タイムアウトしました。\n時間を空けてから再度お試し下さい。");
-													break;
-												default:
-													alert("原因不明エラーが発生しました。(Error Code:"+error.code+")");
-													break;
-											}
-										}
-									);
-								}
-							</script>
-							<br>
-							下のボタンを押すと位置情報を取得します。<br>
-							※取得には時間がかかる場合が御座います。画面が切り替わるまでお待ちください。<br><br>
-							<!-- 取得中の時はボタンに処理中って表示したいね -->
-							<button onclick="getPosition();">位置情報を取得して進む (自動設定)</button>
-							<span id="geoNotice"></span>
-							<br><br>
+                                                        <script>
+                                                                if (navigator.geolocation) {
+                                                                        document.write("端末の位置情報サービスを利用してデバイスの位置情報を登録します。<br>そのため、位置情報の取得の許可をお願い致します。<br>");
+                                                                } else {
+                                                                        document.write("この端末では位置情報の取得ができません。<br>手動で設定を行って下さい。<br>");
+                                                                }
+                                                                function getPosition() {
+                                                                        document.getElementById("geoNotice").innerHTML = "取得中...しばらくお待ちください...";
+                                                                        navigator.geolocation.getCurrentPosition(
+                                                                                function(position) {
+                                                                                        document.location.href = "?step=2&lat=" + position.coords.latitude + "&lng=" + position.coords.longitude;
+                                                                                },
+                                                                                function(error) {
+                                                                                        switch(error.code) {
+                                                                                                case 1:
+                                                                                                        alert("位置情報の利用が許可されていません。\n権限をご確認下さい。");
+                                                                                                        break;
+                                                                                                case 2:
+                                                                                                        alert("現在位置が取得できませんでした。\n時間を空けてから再度お試し下さい。");
+                                                                                                        break;
+                                                                                                case 3:
+                                                                                                        alert("タイムアウトしました。\n時間を空けてから再度お試し下さい。");
+                                                                                                        break;
+                                                                                                default:
+                                                                                                        alert("原因不明エラーが発生しました。(Error Code:"+error.code+")");
+                                                                                                        break;
+                                                                                        }
+                                                                                }
+                                                                        );
+                                                                }
+                                                        </script>
+                                                        <br>
+                                                        下のボタンを押すと位置情報を取得します。<br>
+                                                        ※取得には時間がかかる場合が御座います。画面が切り替わるまでお待ちください。<br><br>
+                                                        <!-- 取得中の時はボタンに処理中って表示したいね -->
+                                                        <button onclick="getPosition();">位置情報を取得して進む (自動設定)</button>
+                                                        <span id="geoNotice"></span>
+                                                        <br><br>
                                                         <a class="waves-effect waves-light btn" href="?step=map&data=0">
                                                                 <i class="material-icons left">landscape</i>
                                                                 手動で位置を設定する
                                                         </a>
-							<br><br>
-                                                	<a class="waves-effect waves-light btn" href="?step=2">
-								<i class="material-icons left">keyboard_arrow_left</i>
-								前に戻る
-							</a>
+                                                        <br><br>
+                                                        <a class="waves-effect waves-light btn" href="addDevice.php">
+                                                                <i class="material-icons left">keyboard_arrow_left</i>
+                                                                前に戻る
+                                                        </a>
+
+
+
 						';
-                                                break;
-                                        case 4:
-						$_SESSION['getStatus'] = 1;
+						break;
+					case 2:
                                                 if(!empty($_GET['lat']) || !empty($_GET['lng'])){
+                                                	$_SESSION['getStatus'] = 1;
                                                         $_SESSION['lat'] = $_GET['lat'];
                                                         $_SESSION['lng'] = $_GET['lng'];
-                                                        header("Location: ?step=4") ;
+                                                        header("Location: ?step=2") ;
                                                 }
 
-						if (isset($_POST["startRegister"])) {
-							if(empty($_POST["deviceID"])) {
-								echo "デバイスIDが入力されていません。<br>";
-							}
-							if(empty($_POST["nickname"])){
-								echo "デバイスの表示名が入力されていません。<br>";
-							}
-							if(strlen($_POST["deviceID"]) != 6){
-								echo "デバイスIDの値が正しい値ではありません。";
-							}
-							if(!empty($_POST["deviceID"]) && !empty($_POST["nickname"]) && (strlen($_POST["deviceID"]) == 6)){
-								$_SESSION["deviceID"] = $_POST["deviceID"];
-								$_SESSION["nickname"] = $_POST["nickname"];
-								header("Location: ?step=process") ;
-							}
-						}
+                                                if (isset($_POST["startRegister"])) {
+                                                        if(empty($_POST["deviceID"])) {
+                                                                echo "デバイスIDが入力されていません。<br>";
+                                                        }
+                                                        if(empty($_POST["nickname"])){
+                                                                echo "デバイスの表示名が入力されていません。<br>";
+                                                        }
+                                                        if(strlen($_POST["deviceID"]) != 6){
+                                                                echo "デバイスIDの値が正しい値ではありません。";
+                                                        }
+                                                        if(!empty($_POST["deviceID"]) && !empty($_POST["nickname"]) && (strlen($_POST["deviceID"]) == 6)){
+                                                                $_SESSION["deviceID"] = $_POST["deviceID"];
+                                                                $_SESSION["nickname"] = $_POST["nickname"];
+                                                                header("Location: ?step=process") ;
+                                                        }
+                                                }
 
-
-						if(empty($_SESSION['lat']) || empty($_SESSION['lng'])){
-							header("Location: ?step=3");
-						}
-						$_SESSION['getStatus'] = 1;
-                                                echo '
-							<h3>5. デバイス情報の登録</h3>
-							続いてデバイス情報の登録を行います。<br>
-							SigfoxのデバイスID(QRコードの下にある6桁の英数字)と、サービス上で表示する名前を入力して下さい。<br>
-							<br>
-
-            						<form id="registerDevice" name="registerDevice" action="" method="POST">
-                    						<div class="cp_iptxt">
-                        						<input type="text" id="deviceID" name="deviceID" pattern="^[0-9A-Za-z]+$" placeholder="Sigfox デバイスID (例:00AA00)" value="';
-
-									if (!empty($_POST["deviceID"])) {echo htmlspecialchars($_POST["deviceID"], ENT_QUOTES);}
-
-						echo '">
-
-                    						</div>
-                    						<div class="cp_iptxt">
-                        						<input type="text" id="nickname" name="nickname" placeholder="デバイスの表示名 (例:A公園前)" value="';
-
-									if (!empty($_POST["nickname"])) {echo htmlspecialchars($_POST["nickname"], ENT_QUOTES);}
-
-						echo '">
-                    						</div>
-								<h4>位置情報</h4>
-                                                        	<a class="waves-effect waves-light btn" href="?step=map&data=1">
-                                                                	<i class="material-icons left">landscape</i>
-                                                                	位置を修正する
-                                                        	</a>
-							';
-                                                		echo "緯度:" . $_SESSION['lat'] . " 経度:" . $_SESSION['lng'] . "<br>";
-
-						echo '
-							<script>
-							var map;
-							var marker;
-							function initMap() {
-								map = new google.maps.Map(document.getElementById("deviceArea"), {
-									center: {lat:' .  $_SESSION['lat'] . ',lng:' . $_SESSION['lng'] . '},
-									zoom: 19
-								});
-								markerLatLng = {lat:' . $_SESSION['lat'] . ', lng:' . $_SESSION['lng']  . '};
-								marker = new google.maps.Marker({
-									position: markerLatLng,
-									map: map
-								});
-							}
-							</script>
-							<div id="deviceArea"></div>
-							<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
-							';
-
-						echo '
-                    						<br>
-                    						<input type="submit" id="startRegister" name="startRegister" value="以上の内容で登録する">
-            						</form>
-
-
-							<br>
-                                                	<a class="waves-effect waves-light btn" href="?step=3"><i class="material-icons left">keyboard_arrow_left</i>前に戻る</a>';
-                                                //echo ' <a class="waves-effect waves-light btn" href="?step=5"><i class="material-icons right">done</i>以上の内容で登録する</a>';
-                                                break;
-                                        case 5:
 
                                                 if(empty($_SESSION['lat']) || empty($_SESSION['lng'])){
-                                                        header("Location: ?step=3");
+                                                        header("Location: ?step=1");
+                                                }
+                                                $_SESSION['getStatus'] = 1;
+                                                echo '
+                                                        <h3>3. デバイス情報の登録</h3>
+                                                        続いてデバイス情報の登録を行います。<br>
+                                                        SigfoxのデバイスID(QRコードの下にある6桁の英数字)と、サービス上で表示する名前を入力して下さい。<br>
+                                                        <br>
+
+                                                        <form id="registerDevice" name="registerDevice" action="" method="POST">
+                                                                <div class="cp_iptxt">
+                                                                        <input type="text" id="deviceID" name="deviceID" pattern="^[0-9A-Za-z]+$" placeholder="Sigfox デバイスID (例:00AA00)" value="';
+
+                                                                        if (!empty($_POST["deviceID"])) {echo htmlspecialchars($_POST["deviceID"], ENT_QUOTES);}
+
+                                                echo '">
+
+                                                                </div>
+                                                                <div class="cp_iptxt">
+                                                                        <input type="text" id="nickname" name="nickname" placeholder="デバイスの表示名 (例:A公園前)" value="';
+
+                                                                        if (!empty($_POST["nickname"])) {echo htmlspecialchars($_POST["nickname"], ENT_QUOTES);}
+
+                                                echo '">
+                                                                </div>
+                                                                <h4>位置情報</h4>
+                                                                <a class="waves-effect waves-light btn" href="?step=map&data=1">
+                                                                        <i class="material-icons left">landscape</i>
+                                                                        位置を修正する
+                                                                </a>
+                                                        ';
+                                                                echo "緯度:" . $_SESSION['lat'] . " 経度:" . $_SESSION['lng'] . "<br>";
+
+                                                echo '
+                                                        <script>
+                                                        var map;
+                                                        var marker;
+                                                        function initMap() {
+                                                                map = new google.maps.Map(document.getElementById("deviceArea"), {
+                                                                        center: {lat:' .  $_SESSION['lat'] . ',lng:' . $_SESSION['lng'] . '},
+                                                                        zoom: 19
+                                                                });
+                                                                markerLatLng = {lat:' . $_SESSION['lat'] . ', lng:' . $_SESSION['lng']  . '};
+                                                                marker = new google.maps.Marker({
+                                                                        position: markerLatLng,
+                                                                        map: map
+                                                                });
+                                                        }
+                                                        </script>
+                                                        <div id="deviceArea"></div>
+                                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
+                                                        ';
+
+                                                echo '
+                                                                <br>
+                                                                <input type="submit" id="startRegister" name="startRegister" value="以上の内容で登録する">
+                                                        </form>
+
+
+                                                        <br>
+                                                        <a class="waves-effect waves-light btn" href="?step=1"><i class="material-icons left">keyboard_arrow_left</i>前に戻る</a>';
+                                                break;
+                                        case 3:
+                                                if(empty($_SESSION['lat']) || empty($_SESSION['lng'])){
+                                                        header("Location: ?step=1");
                                                 }
 
-						require_once('./myid.php');
-						$strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
-						try {
-							$dbh = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_ID, DB_PASS, $strcode);
-							$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-						} catch (PDOException $e) {
-							echo $e->getMessage();
-							exit;
-						}
+                                                require_once('./myid.php');
+                                                $strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
+                                                try {
+                                                        $dbh = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_ID, DB_PASS, $strcode);
+                                                        $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                                                } catch (PDOException $e) {
+                                                        echo $e->getMessage();
+                                                        exit;
+                                                }
 
                                                 $stmt = $dbh->prepare("INSERT INTO StatusData ( DeviceID, Owner, Latitude, Longitude, NickName ) VALUES (:deviceid, :owner, :latitude, :longitude, :nickname)");
                                                 $stmt->bindParam(':deviceid', $_SESSION['deviceID'], PDO::PARAM_STR);
@@ -324,30 +264,30 @@ require_once('./siteInfo.php');
                                                 $stmt->bindParam(':nickname', $_SESSION['nickname'], PDO::PARAM_STR);
                                                 $stmt->execute();
 
-						unset($_SESSION['lat']);
-						unset($_SESSION['lng']);
-						unset($_SESSION['getStatus']);
+                                                unset($_SESSION['lat']);
+                                                unset($_SESSION['lng']);
+                                                unset($_SESSION['getStatus']);
                                                 unset($_SESSION['deviceID']);
                                                 unset($_SESSION['nickname']);
                                                 echo '
-							<h3>6. 完了</h3>
-							デバイスの登録が完了しました。<br>
-							デバイスの電源を入れて、データが送信されると情報が確認できるようになります。<br>
-							※電源を入れてから最初のデータが表示されるまで、最大5分程度かかる場合が御座います。<br>
-							<br>
-                                                	<a class="waves-effect waves-light btn" href="./addDevice.php">
-								<i class="material-icons left">add</i>
-								別のデバイスを登録する
-							</a>
-                                                	<a class="waves-effect waves-light btn" href="./boxtool.php">
-								<i class="material-icons left">tap_and_play</i>
-								デバイス管理メニューに戻る
-							</a>
-                                                	<a class="waves-effect waves-light btn" href="./dashboard.php">
-								<i class="material-icons left">dashboard</i>
-								ホームに戻る
-							</a>
-						';
+                                                        <h3>4. 完了</h3>
+                                                        デバイスの登録が完了しました。<br>
+                                                        デバイスの電源を入れて、データが送信されると情報が確認できるようになります。<br>
+                                                        ※電源を入れてから最初のデータが表示されるまで、最大5分程度かかる場合が御座います。<br>
+                                                        <br>
+                                                        <a class="waves-effect waves-light btn" href="./addDevice.php">
+                                                                <i class="material-icons left">add</i>
+                                                                別のデバイスを登録する
+                                                        </a>
+                                                        <a class="waves-effect waves-light btn" href="./boxtool.php">
+                                                                <i class="material-icons left">tap_and_play</i>
+                                                                デバイス管理メニューに戻る
+                                                        </a>
+                                                        <a class="waves-effect waves-light btn" href="./dashboard.php">
+                                                                <i class="material-icons left">dashboard</i>
+                                                                ホームに戻る
+                                                        </a>
+                                                ';
                                                 break;
 					case map:
 						if($_GET['data'] == 0){
@@ -361,13 +301,13 @@ require_once('./siteInfo.php');
 							';
 						if($_GET['data'] == 0){
 						echo '
-							<a class="waves-effect waves-light btn" href="?step=3">
+							<a class="waves-effect waves-light btn" href="?step=1">
                                                                 <i class="material-icons left">keyboard_arrow_left</i>
                                                                 戻る
                                                         </a>
 						';}else{
 						echo '
-                                                        <a class="waves-effect waves-light btn" href="?step=4">
+                                                        <a class="waves-effect waves-light btn" href="?step=2">
                                                                 <i class="material-icons left">keyboard_arrow_left</i>
                                                                 戻る
                                                         </a>
@@ -386,7 +326,7 @@ require_once('./siteInfo.php');
 									if((clickLat == null) &&(clickLng == null)){
 										alert("位置が選択されていません。");
 									}else{
-										document.location.href = "?step=4&lat=" + clickLat + "&lng=" + clickLng;
+										document.location.href = "?step=2&lat=" + clickLat + "&lng=" + clickLng;
 									}
 								}
 
@@ -395,7 +335,7 @@ require_once('./siteInfo.php');
 									if(' . $_SESSION['getStatus'] . ' == 1){
 
 										var map = new google.maps.Map(document.getElementById("mapSetting"), {
-											zoom: 15,
+											zoom: 18,
 											center: {lat: ' . $_SESSION['lat'] . ', lng: ' . $_SESSION['lng'] . '}
 										});
 									}else{
@@ -451,15 +391,15 @@ require_once('./siteInfo.php');
 						break;
 					case process:
                                                 if(empty($_SESSION['lat']) || empty($_SESSION['lng'])){
-                                                        header("Location: ?step=3");
+                                                        header("Location: ?step=1");
                                                 }
                                                 if(empty($_SESSION['deviceID']) || empty($_SESSION['nickname'])){
-                                                        header("Location: ?step=4");
+                                                        header("Location: ?step=2");
                                                 }
 						echo '
 							<h3>登録処理中...</h3>
 							現在、アカウントにデバイスを登録しています。画面が切り替わるまでしばらくお待ちください。
-							<META http-equiv="Refresh" content="1;URL=?step=5">
+							<META http-equiv="Refresh" content="1;URL=?step=3">
 
 						';
 						break;

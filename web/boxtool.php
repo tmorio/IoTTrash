@@ -16,6 +16,11 @@ try {
 		echo $e->getMessage();
 		exit;
 }
+unset($_SESSION['lat']);
+unset($_SESSION['lng']);
+unset($_SESSION['getStatus']);
+unset($_SESSION['deviceID']);
+unset($_SESSION['nickname']);
 ?>
 <!doctype html>
 <html>
@@ -79,7 +84,7 @@ try {
                                         </div>
                                         <!-- 削除 -->
                                         <div class="menuIcon col s12 m4 menu-card">
-                                                <a href="#">
+                                                <a href="deleteDevice.php">
                                                         <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
                                                 		<i class="material-icons center large">clear</i>
                                                                 <h6>デバイス削除</h6>
