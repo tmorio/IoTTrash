@@ -33,8 +33,7 @@ $stmt->execute();
 		<link rel="stylesheet" type="text/css" href="css/style.css?Ver=2">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-		<!-- <script type="text/javascript" src="js/materialize.min.js"></script> --><!-- ローカルにあるjsだと動作不良? -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script><!-- 0.98.0のCDNからだと動作 -->
+		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
 		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
@@ -95,7 +94,7 @@ $stmt->execute();
 							<input type="text" name="DeviceID" id="DeviceID" pattern="^[0-9A-Za-z]+$" value="' . $data['DeviceID'] . '" required>
 							<br><br>
 							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>編集を適用する</button>
-							<a class="waves-effect waves-light btn listButton" href="#"><i class="material-icons right">delete</i>削除</a>
+							<a class="waves-effect waves-light btn listButton" href="delete.php?Device=' . $data['DeviceID'] . '"><i class="material-icons right">delete</i>削除</a>
 						</form>
 					</div>
 				';
@@ -111,5 +110,10 @@ $stmt->execute();
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
 		</footer>
+		<script>
+			$(document).ready(function() {
+				$('.collapsible').collapsible();
+			});
+		</script>
 	</body>
 </html>
