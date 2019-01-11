@@ -108,6 +108,10 @@ img.logo-image {
     -ms-overflow-style:none;
 }
 
+.wizardInfo img{
+    max-width: 70%;
+}
+
 .wizardInfo::-webkit-scrollbar{
     display:none;
 }
@@ -121,6 +125,23 @@ img.logo-image {
 }
 
 .AdminDisplay::-webkit-scrollbar{
+    display:none;
+}
+
+.deviceListBoard {
+    padding: 1%;
+    width: 100%;
+    height: calc(100vh - 64px - 22px);
+    overflow-y:auto;
+    -ms-overflow-style:none;
+    background: #1e5799;
+    background: -moz-linear-gradient(left, #1e5799 0%, #2989d8 100%, #207cca 100%, #7db9e8 100%, #2989d8 100%);
+    background: -webkit-linear-gradient(left, #1e5799 0%,#2989d8 100%,#7db9e8 100%,#207cca 100%,#2989d8 100%);
+    background: linear-gradient(to right, #1e5799 0%,#2989d8 100%,#7db9e8 100%,#207cca 100%,#2989d8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#2989d8',GradientType=1 );
+}
+
+.deviceListBoard::-webkit-scrollbar{
     display:none;
 }
 
@@ -147,4 +168,40 @@ img.logo-image {
 
 .menuIcon {
     font-size: 30px;
+}
+
+.listOutput {
+   margin:20px 13vw 0;
+}
+
+.listButton {
+  margin: 0 0 0 auto;
+}
+
+.listTitle {
+    font-size: 25px;
+    font-weight: bolder;
+    vertical-align:middle;
+    color: #ffffff;
+    margin: 0 10px 0 20px;
+}
+
+.listDetail {
+    background:#ffffff;
+}
+
+.editDevice {
+    font-size: 25px;
+}
+
+.editError {
+    font-size: 25px;
+    font-weight: bolder;
+    color: #ffffff;
+    margin:0 13vw 0;
+}
+
+.editDelete {
+    display: block;
+    margin: 0 0 0 auto;
 }
