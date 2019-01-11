@@ -17,12 +17,22 @@ try {
 		exit;
 }
 
-$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+if($_GET['del'] == 1){
+        $query = "DELETE FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
 
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-$stmt->execute();
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+        $stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+        $stmt->execute();
+	header("Location: editDevice.php");
+}else{
+	$query = "SELECT * FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
 
+	$stmt = $dbh->prepare($query);
+	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+	$stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+	$stmt->execute();
+}
 ?>
 <!doctype html>
 <html>
@@ -33,13 +43,12 @@ $stmt->execute();
 		<link rel="stylesheet" type="text/css" href="css/style.css?Ver=2">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<!-- <script type="text/javascript" src="js/materialize.min.js"></script> --><!-- ローカルにあるjsだと動作不良? -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script><!-- 0.98.0のCDNからだと動作 -->
 		<script type="text/javascript" src="js/footerFixed.js"></script>
-		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
-
 	<!-- ヘッダー -->
 	<div class="serviceHeader navbar-fixed">
 		<nav>
@@ -56,36 +65,34 @@ $stmt->execute();
 		</nav>
 	</div>
 	<div class="deviceListBoard">
-        	<a class="waves-effect waves-light btn" href="./boxtool.php">
-        		<i class="material-icons left">keyboard_arrow_left</i>デバイス管理に戻る
-        	</a>
-		&emsp;&emsp;
-                <a class="waves-effect waves-light btn" href="./addDevice.php">
-                        <i class="material-icons left">add</i>デバイス追加
-                </a>
-                <a class="waves-effect waves-light btn" href="#">
-                        <i class="material-icons left">search</i>検索
-                </a>
-
+		<br><br>
                 <div class="listOutput">
                 <ul class="collapsible">
                 <?php
+			//ここに適用したい (jsについては<head>のコメント参照)
+
                         foreach($stmt as $data){
                                 echo '<li><div class="collapsible-header">';
                                 echo "デバイス名: " .  $data['NickName'] ;
-                                echo "&nbsp;(" .  $data['DeviceID'] . ")";
+                                echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
 
                                 if(empty($data['Time'])){
                                         echo "更新日時: 未取得";
                                 }else{
                                         echo "更新日時: " . $data['Time'];
                                 }
-                                echo '&nbsp;<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">highlight_off</i>削除</a>';
-                                echo '</div></li>';
+				echo '</div>';
+                                echo '</li>';
                         }
                 ?>
                 </ul>
                 </div>
+                <div class="deleteCheck">削除するとこのデバイスのデータ履歴も削除されます。<br>本当に削除しますか?</div><br><br>
+		<div class="buttonH">
+                	<a class="waves-effect waves-light btn-large listButton" href="editDevice.php"><i class="material-icons right">keyboard_return</i>編集・削除ページへ戻る</a><br><br><br>
+                	<a class="waves-effect waves-light btn listButton" href="delete.php?Device=<?php echo $_GET['Device']; ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
+		</div>
+
 
 	</div>
 		<!-- フッター -->
@@ -94,4 +101,3 @@ $stmt->execute();
 		</footer>
 	</body>
 </html>
-

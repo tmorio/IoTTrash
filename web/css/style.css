@@ -201,7 +201,16 @@ img.logo-image {
     margin:0 13vw 0;
 }
 
-.editDelete {
-    display: block;
-    margin: 0 0 0 auto;
+.deleteCheck {
+    width: 100%;
+    font-size: 25px;
+    font-weight: bolder;
+    text-align:center;
+    margin: 10vh 0 0;
+    color: #ffffff;
+}
+
+.buttonH {
+    text-align: center;
+    margin: 0 auto;
 }

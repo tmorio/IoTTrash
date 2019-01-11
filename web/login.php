@@ -4,6 +4,9 @@ require_once('./siteInfo.php');
 
 session_start();
 
+if(!empty($_SESSION['userNo']) && !empty($_SESSION['userGroup']) && !empty($_SESSION['userName'])){
+}
+
 $errorMessage = '';
 if (isset($_POST["login"])) {
 	if (empty($_POST["userid"])) {

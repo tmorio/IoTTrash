@@ -12,7 +12,7 @@ require_once('./siteInfo.php');
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>MyBox Cloud - BoxMap</title>
+		<title>MyBox Cloud - AddDevice</title>
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -135,7 +135,7 @@ require_once('./siteInfo.php');
                                                         下のボタンを押すと位置情報を取得します。<br>
                                                         ※取得には時間がかかる場合が御座います。画面が切り替わるまでお待ちください。<br><br>
                                                         <!-- 取得中の時はボタンに処理中って表示したいね -->
-                                                        <button onclick="getPosition();">位置情報を取得して進む (自動設定)</button>
+                                                        <button class="btn waves-effect waves-light" onclick="getPosition();"><i class="material-icons left">gps_fixed</i>位置情報を取得して進む (自動設定)</button>
                                                         <span id="geoNotice"></span>
                                                         <br><br>
                                                         <a class="waves-effect waves-light btn" href="?step=map&data=0">
@@ -234,7 +234,7 @@ require_once('./siteInfo.php');
 
                                                 echo '
                                                                 <br>
-                                                                <input type="submit" id="startRegister" name="startRegister" value="以上の内容で登録する">
+                                                                <button class="btn waves-effect waves-light" type="submit" id="startRegister" name="startRegister"><i class="material-icons left">check</i>以上の内容で登録する</button>
                                                         </form>
 
 

@@ -60,8 +60,8 @@ require_once('./siteInfo.php');
 					<div class="boxAdmin col s12 m4 menu-card">
 						<a href="boxtool.php">
 							<div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
-								<i class="material-icons center large">tap_and_play</i>
-								<h6>デバイス管理</h6>
+								<i class="material-icons center large">trending_up</i>
+								<h6>分析・管理</h6>
 							</div>
 						</a>
 					</div>

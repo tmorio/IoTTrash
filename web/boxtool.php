@@ -84,10 +84,10 @@ unset($_SESSION['nickname']);
                                         </div>
                                         <!-- 削除 -->
                                         <div class="menuIcon col s12 m4 menu-card">
-                                                <a href="deleteDevice.php">
+                                                <a href="editDevice.php">
                                                         <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
-                                                		<i class="material-icons center large">clear</i>
-                                                                <h6>デバイス削除</h6>
+                                                		<i class="material-icons center large">edit</i>
+                                                                <h6>編集・削除</h6>
                                                         </div>
                                                 </a>
                                         </div>

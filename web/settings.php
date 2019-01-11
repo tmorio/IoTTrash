@@ -61,7 +61,6 @@ try {
 			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知</a>
 			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>
 			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>グループ・権限</a>
-			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">apps</i>API</a>
 		</div>
 		
 		<!-- 設定表示 -->
