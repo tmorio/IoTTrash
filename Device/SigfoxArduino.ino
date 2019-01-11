@@ -110,6 +110,6 @@ void loop()
       successCount++;
       }
     Serial.println(successCount);
-    delay(10000); 
+    delay(900000); 
 
 }
