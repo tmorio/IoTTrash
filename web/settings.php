@@ -78,17 +78,33 @@ $result = $stmt->fetch();
 		<?php
 			switch($_GET['page']){
 				default;
+					switch($_GET['mes']){
+						case 2:
+							echo '設定を更新しました。';
+							break;
+						case 1:
+							echo 'パスワードが違います。';
+							break;
+					}
 					echo '
 						<h3>アカウント設定</h3><br>
-                				<form action="doSetting.php" method="POST">
+                				<form action="doSetting.php?Setup=account" method="POST">
                         				MyBox ID (ログインID)<br>
-                        	        		<input type="text" name="UserID" id="UserID" pattern="^[0-9A-Za-z]+$" value="' . $result['UserID'] . '" required>
+                        	        		<input type="text" name="newUserID" id="newUserID" pattern="^[0-9A-Za-z]+$" value="' . $result['UserID'] . '" required>
                                 			名前<br>
-                                			<input type="text" name="Username" id="Username"  value="' . $result['Name'] . '" required>
-                                			<br><br>
-                                			<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>編集を適用する</button>
+                                			<input type="text" name="newUsername" id="newUsername"  value="' . $result['Name'] . '" required>
+                                                        メールアドレス<br>
+                                                        <input type="email" name="newmail" id="newmail"  value="' . $result['mailAddress'] . '" required>
+                                                        新しいパスワード (変更する場合は入力して下さい)<br>
+                                                        <input type="password" name="newPassword" id="newPassword">
+                                			<br><br><br>
+                                                        現在のパスワード (必須)<br>
+                                                        <input type="password" name="nowPassword" id="nowPassword" required><br>
+                                			<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>変更を適用する</button>
 						</form>
 					';
+					break;
+				case notice:
 					break;
 			}
 		?>
