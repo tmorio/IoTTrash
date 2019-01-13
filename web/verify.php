@@ -21,6 +21,10 @@ if((strtotime($result['expireTime']) >= time()) && !empty($result['expireTime'])
 	$stmt->bindParam(':UserID', $result['UserID'], PDO::PARAM_INT);
 	$stmt->bindParam(':newmail', $result['newMail'], PDO::PARAM_STR);
 	$stmt->execute();
+	$query = "DELETE FROM EmailChange WHERE verifyCode = :token";
+	$stmt = $dbh->prepare($query);
+	$stmt->bindParam(':token', $_GET['token'], PDO::PARAM_STR);
+	$stmt->execute();
 	echo 'メールアドレスの変更が完了しました。';
 }else{
 	echo 'URLの期限が切れているか、URLが無効です。再度お手続きください。';
