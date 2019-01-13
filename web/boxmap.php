@@ -149,35 +149,36 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 				$s=120;
 				$v=255;
 				$color=hsv2code($h,$s,$v);
+
 		  echo '<li class="DeviceInfo collection-item" style="background-color: #'.$color.';">'; //各デバイスの情報が入るブロック
-		  echo "デバイス名: " .  $data['NickName'] . "<br>\n";
-		  echo '<hr size="1" color="#37474f" noshade>';
-		  echo "デバイスID: " .  $data['DeviceID'] . "\n";
+		  echo "" .  $data['NickName'] . "&nbsp;";
+		  echo "(" .  $data['DeviceID'] . ")";
+                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');"><i class="material-icons left">location_on</i>マップに表示</button>';
+
+                  echo '<hr size="1" color="#37474f" noshade>';
 
 		  if(empty($data['Time'])){
-			echo "更新日時: 未取得\n";
+			echo "更新日時: 未取得";
 		  }else{
-		  	echo "更新日時: " . $data['Time'] . "\n";
+		  	echo "更新日時: " . $data['Time'];
 		  }
 
 		  echo '<div class="DeviceSensor">';
 
 		  if(empty($data['Temp']) || empty($data['Hum'])){
-			echo "データ取得待ち\n";
+			echo "データ取得待ち";
 		  }else{
-		  	echo "温度: " . $data['Temp'] . "°C" . " 湿度: " . $data['Hum'] . "%" . "\n";
+		  	echo "温度: " . $data['Temp'] . "°C" . " 湿度: " . $data['Hum'] . "%";
 		  }
 		  echo '</div>';
 		  echo '<div class="BoxAvailable">';
 
 		  if(!empty($data['Dis'])){
-			  echo "空き容量: " . $data['Dis'] . " cm" . "\n";
+			  echo "空き容量: " . $data['Dis'] . " cm";
 		  }
 
 		  echo '</div>';
-		  echo '<a href="#">マップに表示</a>';
-		  echo "&ensp;";
-		  echo '<a href="#">回収対象に設定</a>';
+		  echo '<br><label><input type="checkbox" class="filled-in" /><span>回収対象にする</span></label>';
 		  echo '</li><br>';
 				}
 				$PinData = $PinData . "]";
@@ -204,6 +205,10 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 						map: map
 					});
 				}
+			}
+
+			function buttonClick(lat,lng) {
+				map.panTo(new google.maps.LatLng(lat,lng));
 			}
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>

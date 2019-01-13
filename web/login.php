@@ -4,7 +4,9 @@ require_once('./siteInfo.php');
 
 session_start();
 
-if(!empty($_SESSION['userNo']) && !empty($_SESSION['userGroup']) && !empty($_SESSION['userName'])){
+if(!empty($_SESSION['userNo']) && !empty($_SESSION['userName'])){
+        header("Location: ./dashboard.php");
+	exit(0);
 }
 
 $errorMessage = '';
@@ -58,6 +60,7 @@ if (isset($_POST["login"])) {
 		}
 	}
 }
+
 ?>
 
 <!doctype html>

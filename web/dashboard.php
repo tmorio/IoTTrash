@@ -7,6 +7,12 @@ if(empty($_SESSION['userName'])){
 
 require_once('./siteInfo.php');
 
+unset($_SESSION['lat']);
+unset($_SESSION['lng']);
+unset($_SESSION['getStatus']);
+unset($_SESSION['deviceID']);
+unset($_SESSION['nickname']);
+
 ?>
 
 <!doctype html>
