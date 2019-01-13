@@ -123,6 +123,8 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 				<span class="infoTitle">デバイス一覧</span>
 			</li>
 
+				<form action="doBoxget.php" method="POST">
+
 			<?php
 				$DeviceCounter = 0;
 				$PinData = "[";
@@ -153,7 +155,7 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  echo '<li class="DeviceInfo collection-item" style="background-color: #'.$color.';">'; //各デバイスの情報が入るブロック
 		  echo "" .  $data['NickName'] . "&nbsp;";
 		  echo "(" .  $data['DeviceID'] . ")";
-                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');"><i class="material-icons left">location_on</i>マップに表示</button>';
+                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');return false;"><i class="material-icons left">location_on</i>マップに表示</button>';
 
                   echo '<hr size="1" color="#37474f" noshade>';
 
@@ -178,14 +180,25 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  }
 
 		  echo '</div>';
-		  echo '<br><label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span>回収対象にする</span></label>';
+		  echo '<br>';
+		  if($data['gettingStatus'] == 0){
+		  	echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span>回収対象にする</span></label>';
+                        if(!empty($data['LastReset'])){
+                                echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+                        }
+		  }else{
+			echo '<label><input type="checkbox" checked="checked" disabled="disabled" /><span>回収依頼済み</span></label>';
+			if(!empty($data['LastReset'])){
+				echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+			}
+		  }
 		  echo '</li><br>';
 				}
 				$PinData = $PinData . "]";
 			?>
-		<li></li>
+			</form>
 		</ul>
-		
+
 		<!-- マップ表示 -->
 		<div id="boxMap">
 		</div>
