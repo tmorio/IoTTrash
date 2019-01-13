@@ -15,52 +15,36 @@ if (isset($_POST["login"])) {
 		$errorMessage = 'MyBox IDが入力されていません．';
 	} else if (empty($_POST["password"])) {
 		$errorMessage = 'パスワードが入力されていません．';
-	}
-	if (!empty($_POST["userid"]) && !empty($_POST["password"])) {
+	} if (!empty($_POST["userid"]) && !empty($_POST["password"])) {
 		$userid = $_POST["userid"];
 
-	$strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8'");
-		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_ID, DB_PASS, $strcode);
-		$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-
-		try {
-
-			$stmt = $pdo->prepare('SELECT * FROM Users WHERE UserID = ?');
-			$stmt->execute(array($userid));
-
-			$password = $_POST["password"];
-
-			if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				if (password_verify($password, $row['Password'])) {
-					session_regenerate_id(true);
-
-					$UserID = $row['UserID'];
-					$sql = "SELECT * FROM Users WHERE UserID = $UserID";
-					$stmt = $pdo->query($sql);
-
-                    			foreach ($stmt as $row) {
-                        			$row['ID'];
-                        			$row['Name'];
-                                                $row['Group'];
-                    			}
-                    			$_SESSION['userNo'] = $row['ID'];
-                                        $_SESSION['userGroup'] = $row['Group'];
-		                        $_SESSION['userName'] = $row['Name'];
-					session_regenerate_id(true);
-					header("Location: dashboard.php");
-
-				} else {
-					$errorMessage = 'MyBox IDまたはパスワードが間違っています．';
-				}
-			} else {
-				$errorMessage = 'MyBox IDまたはパスワードが間違っています．';
+                try {
+			$strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8'");
+			$dbh = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_ID, DB_PASS, $strcode);
+			$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			$query = "SELECT * FROM Users WHERE UserID = :UserID";
+			$stmt = $dbh->prepare($query);
+			$stmt->bindParam(':UserID', $_POST['userid'], PDO::PARAM_STR);
+			$stmt->execute();
+			$result = $stmt->fetch();
+			if (password_verify($_POST['password'], $result['Password'])){
+                    		$_SESSION['userNo'] = $result['ID'];
+                        	//$_SESSION['userGroup'] = $row['Group'];
+		        	$_SESSION['userName'] = $result['Name'];
+				session_regenerate_id(true);
+				header("Location: dashboard.php");
+			}else{
+				unset($result);
+				$errorMessage = 'MyBox IDまたはパスワードが違います。';
 			}
-		} catch (PDOException $e) {
-			$errorMessage = 'データベースへの接続に失敗しました．';
-		}
+
+                } catch (PDOException $e) {
+                        $errorMessage = 'データベースへの接続に失敗しました．';
+                }
+
+
 	}
 }
-
 ?>
 
 <!doctype html>
