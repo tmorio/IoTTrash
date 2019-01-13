@@ -18,7 +18,7 @@ $result = $stmt->fetch();
 if((strtotime($result['expireTime']) >= time()) && !empty($result['expireTime'])){
 	$query = "UPDATE Users SET mailAddress = :newmail WHERE ID = :UserID";
 	$stmt = $dbh->prepare($query);
-	$stmt->bindParam(':UserID', $result['userID'], PDO::PARAM_STR);
+	$stmt->bindParam(':UserID', $result['UserID'], PDO::PARAM_INT);
 	$stmt->bindParam(':newmail', $result['newMail'], PDO::PARAM_STR);
 	$stmt->execute();
 	echo 'メールアドレスの変更が完了しました。';
