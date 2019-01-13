@@ -178,7 +178,7 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  }
 
 		  echo '</div>';
-		  echo '<br><label><input type="checkbox" class="filled-in" /><span>回収対象にする</span></label>';
+		  echo '<br><label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span>回収対象にする</span></label>';
 		  echo '</li><br>';
 				}
 				$PinData = $PinData . "]";
