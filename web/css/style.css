@@ -218,3 +218,7 @@ img.logo-image {
 .wideControl {
     width: 100%;
 }
+
+.settingInfo {
+    padding: 5vh 10vw;
+}

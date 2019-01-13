@@ -16,6 +16,13 @@ try {
 		echo $e->getMessage();
 		exit;
 }
+
+$query = "SELECT * FROM Users WHERE ID = :UserID AND Name = :Username";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_STR);
+$stmt->bindParam(':Username', $_SESSION['userName'], PDO::PARAM_STR);
+$stmt->execute();
+$result = $stmt->fetch();
 ?>
 <!doctype html>
 <html>
@@ -51,7 +58,6 @@ try {
 	
 	<!-- 表示画面 （Google Mapみたいに2画面分割で左にリスト、右にマップ?)-->
 	<div class="settingBoard">
-	
 		<!-- 設定分類一覧表示 -->
 		<div class="collection with-header settingList">
 			<div class="collection-header center-align"><a class="waves-effect waves-light btn" href="./dashboard.php">
@@ -59,12 +65,33 @@ try {
 			<div class="collection-header"><h5>サービス設定</h5></div>
 			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">account_circle</i>アカウント設定</a>
 			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知</a>
-			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>
-			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>グループ・権限</a>
+			<?php
+			if($_SESSION['userService'] == 0){
+				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>';
+				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>グループ・権限</a>';
+			}
+			?>
 		</div>
 		
 		<!-- 設定表示 -->
-		<div id="settingInfo">
+		<div class="settingInfo">
+		<?php
+			switch($_GET['page']){
+				default;
+					echo '
+						<h3>アカウント設定</h3><br>
+                				<form action="doSetting.php" method="POST">
+                        				MyBox ID (ログインID)<br>
+                        	        		<input type="text" name="UserID" id="UserID" pattern="^[0-9A-Za-z]+$" value="' . $result['UserID'] . '" required>
+                                			名前<br>
+                                			<input type="text" name="Username" id="Username"  value="' . $result['Name'] . '" required>
+                                			<br><br>
+                                			<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>編集を適用する</button>
+						</form>
+					';
+					break;
+			}
+		?>
 		</div>
 	</div>
 		<!-- フッター -->
