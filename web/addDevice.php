@@ -82,7 +82,6 @@ require_once('./siteInfo.php');
 			<a href="?step=2" class="collection-item grey-text text-darken-4 step-item" id="row_step2"> <i class="material-icons left">edit</i>3. デバイス情報の登録</a>
 			
 			<div 			  class="collection-item grey-text text-darken-4 step-item" id="row_step3"> <i class="material-icons left">check</i>4. 登録完了</div>
-			
 			<div class="collection-item"></div>
 		</div>
 		<!-- ウィザード -->
