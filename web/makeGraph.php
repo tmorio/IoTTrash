@@ -75,7 +75,7 @@ $result = $stmt->fetch();
 		?>
 		<span class="listTitle">ID:<?php echo $_GET['DeviceID'] . 'のデータ履歴'; ?></span>
                 <a class="waves-effect waves-light btn" href="#">
-                        <i class="material-icons left">vertical_align_bottom</i>データ書き出し (CSV)
+                        <i class="material-icons left">vertical_align_bottom</i>全データ書き出し (CSV)
                 </a>
                 <a class="waves-effect waves-light btn red" href="#">
                         <i class="material-icons left">highlight_off</i>データ履歴の削除
@@ -125,32 +125,32 @@ $result = $stmt->fetch();
                                 switch($_GET['time']){
                                         default:
 						$dataCounter = 1;
-                                                $stopCounter = 9;
+                                                $stopCounter = 10;
 						$passNum = 1;
                                                 break;
 					case 1:
 						$dataCounter = 2;
-						$stopCounter = 20;
+						$stopCounter = 22;
 						$passNum = 2;
 						break;
                                         case 2:
                                                 $dataCounter = 4;
-                                                $stopCounter = 36;
+                                                $stopCounter = 40;
                                                 $passNum = 4;
                                                 break;
                                         case 3:
                                                 $dataCounter = 12;
-                                                $stopCounter = 108;
+                                                $stopCounter = 120;
                                                 $passNum = 12;
                                                 break;
                                         case 4:
                                                 $dataCounter = 24;
-                                                $stopCounter = 216;
+                                                $stopCounter = 240;
                                                 $passNum = 24;
                                                 break;
                                         case 5:
                                                 $dataCounter = 32;
-                                                $stopCounter = 288;
+                                                $stopCounter = 320;
                                                 $passNum = 32;
                                                 break;
                                 }
@@ -180,7 +180,7 @@ $result = $stmt->fetch();
 
                                         $dataCounter++;
 
-                                        if($dataCounter == $stopCounter){
+                                        if($dataCounter == ($stopCounter + $passNum)){
                                                 break;
                                         }else{
 						if($addData == 1){
