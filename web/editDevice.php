@@ -35,7 +35,6 @@ $stmt->execute();
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
-		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
 	<!-- ヘッダー -->
@@ -61,9 +60,13 @@ $stmt->execute();
                 <a class="waves-effect waves-light btn" href="./addDevice.php">
                         <i class="material-icons left">add</i>デバイス追加
                 </a>
+                <a class="waves-effect waves-light btn" href="deviceList.php">
+                        <i class="material-icons left">equalizer</i>一覧・分析
+                </a>
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">search</i>検索
                 </a>
+
 		<?php if($_GET['Error'] == 1){ echo '<br><br><span class="editError">（編集エラー）入力されたデバイスIDが6文字ではありません。</span>';} ?>
                 <div class="listOutput">
                 <ul class="collapsible">
@@ -72,7 +75,7 @@ $stmt->execute();
 
                         foreach($stmt as $data){
                                 echo '<li><div class="collapsible-header">';
-                                echo "デバイス名: " .  $data['NickName'] ;
+                                echo $data['NickName'] ;
                                 echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
 
                                 if(empty($data['Time'])){
@@ -94,7 +97,7 @@ $stmt->execute();
 							<input type="text" name="DeviceID" id="DeviceID" pattern="^[0-9A-Za-z]+$" value="' . $data['DeviceID'] . '" required>
 							<br><br>
 							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>編集を適用する</button>
-							<a class="waves-effect waves-light btn listButton" href="delete.php?Device=' . $data['DeviceID'] . '"><i class="material-icons right">delete</i>削除</a>
+							<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=' . $data['DeviceID'] . '"><i class="material-icons right">delete</i>削除</a>
 						</form>
 					</div>
 				';

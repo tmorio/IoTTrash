@@ -59,12 +59,12 @@ $stmt->execute();
         	<a class="waves-effect waves-light btn" href="./boxtool.php">
         		<i class="material-icons left">keyboard_arrow_left</i>デバイス管理に戻る
         	</a>
-		&emsp;&emsp;
+		<span class="listTitle">一覧・分析</span>
                 <a class="waves-effect waves-light btn" href="./addDevice.php">
                         <i class="material-icons left">add</i>デバイス追加
                 </a>
-                <a class="waves-effect waves-light btn" href="./deleteDevice.php">
-			<i class="material-icons left">highlight_off</i>デバイス削除
+                <a class="waves-effect waves-light btn" href="./editDevice.php">
+			<i class="material-icons left">edit</i>編集・削除
 		</a>
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">search</i>検索
@@ -75,15 +75,17 @@ $stmt->execute();
 		<?php
 			foreach($stmt as $data){
 				echo '<li><div class="collapsible-header">';
-				echo "デバイス名: " .  $data['NickName'] ;
-				echo "&nbsp;(" .  $data['DeviceID'] . ")";
+				echo $data['NickName'] ;
+				echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
 
 				if(empty($data['Time'])){
 					echo "更新日時: 未取得";
 				}else{
 					echo "更新日時: " . $data['Time'];
 				}
-                                echo '&nbsp;<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">timeline</i>グラフ表示</a>';
+                                echo '<div class="listButton">';
+                                echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '"><i class="material-icons left">timeline</i>グラフ表示</a>';
+				echo '</div>';
 				echo '</div></li>';
 			}
 		?>

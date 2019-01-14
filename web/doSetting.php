@@ -54,7 +54,7 @@ switch($_GET['Setup']){
 
 				$toMail = $_POST['newmail'];
 				$returnMail = 'mybox@moritoworks.com';
-				$name = "MyBox Cloud 認証";
+				$name = "MyBox Cloud";
 				$mail = 'mybox@moritoworks.com';
 				$subject = "メールアドレスを確認して下さい。";
 				$url = "https://mybox.moritoworks.com/verify.php?token=".$verifyCode;
@@ -67,6 +67,8 @@ MyBox IDのメールアドレスの変更を適用するには、30分以内に�
 この操作に心当たりがない場合は、他のユーザーが間違えてメールアドレスを入力した可能性があります。
 大変お手数をおかけしますが、メールの破棄をお願い致します。
 
+なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
+何卒ご了承ください。
 ------------------------------
 MyBox Cloud
 
@@ -80,6 +82,7 @@ EOM;
 				$header = 'From: ' . mb_encode_mimeheader($name). ' <' . $mail. '>';
 				mb_send_mail($toMail, $subject, $body, $header, '-f'. $returnMail);
 				header("Location: ./settings.php?mes=3");
+				exit(0);
 			}
 			header("Location: ./settings.php?mes=2");
 		}else{

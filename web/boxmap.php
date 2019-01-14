@@ -155,7 +155,8 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  echo '<li class="DeviceInfo collection-item" style="background-color: #'.$color.';">'; //各デバイスの情報が入るブロック
 		  echo "" .  $data['NickName'] . "&nbsp;";
 		  echo "(" .  $data['DeviceID'] . ")";
-                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');return false;"><i class="material-icons left">location_on</i>マップに表示</button>';
+		  echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
+                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');return false;"><i class="material-icons left">location_on</i>表示</button>';
 
                   echo '<hr size="1" color="#37474f" noshade>';
 
@@ -184,12 +185,12 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  if($data['gettingStatus'] == 0){
 		  	echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span>回収対象にする</span></label>';
                         if(!empty($data['LastReset'])){
-                                echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+                                echo '&nbsp;(最終回収 :&nbsp;' . $data['LastReset'] . ')';
                         }
 		  }else{
 			echo '<label><input type="checkbox" checked="checked" disabled="disabled" /><span>回収依頼済み</span></label>';
 			if(!empty($data['LastReset'])){
-				echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+				echo '&nbsp;(最終回収 :&nbsp;' . $data['LastReset'] . ')';
 			}
 		  }
 		  echo '</li><br>';

@@ -31,6 +31,7 @@ if (isset($_POST["login"])) {
                     		$_SESSION['userNo'] = $result['ID'];
                         	//$_SESSION['userGroup'] = $row['Group'];
 		        	$_SESSION['userName'] = $result['Name'];
+				$_SESSION['userService'] = $result['Service'];
 				session_regenerate_id(true);
 				header("Location: dashboard.php");
 			}else{
