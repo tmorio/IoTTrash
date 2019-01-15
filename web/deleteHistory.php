@@ -18,17 +18,10 @@ try {
 }
 
 if($_GET['del'] == 1){
-        $query = "DELETE FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
-
-        $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-        $stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
-        $stmt->execute();
-
         $query = "DELETE FROM History WHERE DeviceID = :deviceid";
 
         $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+        $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
         $stmt->execute();
 
 	header("Location: editDevice.php");
@@ -37,13 +30,13 @@ if($_GET['del'] == 1){
 
 	$stmt = $dbh->prepare($query);
 	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-	$stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+	$stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
 	$stmt->execute();
-        $data = $stmt->fetch();
-        if(empty($data['DeviceID'])){
-                echo '削除権限がありません。';
-                exit(0);
-        }
+	$data = $stmt->fetch();
+	if(empty($data['DeviceID'])){
+		echo '削除権限がありません。';
+		exit(0);
+	}
 }
 ?>
 <!doctype html>
@@ -79,24 +72,29 @@ if($_GET['del'] == 1){
                 <div class="listOutput">
                 <ul class="collapsible">
                 <?php
-			 echo '<li><div class="collapsible-header">';
-                         echo "デバイス名: " .  $data['NickName'] ;
-                         echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
 
-                         if(empty($data['Time'])){
-                         	echo "更新日時: 未取得";
-                         }else{
+			echo '<li><div class="collapsible-header">';
+                        echo "デバイス名: " .  $data['NickName'] ;
+                        echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
+
+                        if(empty($data['Time'])){
+                        	echo "更新日時: 未取得";
+                        }else{
                                 echo "更新日時: " . $data['Time'];
-                         }
+                        }
 			echo '</div>';
                         echo '</li>';
                 ?>
                 </ul>
                 </div>
-                <div class="deleteCheck">削除するとこのデバイスのデータ履歴も削除されます。<br>本当に削除しますか?</div><br><br>
+                <div class="deleteCheck">このデバイスのデータ履歴を削除してよろしいですか?</div><br><br>
 		<div class="buttonH">
-                	<a class="waves-effect waves-light btn-large listButton" href="editDevice.php"><i class="material-icons right">keyboard_return</i>編集・削除ページへ戻る</a><br><br><br>
-                	<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=<?php echo $_GET['Device']; ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
+		<?php
+		echo '
+                	<a class="waves-effect waves-light btn-large listButton" href="makeGraph.php?DeviceID=' . $_GET['DeviceID'] . '"><i class="material-icons right">keyboard_return</i>データグラフへ戻る</a><br><br><br>
+                	<a class="waves-effect waves-light btn listButton red" href="deleteHistory.php?DeviceID=' . $_GET['DeviceID'] . '&del=1"><i class="material-icons right">delete</i>削除する</a>
+		';
+		?>
 		</div>
 
 
