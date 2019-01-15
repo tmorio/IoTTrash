@@ -74,7 +74,7 @@ $result = $stmt->fetch();
 		}
 		?>
 		<span class="listTitle">ID:<?php echo $_GET['DeviceID'] . 'のデータ履歴'; ?></span>
-                <a class="waves-effect waves-light btn" href="#">
+                <?php echo '<a class="waves-effect waves-light btn" href="makecsv.php?DeviceID=' . $_GET['DeviceID']  .'" target="_blank">'; ?>
                         <i class="material-icons left">vertical_align_bottom</i>全データ書き出し (CSV)
                 </a>
                 <?php echo '<a class="waves-effect waves-light btn red" href="deleteHistory.php?DeviceID=' . $_GET['DeviceID'] . '">'; ?>
@@ -82,7 +82,7 @@ $result = $stmt->fetch();
                 </a>
 
 		<div class="graphArea">
-			<a class='dropdown-trigger btn' href='#' data-target='dropdown1'><i class="material-icons left">keyboard_arrow_down</i>時間の間隔 
+			<a class='dropdown-trigger btn' href='#' data-target='dropdown1'><i class="material-icons left">keyboard_arrow_down</i>時間の間隔
 			<?php
 				switch($_GET['time']){
 					default:
