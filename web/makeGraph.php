@@ -52,7 +52,7 @@ $result = $stmt->fetch();
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -109,12 +109,12 @@ $result = $stmt->fetch();
 			</a>
 			<ul id='dropdown1' class='dropdown-content'>
 			<?php
-				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=0">15分毎</a></li>';
-				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=1">30分毎</a></li>';
-				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=2">1時間毎</a></li>';
-                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=3">3時間毎</a></li>';
-                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=4">6時間毎</a></li>';
-                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=5">8時間毎</a></li>';
+				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=0&from=' . $_GET['from'] . '">15分毎</a></li>';
+				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=1&from=' . $_GET['from'] . '">30分毎</a></li>';
+				echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=2&from=' . $_GET['from'] . '">1時間毎</a></li>';
+                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=3&from=' . $_GET['from'] . '">3時間毎</a></li>';
+                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=4&from=' . $_GET['from'] . '">6時間毎</a></li>';
+                                echo '<li><a href="?DeviceID=' . $_GET['DeviceID']  . '&time=5&from=' . $_GET['from'] . '">8時間毎</a></li>';
 			?>
 			</ul>
 			<br><br>

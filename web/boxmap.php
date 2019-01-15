@@ -16,18 +16,31 @@ try {
 		echo $e->getMessage();
 		exit;
 }
-
-$query = "SELECT COUNT(*) FROM StatusData WHERE Owner = :UserID";
+if(!empty($_SESSION['userGroup'])){
+	$query = "SELECT COUNT(*) FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+}else{
+	$query = "SELECT COUNT(*) FROM StatusData WHERE Owner = :UserID";
+}
 
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+if(!empty($_SESSION['userGroup'])){
+	$stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_STR);
+}
 $stmt->execute();
 $DeviceCount = $stmt->fetchColumn();
 
-$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+if(!empty($_SESSION['userGroup'])){
+	$query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+}else{
+	$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+}
 
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+if(!empty($_SESSION['userGroup'])){
+	$stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_INT);
+}
 $stmt->execute();
 ?>
 <?php
@@ -90,7 +103,6 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
 
@@ -104,7 +116,7 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -136,30 +148,34 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 						$DeviceCounter = $DeviceCounter + 1;
 					}
 				
-				//$Red=255-$data['Dis'];
-				//$Green=100+$data['Dis'];
-				//$Blue=175;
-				//if($Red<0) $Red=0;
-				//if($Green>255) $Green=255;
-				//$color=$Red*0x10000+$Green*0x100+$Blue;
-				
 				// red     green
 				// 0<=(h)<=130
 				$max=120; //cm
 				$min=0; //cm
 				$h=map($data['Dis'],$min,$max,0,130);
-				$s=120;
+				$s=130;
 				$v=255;
 				$color=hsv2code($h,$s,$v);
 
 		  echo '<li class="DeviceInfo collection-item" style="background-color: #'.$color.';">'; //各デバイスの情報が入るブロック
+		  echo '<div class="clearfix valign-wrapper">';
 		  echo "" .  $data['NickName'] . "&nbsp;";
 		  echo "(" .  $data['DeviceID'] . ")";
-		  echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
-                  echo '<button class="waves-effect waves-light btn" onclick="buttonClick(' .  $data['Latitude'] . ',' . $data['Longitude'] . ');return false;"><i class="material-icons left">location_on</i>表示</button>';
-
-                  echo '<hr size="1" color="#37474f" noshade>';
-
+		  echo '<div class="right">';
+                  echo '<button class="waves-effect waves-light btn right marg" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
+		  if(!empty($data['Temp'])){
+			if($_SESSION['userService'] != 1){
+                  		echo '<a class="waves-effect waves-light btn right marg" href="makeGraph.php?DeviceID='.$data['DeviceID'].'&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
+			}
+		  	echo '<a class="waves-effect waves-light btn" href="#?DeviceID='.$data['DeviceID'].'"><i class="material-icons left">check</i>回収済みにする</a>';
+		  }else{
+			if($_SESSION['userService'] != 1){
+				echo '<a class="waves-effect waves-light btn right marg disabled"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
+			}
+			echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">check</i>回収済みにする</a>';
+		  }
+		  echo '</div></div>';
+		  echo '<hr size="1" color="#37474f" noshade>';
 		  if(empty($data['Time'])){
 			echo "更新日時: 未取得";
 		  }else{
@@ -181,9 +197,15 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  }
 
 		  echo '</div>';
-		  echo '<br>';
+                  if(!empty($data['Dis'])){
+                          echo "<br>";
+                  }
 		  if($data['gettingStatus'] == 0){
-		  	echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span>回収対象にする</span></label>';
+			if($_SESSION['userService'] != 1){
+                                if(!empty($data['Temp'])){
+		  			echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span class="grey-text text-darken-3">回収対象にする</span></label>';
+				}
+			}
                         if(!empty($data['LastReset'])){
                                 echo '&nbsp;(最終回収 :&nbsp;' . $data['LastReset'] . ')';
                         }

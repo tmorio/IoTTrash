@@ -81,7 +81,7 @@ if($_GET['del'] == 1){
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>

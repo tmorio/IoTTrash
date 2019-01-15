@@ -42,8 +42,9 @@ unset($_SESSION['nickname']);
 					<ul class="right">
 						<!-- ユーザー名 -->
 						<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
-						<!-- ログアウトボタン -->
-						<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+						<!-- 設定,ログアウトボタン -->
+                                                <li><a class="waves-effect waves-light btn" href="./settings.php"><i class="material-icons left">build</i>設定</a></li>
+						<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -67,22 +68,22 @@ unset($_SESSION['nickname']);
 						</div>
 						<!-- ゴミ箱管理 -->
 						<div class="boxAdmin col s12 m4 menu-card">
-							<a href="boxtool.php">
+							<a href="getMenu.php">
 								<div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
-									<i class="material-icons center large">trending_up</i>
-									<h6>分析・管理</h6>
+									<i class="material-icons center large">local_shipping</i>
+									<h6>回収管理</h6>
 								</div>
 							</a>
 						</div>
 						<!-- 設定 -->
-						<div class="settingTool col s12 m4 menu-card">
-							<a href="settings.php">
-								<div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
-									<i class="material-icons center large">build</i>
-									<h6>設定</h6>
-								</div>
-							</a>
-						</div>
+                                                <div class="boxAdmin col s12 m4 menu-card">
+                                                        <a href="boxtool.php">
+                                                                <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
+                                                                        <i class="material-icons center large">trending_up</i>
+                                                                        <h6>分析・管理</h6>
+                                                                </div>
+                                                        </a>
+                                                </div>
 					</div>
 				</div>
 			';
@@ -96,11 +97,20 @@ unset($_SESSION['nickname']);
                                                         <a href="boxmap.php">
                                                                 <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
                                                                         <i class="material-icons center large">local_shipping</i>
-                                                                        <h6>確認・回収作業</h6>
+                                                                        <h6>回収作業</h6>
                                                                 </div>
                                                         </a>
                                                 </div>
-                                                <!-- ゴミ箱管理 -->
+                                                <!-- 依頼一覧 -->
+                                                <div class="trashMap col s12 m4 menu-card">
+                                                        <a href="missions.php">
+                                                                <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
+                                                                        <i class="material-icons center large">record_voice_over</i>
+                                                                        <h6>依頼確認</h6>
+                                                                </div>
+                                                        </a>
+                                                </div>
+                                                <!-- 設定 -->
                                                 <div class="boxAdmin col s12 m4 menu-card">
                                                         <a href="settings.php">
                                                                 <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">

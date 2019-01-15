@@ -29,7 +29,7 @@ if (isset($_POST["login"])) {
 			$result = $stmt->fetch();
 			if (password_verify($_POST['password'], $result['Password'])){
                     		$_SESSION['userNo'] = $result['ID'];
-                        	//$_SESSION['userGroup'] = $row['Group'];
+                        	$_SESSION['userGroup'] = $result['GroupID'];
 		        	$_SESSION['userName'] = $result['Name'];
 				$_SESSION['userService'] = $result['Service'];
 				session_regenerate_id(true);

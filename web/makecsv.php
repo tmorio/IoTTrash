@@ -16,10 +16,17 @@ try {
 		exit;
 }
 
-$query = "SELECT * FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
+if(!empty($_SESSION['userGroup'])){
+        $query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup AND DeviceID = :deviceid";
+}else{
+        $query = "SELECT * FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";;
+}
 
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+if(!empty($_SESSION['userGroup'])){
+        $stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_INT);
+}
 $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetch();

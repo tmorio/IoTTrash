@@ -17,10 +17,17 @@ try {
 		exit;
 }
 
-$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+if(!empty($_SESSION['userGroup'])){
+        $query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+}else{
+        $query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+}
 
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+if(!empty($_SESSION['userGroup'])){
+        $stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_INT);
+}
 $stmt->execute();
 
 ?>
@@ -36,7 +43,6 @@ $stmt->execute();
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
 
@@ -50,7 +56,7 @@ $stmt->execute();
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>
