@@ -84,7 +84,11 @@ $stmt->execute();
 					echo "更新日時: " . $data['Time'];
 				}
                                 echo '<div class="listButton">';
-                                echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '"><i class="material-icons left">timeline</i>グラフ表示</a>';
+				if(!empty($data['Time'])){
+                                	echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '"><i class="material-icons left">timeline</i>グラフ表示</a>';
+				}else{
+					echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">timeline</i>グラフ表示</a>';
+				}
 				echo '</div>';
 				echo '</div></li>';
 			}
