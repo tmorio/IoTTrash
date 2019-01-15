@@ -37,9 +37,9 @@ $stmt->execute();
 
 $filenameData = $_GET['DeviceID'] . '('  . date("YmdHis") . ')';
 
-$fileinput = "DateTime,BoxAvailable\r\n";
+$fileinput = "DateTime,BoxAvailable,Temperature,Humidity\r\n";
 foreach($stmt as $data){
-	$fileinput = $fileinput . $data['Time'] . "," . $data['Dis'] . "\r\n";
+	$fileinput = $fileinput . $data['Time'] . "," . $data['Dis'] . "," . $data['Temp'] . "," . $data['Hum'] . "\r\n";
 }
 
 $fpath = './export/' . $filenameData . '.csv';
