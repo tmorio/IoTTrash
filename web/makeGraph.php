@@ -77,7 +77,7 @@ $result = $stmt->fetch();
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">vertical_align_bottom</i>全データ書き出し (CSV)
                 </a>
-                <a class="waves-effect waves-light btn red" href="#">
+                <?php echo '<a class="waves-effect waves-light btn red" href="deleteHistory.php?DeviceID=' . $_GET['DeviceID'] . '">'; ?>
                         <i class="material-icons left">highlight_off</i>データ履歴の削除
                 </a>
 
