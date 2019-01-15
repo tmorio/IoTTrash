@@ -18,6 +18,18 @@ try {
 }
 
 if($_GET['del'] == 1){
+        $query = "SELECT * FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
+
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+        $stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch();
+        if(empty($data['DeviceID'])){
+                echo '削除権限がありません。';
+                exit(0);
+        }
+
         $query = "DELETE FROM History WHERE DeviceID = :deviceid";
 
         $stmt = $dbh->prepare($query);
