@@ -24,7 +24,7 @@ if($_GET['del'] == 1){
         $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
         $stmt->execute();
 
-	header("Location: editDevice.php");
+	header("Location: deviceList.php");
 }else{
 	$query = "SELECT * FROM StatusData WHERE Owner = :UserID AND DeviceID = :deviceid";
 
