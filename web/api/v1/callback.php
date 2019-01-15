@@ -1,5 +1,5 @@
 <?php
-require_once('./myid.php');
+require_once('../../myid.php');
 //文字コード設定(絵文字対策のためにUTF8MB4)
 $strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
 //DB接続試行
