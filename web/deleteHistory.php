@@ -22,7 +22,7 @@ if($_GET['del'] == 1){
 
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-        $stmt->bindParam(':deviceid', $_GET['Device'], PDO::PARAM_STR);
+        $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch();
         if(empty($data['DeviceID'])){
@@ -31,6 +31,12 @@ if($_GET['del'] == 1){
         }
 
         $query = "DELETE FROM History WHERE DeviceID = :deviceid";
+
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
+        $stmt->execute();
+
+        $query = "UPDATE StatusData SET Time = NULL, Sensor = NULL, Temp = NULL, Hum = NULL, Dis = NULL WHERE DeviceID = :deviceid";
 
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':deviceid', $_GET['DeviceID'], PDO::PARAM_STR);
@@ -74,7 +80,7 @@ if($_GET['del'] == 1){
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>

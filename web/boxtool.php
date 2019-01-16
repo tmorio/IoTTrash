@@ -6,7 +6,7 @@ if(empty($_SESSION['userName'])){
 	exit(0);
 }
 
-if($_SESSION['userGroup'] != 0){
+if($_SESSION['userGroup'] == 1){
         header("Location: dashboard.php");
 	exit(0);
 }
