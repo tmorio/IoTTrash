@@ -3,6 +3,12 @@ session_start();
 
 if(empty($_SESSION['userName'])){
 	header("Location: login.php");
+	exit(0);
+}
+
+if($_SESSION['userGroup'] != 0){
+        header("Location: dashboard.php");
+	exit(0);
 }
 
 require_once('./myid.php');
@@ -34,7 +40,6 @@ unset($_SESSION['nickname']);
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
 
@@ -48,7 +53,7 @@ unset($_SESSION['nickname']);
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>
