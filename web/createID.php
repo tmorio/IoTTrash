@@ -25,12 +25,17 @@ if (isset($_POST["signUp"])) {
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         try {
+	    $stmt = $pdo->prepare("SELECT * FROM Users WHERE UserID = ?");
+	    $stmt->execute(array($userID));
+	    $result = $stmt->fetch();
+	    if(empty($result['ID'])){
+            	$stmt = $pdo->prepare("INSERT INTO Users(UserID, Name, Password) VALUES (?, ?, ?)");
+            	$stmt->execute(array($userID, $username, password_hash($password, PASSWORD_DEFAULT)));
+		$signUpMessage = '登録成功しました．MyBox IDは '. $userID . ' です．パスワードは '. $password. ' です．ログインページで試してみましょう．';
+	    }else{
+		$errorMessage = 'このIDは利用できません';
+	    }
 
-            $stmt = $pdo->prepare("INSERT INTO Users(UserID, Name, Password) VALUES (?, ?, ?)");
-
-            $stmt->execute(array($userID, $username, password_hash($password, PASSWORD_DEFAULT)));
-
-            $signUpMessage = '登録成功しました．MyBox IDは '. $userID . ' です．パスワードは '. $password. ' です．ログインページで試してみましょう．';
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
         }
@@ -46,7 +51,7 @@ if (isset($_POST["signUp"])) {
             <meta charset="UTF-8">
             <title>MyBox ID Register</title>
             <link rel="stylesheet" type="text/css" href="style.css">
-            <script src="https://use.fontawesome.com/12725d4110.js"></script>
+	    <script src="https://use.fontawesome.com/12725d4110.js"></script>
     </head>
     <body>
 	<div class="loginForm">
