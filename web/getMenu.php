@@ -97,6 +97,9 @@ $stmt->execute();
 					case 2:
 						echo '処理完了';
 						break;
+					case 3:
+						echo '依頼取消';
+						break;
 				}
                                 echo '<div class="listButton">';
 				if($data['ProcessStatus'] != 2) {
