@@ -62,7 +62,7 @@ if($_GET['del'] == 1){
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>MyBox Cloud - BoxAdmin</title>
+		<title>MyBox Cloud - Delete</title>
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css?Ver=2">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
