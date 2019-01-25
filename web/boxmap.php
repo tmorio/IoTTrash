@@ -167,12 +167,12 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 			if($_SESSION['userService'] != 1){
                   		echo '<a class="waves-effect waves-light btn right marg" href="makeGraph.php?DeviceID='.$data['DeviceID'].'&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
 			}
-		  	echo '<a class="waves-effect waves-light btn" href="#?DeviceID='.$data['DeviceID'].'"><i class="material-icons left">check</i>回収済みにする</a>';
+		  	//echo '<a class="waves-effect waves-light btn" href="#?DeviceID='.$data['DeviceID'].'"><i class="material-icons left">check</i>回収済みにする</a>';
 		  }else{
 			if($_SESSION['userService'] != 1){
 				echo '<a class="waves-effect waves-light btn right marg disabled"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
 			}
-			echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">check</i>回収済みにする</a>';
+			//echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">check</i>回収済みにする</a>';
 		  }
 		  echo '</div></div>';
 		  echo '<hr size="1" color="#37474f" noshade>';
@@ -200,19 +200,19 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
                   if(!empty($data['Dis'])){
                           echo "<br>";
                   }
-		  if($data['gettingStatus'] == 0){
+		  if($data['OrderStatus'] == 0){
 			if($_SESSION['userService'] != 1){
                                 if(!empty($data['Temp'])){
 		  			echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span class="grey-text text-darken-3">回収対象にする</span></label>';
 				}
 			}
                         if(!empty($data['LastReset'])){
-                                echo '&nbsp;(最終回収 :&nbsp;' . $data['LastReset'] . ')';
+                                echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
                         }
 		  }else{
 			echo '<label><input type="checkbox" checked="checked" disabled="disabled" /><span>回収依頼済み</span></label>';
 			if(!empty($data['LastReset'])){
-				echo '&nbsp;(最終回収 :&nbsp;' . $data['LastReset'] . ')';
+				echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
 			}
 		  }
 		  echo '</li><br>';
