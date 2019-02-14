@@ -76,13 +76,18 @@ $stmt->execute();
 	
 
 <script type="text/javascript">
+	var Count = 0;
 	function checkValue(check){
 		var btn = document.getElementById('sendB');
 
 		if (check.checked) {
 			btn.removeAttribute('disabled');
+			Count++;
 		} else {
-			btn.setAttribute('disabled', 'disabled');
+			Count--;
+			if(Count == 0){
+				btn.setAttribute('disabled', 'disabled');
+			}
 		}
 	}
 </script>
@@ -160,7 +165,7 @@ $stmt->execute();
 		  					if($data['OrderStatus'] == 0){
 								if($_SESSION['userService'] != 1){
                                 					if(!empty($data['Temp'])){
-		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収対象にする</span></label>';
+		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . $data['DeviceID'] . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
 									}
 								}
 		  					}else{

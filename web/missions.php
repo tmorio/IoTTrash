@@ -51,6 +51,23 @@ $stmt->execute();
 	</head>
 	<body>
 
+<script type="text/javascript">
+        var Count = 0;
+        function checkValue(check){
+                var btn = document.getElementById('mapGet');
+
+                if (check.checked) {
+                        btn.removeAttribute('disabled');
+                        Count++;
+                } else {
+                        Count--;
+                        if(Count == 0){
+                                btn.setAttribute('disabled', 'disabled');
+                        }
+                }
+        }
+</script>
+
 	<!-- ヘッダー -->
 	<div class="serviceHeader navbar-fixed">
 		<nav>
@@ -78,7 +95,7 @@ $stmt->execute();
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
-                <a class="waves-effect waves-light btn" href="#">
+                <a id="mapGet" class="waves-effect waves-light btn" href="#" disabled="disabled">
                         <i class="material-icons left">navigation</i>選択した端末を通るルートを検索
                 </a>
 
@@ -87,15 +104,11 @@ $stmt->execute();
 		<?php
 			foreach($stmt as $data){
 				echo '<li><div class="collapsible-header">';
-				echo $data['DeviceID'] ;
+				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 				echo '<br>';
 				echo '<div class="listButton">';
-				if($data['ProcessStatus'] < 2) {
-					echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#"><span>回収する</span></label>&nbsp;';
-					echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
-				}else{
-					echo '<a class="waves-effect waves-light btn blue" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">stop_screen_share</i>非表示にする</a>';
-				}
+				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '</div>';
 				echo '</div></li>';
 			}

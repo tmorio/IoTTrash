@@ -55,6 +55,23 @@ $stmt->execute();
 	</head>
 	<body>
 
+<script type="text/javascript">
+        var Count = 0;
+        function checkValue(check){
+                var btn = document.getElementById('mapGet');
+
+                if (check.checked) {
+                        btn.removeAttribute('disabled');
+                        Count++;
+                } else {
+                        Count--;
+                        if(Count == 0){
+                                btn.setAttribute('disabled', 'disabled');
+                        }
+                }
+        }
+</script>
+
 	<!-- ヘッダー -->
 	<div class="serviceHeader navbar-fixed">
 		<nav>
@@ -82,21 +99,26 @@ $stmt->execute();
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
-                <a class="waves-effect waves-light btn" href="#">
+                <a id="mapGet" class="waves-effect waves-light btn" href="#" disabled="disabled">
                         <i class="material-icons left">navigation</i>選択した端末を通るルートを検索
                 </a>
 
 		<div class="listOutput">
-		<ul class="collapsible">
 		<?php
+			$counter = 0;
 			foreach($stmt as $data){
+				if(empty($data['DevName'])){
+					break;
+				}
+				if($counter == 0){
+					echo '<ul class="collapsible">';
+				}
 				echo '<li><div class="collapsible-header">';
-				echo $data['DeviceID'] ;
-				echo "<br>";
+				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 
                                 echo '<div class="listButton">';
 				if($data['ProcessStatus'] < 2) {
-					echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#"><span>回収する</span></label>&nbsp;';
+					echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
 					echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 					if($data['ProcessStatus'] == 0) {
 						echo '<a class="waves-effect waves-light btn red" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">highlight_off</i>依頼取消</a>';
@@ -108,9 +130,14 @@ $stmt->execute();
 				}
 				echo '</div>';
 				echo '</div></li>';
+				$counter++;
 			}
+		if($counter != 0){
+			echo '</ul>';
+		}else{
+			echo '<br><span class="listTitle">回収依頼中のゴミ箱がありません。</span>';
+		}
 		?>
-		</ul>
 		</div>
 
 	</div>

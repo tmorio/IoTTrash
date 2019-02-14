@@ -94,7 +94,7 @@ if($_GET['del'] == 1){
                 <ul class="collapsible">
                 <?php
 			 echo '<li><div class="collapsible-header">';
-                                echo $data['OrderName'] ;
+                                echo $data['DeviceID'] ;
                                 echo "<br>";
 
 				echo '</div>';
