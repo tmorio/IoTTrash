@@ -18,7 +18,7 @@ try {
 }
 
 if($_GET['del'] == 1){
-	$Intime = date('Y-m-d H:i:s', $data['time']);
+	$Intime = date('Y-m-d H:i:s', time());
 
         $query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
         $stmt = $dbh->prepare($query);
