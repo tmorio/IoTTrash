@@ -109,7 +109,7 @@ $stmt->execute();
                                                         if($data['OrderStatus'] == 1){
                                                                 echo '<span class="new badge blue" data-badge-caption="">回収依頼済み</span>';
                                                         }else{
-								if(($data['dis'] <= 20) && !empty($data['Time'])){
+								if(($data['Dis'] <= 20) && !empty($data['Time'])){
 									echo '<span class="new badge red" data-badge-caption="">回収して下さい</span>';
 								}
 							}
@@ -153,6 +153,11 @@ $stmt->execute();
 		  					}else{
 								echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
 		  					}
+
+							if(!empty($data['LastReset'])){
+								echo '<br><br>';
+								echo '最終回収日時&thinsp;:&thinsp;' . $data['LastReset'];
+							}
 						echo '</div>';
 					echo '</li>';
 				}

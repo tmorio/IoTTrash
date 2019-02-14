@@ -18,8 +18,9 @@ try {
 }
 
 if($_GET['del'] == 1){
-        $query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
+	$Intime = date('Y-m-d H:i:s', $data['time']);
 
+        $query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
         $stmt->bindParam(':GroupsID', $_SESSION['userGroup'], PDO::PARAM_INT);
@@ -31,11 +32,17 @@ if($_GET['del'] == 1){
                 exit(0);
         }
 
-        $query = "UPDATE OrderInfo SET ProcessStatus = 2 WHERE DeviceID = :orderNo";
-
+        $query = "UPDATE StatusData SET OrderStatus = 0, LastReset = :nowTime WHERE DeviceID = :orderNo";
         $stmt = $dbh->prepare($query);
-	$stmt->bindParam(':orderNo', $_GET['OrderID'], PDO::PARAM_STR);
+        $stmt->bindParam(':nowTime', $Intime, PDO::PARAM_STR);
+        $stmt->bindParam(':orderNo', $_GET['OrderID'], PDO::PARAM_STR);
         $stmt->execute();
+
+        $query = "DELETE FROM OrderInfo WHERE DeviceID = :orderNo";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':orderNo', $_GET['OrderID'], PDO::PARAM_STR);
+        $stmt->execute();
+
 	if($_SESSION['userService'] == 1){
 		header("Location: missions.php");
 	}else{

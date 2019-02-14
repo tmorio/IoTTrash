@@ -134,6 +134,8 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
                                 <a class="waves-effect waves-light btn" href="./boxmap.php"><i class="material-icons left">loop</i>更新</a>
 				&nbsp;
 				<button class="btn waves-effect waves-light" type="submit" name="action">回収依頼送信<i class="material-icons right">send</i></button>
+                                &nbsp;
+                                <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">exit_to_app</i>新UIに切り替え</a>
 				<br><br>
 				<span class="infoTitle">デバイス一覧</span>
 			</li>
