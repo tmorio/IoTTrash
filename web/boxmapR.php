@@ -74,18 +74,31 @@ $stmt->execute();
 		</nav>
 	</div>
 	
+
+<script type="text/javascript">
+	function checkValue(check){
+		var btn = document.getElementById('sendB');
+
+		if (check.checked) {
+			btn.removeAttribute('disabled');
+		} else {
+			btn.setAttribute('disabled', 'disabled');
+		}
+	}
+</script>
+
 	<!-- 表示画面 （Google Mapみたいに2画面分割で左にリスト、右にマップ?)-->
 	<div class="mapBoard">
 	
 		<!-- ゴミ箱一覧表示 -->
 		<ul class="collection with-header trashList">
 			<li class="collection-header">
-				<form action="doBoxget.php" method="POST">
+				<form action="doBoxGet.php" method="POST">
                                 <a class="waves-effect waves-light btn" href="./dashboard.php"><i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a>
 				&nbsp;
                                 <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">loop</i>更新</a>
 				&nbsp;
-				<button class="btn waves-effect waves-light" type="submit" name="action">回収依頼送信<i class="material-icons right">send</i></button>
+				<button id="sendB" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">回収依頼送信<i class="material-icons right">send</i></button>
 				<br><br>
 				<span class="infoTitle">デバイス一覧</span>
 			</li>
@@ -147,7 +160,7 @@ $stmt->execute();
 		  					if($data['OrderStatus'] == 0){
 								if($_SESSION['userService'] != 1){
                                 					if(!empty($data['Temp'])){
-		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" value="#"><span>回収対象にする</span></label>';
+		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収対象にする</span></label>';
 									}
 								}
 		  					}else{
