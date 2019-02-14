@@ -1,0 +1,94 @@
+#boxMap {
+    width: 700px;
+    height: 100vh;
+}
+
+.loginForm {
+    width: 40%;  
+    margin: 0 auto;  
+}
+
+.listDevTitle {
+    font-weight:bold;
+}
+
+input[type="submit"] {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #FFF;
+    background: #00bcd4;
+    transition: .4s;
+}
+
+.buttonLogin {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #FFF;
+    background: #00bcd4;
+    transition: .4s;
+}
+
+.cp_iptxt {
+	position: relative;
+	width: 80%;
+	margin: 5px;
+}
+.cp_iptxt input[type=text] {
+	font: 15px/24px sans-serif;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 8px 0;
+	padding: 0.3em;
+	transition: 0.3s;
+	border: 1px solid #1b2538;
+	border-radius: 4px;
+	outline: none;
+}
+.cp_iptxt input[type=text]:focus {
+	border-color: #da3c41;
+}
+.cp_iptxt input[type=text] {
+	padding-left: 40px;
+}
+.cp_iptxt i {
+	position: absolute;
+	top: 8px;
+	left: 0;
+	padding: 9px 8px;
+	transition: 0.3s;
+	color: #aaaaaa;
+}
+.cp_iptxt input[type=text]:focus + i {
+	color: #da3c41;
+}
+
+.cp_iptxt input[type=password] {
+        font: 15px/24px sans-serif;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 8px 0;
+        padding: 0.3em;
+        transition: 0.3s;
+        border: 1px solid #1b2538;
+        border-radius: 4px;
+        outline: none;
+}
+.cp_iptxt input[type=password]:focus {
+        border-color: #da3c41;
+}
+.cp_iptxt input[type=password] {
+        padding-left: 40px;
+}
+.cp_iptxt input[type=password]:focus + i {
+        color: #da3c41;
+}
+
+

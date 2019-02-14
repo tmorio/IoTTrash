@@ -5,6 +5,11 @@ if(empty($_SESSION['userName'])){
 	header("Location: login.php");
 }
 
+if($_SESSION['userGroup'] == 1){
+        header("Location: dashboard.php");
+        exit(0);
+}
+
 require_once('./myid.php');
 require_once('./siteInfo.php');
 
@@ -18,9 +23,9 @@ try {
 }
 
 if(!empty($_SESSION['userGroup'])){
-        $query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+        $query = "SELECT * FROM OrderInfo WHERE Owner = :UserID OR GroupID = :usergroup";
 }else{
-        $query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+        $query = "SELECT * FROM OrderInfo WHERE Owner = :UserID";
 }
 
 $stmt = $dbh->prepare($query);
@@ -35,7 +40,7 @@ $stmt->execute();
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>MyBox Cloud - MissionList</title>
+		<title>MyBox Cloud - Missions</title>
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css?Ver=2">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -65,12 +70,16 @@ $stmt->execute();
         	<a class="waves-effect waves-light btn" href="./dashboard.php">
         		<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る
         	</a>
-		<span class="listTitle">依頼一覧</span>
+		<span class="listTitle">回収管理</span>
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">filter_list</i>並べ替え
                 </a>
                 <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">search</i>検索
+                </a>
+                &ensp;
+                <a class="waves-effect waves-light btn" href="#">
+                        <i class="material-icons left">navigation</i>選択した端末を通るルートを検索
                 </a>
 
 		<div class="listOutput">
@@ -78,17 +87,15 @@ $stmt->execute();
 		<?php
 			foreach($stmt as $data){
 				echo '<li><div class="collapsible-header">';
-				echo $data['NickName'] ;
-				echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
-
-				if(empty($data['Time'])){
-					echo "更新日時: 未取得";
+				echo $data['DeviceID'] ;
+				echo '<br>';
+				echo '<div class="listButton">';
+				if($data['ProcessStatus'] < 2) {
+					echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#"><span>回収する</span></label>&nbsp;';
+					echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				}else{
-					echo "更新日時: " . $data['Time'];
+					echo '<a class="waves-effect waves-light btn blue" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">stop_screen_share</i>非表示にする</a>';
 				}
-                                echo '<div class="listButton">';
-				echo '<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
-                                echo '<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">navigation</i>ルート</a>';
 				echo '</div>';
 				echo '</div></li>';
 			}

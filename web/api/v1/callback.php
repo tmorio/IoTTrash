@@ -32,11 +32,6 @@ for ($i = 0; $i < 3; $i++){
 	$sensor[$i] = hexdec($sensor[$i]);
 }
 
-$fl = fopen('sigfoxMsg.json','w'); // write json file sigfoxMsg.json for test
-{      fwrite($fl, $json_string);
-       fclose($fl);
-}
-
 $query = "INSERT INTO History (DeviceID, Time, Sensor, Temp, Hum, Dis) VALUES (:deviceid, :intime, :sensor, :sensor1, :sensor2, :sensor3)";
 
 $stmt = $dbh->prepare($query);

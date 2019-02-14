@@ -27,7 +27,20 @@ img.logo-image {
 	max-width: 200px;
 	padding: 25px;
 }
-
+.flexbox{
+	display: flex;
+}
+.flex-right{
+	margin-left: auto;
+}
+.marg{
+	margin-left:10px;
+}
+.clearfix:after{
+	content: "";
+	clear: both;
+	display: block;
+}
 #boxMap {
     width: 100%;
     height: calc(100vh - 64px - 22px);
@@ -171,7 +184,7 @@ img.logo-image {
 }
 
 .listOutput {
-   margin:20px 13vw 0;
+   margin:20px 15vw 0;
 }
 
 .listButton {
@@ -229,3 +242,4 @@ img.logo-image {
     background-color: #fff;
     padding: 10px;
 }
+

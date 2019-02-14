@@ -128,14 +128,15 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		<!-- ゴミ箱一覧表示 -->
 		<ul class="collection with-header trashList">
 			<li class="collection-header">
+				<form action="doBoxget.php" method="POST">
                                 <a class="waves-effect waves-light btn" href="./dashboard.php"><i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a>
 				&nbsp;
-                                <a class="waves-effect waves-light btn" href="./boxmap.php"><i class="material-icons left">loop</i>最新のデータを読み込む</a>
+                                <a class="waves-effect waves-light btn" href="./boxmap.php"><i class="material-icons left">loop</i>更新</a>
+				&nbsp;
+				<button class="btn waves-effect waves-light" type="submit" name="action">回収依頼送信<i class="material-icons right">send</i></button>
 				<br><br>
 				<span class="infoTitle">デバイス一覧</span>
 			</li>
-
-				<form action="doBoxget.php" method="POST">
 
 			<?php
 				$DeviceCounter = 0;
@@ -203,16 +204,16 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		  if($data['OrderStatus'] == 0){
 			if($_SESSION['userService'] != 1){
                                 if(!empty($data['Temp'])){
-		  			echo '<label><input type="checkbox" name="boxes[]" value="' . $data['DeviceID'] . '" class="filled-in" /><span class="grey-text text-darken-3">回収対象にする</span></label>';
+		  			echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" value="#"><span>回収対象にする</span></label>';
 				}
 			}
                         if(!empty($data['LastReset'])){
-                                echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+                                //echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
                         }
 		  }else{
-			echo '<label><input type="checkbox" checked="checked" disabled="disabled" /><span>回収依頼済み</span></label>';
+			echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
 			if(!empty($data['LastReset'])){
-				echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
+				//echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
 			}
 		  }
 		  echo '</li><br>';

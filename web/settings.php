@@ -36,7 +36,6 @@ $result = $stmt->fetch();
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-		<script src="https://use.fontawesome.com/12725d4110.js"></script>
 	</head>
 	<body>
 
@@ -50,7 +49,7 @@ $result = $stmt->fetch();
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php">ログアウト</a></li>
+					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -63,8 +62,8 @@ $result = $stmt->fetch();
 			<div class="collection-header center-align"><a class="waves-effect waves-light btn" href="./dashboard.php">
 				<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a></div>
 			<div class="collection-header"><h5>サービス設定</h5></div>
-			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">account_circle</i>アカウント設定</a>
-			<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知</a>
+			<a href="?page=account" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">account_circle</i>アカウント設定</a>
+			<a href="?page=notice" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知</a>
 			<?php
 			if($_SESSION['userService'] == 0){
 				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>';
@@ -84,6 +83,9 @@ $result = $stmt->fetch();
 							break;
 						case 1:
 							echo 'パスワードが違います。';
+							break;
+						case 3:
+							echo '設定を更新しました。メールアドレスの変更を完了するには、届いたメールにあるURLを30分以内にクリックしてください。';
 							break;
 					}
 					echo '
@@ -105,6 +107,26 @@ $result = $stmt->fetch();
 					';
 					break;
 				case notice:
+					echo '
+						<h3>通知設定</h3><br>
+						<form action="#" method="POST">
+							<h4>サービス関連</h4>
+							<label>
+								<input type="checkbox" class="filled-in" checked="checked" />
+								<span>満杯になりそうな時に通知</span>
+							</label>
+                                                        <br>
+                                                        <label>
+                                                                <input type="checkbox" class="filled-in" checked="checked" />
+                                                                <span>異臭の発生予測を通知</span>
+                                                        </label>
+							<br>
+                                                        <label>
+                                                                <input type="checkbox" class="filled-in" checked="checked" />
+                                                                <span>回収作業が完了した時に通知</span>
+                                                        </label>
+						</form>
+					';
 					break;
 			}
 		?>
