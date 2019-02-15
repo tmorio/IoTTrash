@@ -53,7 +53,8 @@ try {
 		<!-- ゴミ箱一覧表示 -->
 		<ul class="collection with-header trashList">
 			<li class="collection-header">
-                                <a class="waves-effect waves-light btn" href="./getMenu.php"><i class="material-icons left">keyboard_arrow_left</i>依頼一覧に戻る</a>
+                                <a class="waves-effect waves-light btn" href="./getMenu.php"><i class="material-icons left">keyboard_arrow_left</i>依頼一覧に戻る</a>&thinsp;
+				<button id="gpsEnable" class="btn waves-effect waves-light" disable="" onclick="GetRealTimePosition();"><i class="material-icons left">gps_fixed</i>現在地を追尾</button>
 				<br><br>
 				<span class="infoTitle">目的地一覧</span><br>
 				デバイス名を選択すると操作を行えます。
@@ -125,7 +126,8 @@ try {
 				var postInfo = new google.maps.DirectionsService();
 				var searchRoute = new google.maps.DirectionsRenderer({
 					map: map,
-					preserveViewport: true,
+					preserveViewport: false,
+					draggable: true,
 				});
 				postInfo.route(request, function(result, status){
 					if (status == google.maps.DirectionsStatus.OK) {
@@ -135,9 +137,57 @@ try {
 
 			}
 
+			var nowPosition = null;
+
+			function create_marker(options){
+				var nowAreaPos =  new google.maps.Marker(options);
+				return nowAreaPos;
+			}
+
+			function deleteNowPosition() {
+		  		if(nowPosition != null){
+		  			nowPosition.setMap(null);
+		  		}
+				nowPosition = null;
+			}
+
+			function GetRealTimePosition(){
+				var btn = document.getElementById('gpsEnable');
+				btn.setAttribute('disabled', 'disabled');
+				btn.innerHTML = '<i class="material-icons left">gps_fixed</i>現在地追尾中';
+				navigator.geolocation.watchPosition(
+					function(position) {
+						deleteNowPosition();
+						nowPosition = create_marker({
+							map: map,
+							position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+						});
+					},
+					function(error) {
+						switch(error.code) {
+							case 1:
+								alert("位置情報の利用が許可されていません。\n権限をご確認下さい。");
+								break;
+							case 2:
+								alert("現在位置が取得できませんでした。\n時間を空けてから再度お試し下さい。");
+								break;
+							case 3:
+								alert("タイムアウトしました。\n時間を空けてから再度お試し下さい。");
+								break;
+							default:
+								alert("原因不明エラーが発生しました。(Error Code:"+error.code+")");
+								break;
+						}
+						btn.innerHTML = '<i class="material-icons left">gps_fixed</i>現在地を追尾';
+						btn.removeAttribute('disabled');
+					}
+				);
+			}
+
 			function buttonClick(lat,lng) {
 				map.panTo(new google.maps.LatLng(lat,lng));
 			}
+
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
 	</div>
