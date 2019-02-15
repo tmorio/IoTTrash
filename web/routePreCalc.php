@@ -96,8 +96,10 @@ echo "ARRAY DATA:";
 print_r($_SESSION['PostData']);
 
 if($_GET['GETOK'] != 0){
-	unset($_SESSION['Boxes']);
-	unset($_SESSION['PostData']);
+	$pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
+	//unset($_SESSION['Boxes']);
+	//unset($_SESSION['PostData']);
+	header($pushTo);
 }
 
 

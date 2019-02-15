@@ -16,38 +16,12 @@ try {
 		echo $e->getMessage();
 		exit;
 }
-if(!empty($_SESSION['userGroup'])){
-	$query = "SELECT COUNT(*) FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
-}else{
-	$query = "SELECT COUNT(*) FROM StatusData WHERE Owner = :UserID";
-}
-
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-if(!empty($_SESSION['userGroup'])){
-	$stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_STR);
-}
-$stmt->execute();
-$DeviceCount = $stmt->fetchColumn();
-
-if(!empty($_SESSION['userGroup'])){
-	$query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
-}else{
-	$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
-}
-
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-if(!empty($_SESSION['userGroup'])){
-	$stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_INT);
-}
-$stmt->execute();
 ?>
 <!doctype html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>MyBox Cloud - BoxMap</title>
+		<title>MyBox Cloud - Route</title>
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css?">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -86,28 +60,32 @@ $stmt->execute();
 			</li>
 
 			<?php
+				$DeviceCount = count($_SESSION['PostData']);
 				$DeviceCounter = 0;
 				$ListCount = 1;
 				$PinData = "[";
+				$Waypoint = "[";
 				echo '<ul class="collapsible">';
-				foreach($stmt as $data){ //データ件数だけ反復される
+				foreach($_SESSION['PostData'] as $data){ //データ件数だけ反復される
 					//ピン緯度経度データ生成処理
-					$PinData = $PinData . "{name:'" . $data['DeviceID'] . "',lat:" . $data['Latitude'] . ",lng:" . $data['Longitude'] . "}";
+					$PinData = $PinData . "{name:'" . $data['DeviceID'] . "',lat:" . $data['Lat'] . ",lng:" . $data['Lng'] . "}";
+					$Waypoint = $Waypoint . "{location: new google.maps.LatLng(" . $data['Lat'] . "," . $data['Lng']  . ")}";
 					if(($DeviceCount - 1) != $DeviceCounter){
 						$PinData = $PinData . ",";
+						$Waypoint = $Waypoint . ",";
 						$DeviceCounter = $DeviceCounter + 1;
 					}
 		  			echo '<li>';
 		  				echo '<div class="collapsible-header">';
 		  					echo '<div class="clearfix valign-wrapper">';
-		  						echo $ListCount . ".&nbsp;" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+		  						echo $ListCount . ".&nbsp;" .  $data['Name'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
 		  					echo '</div>';
                                                         if($ListCount == 1){
                                                                 echo '<span class="new badge blue" data-badge-caption="">次の目的地</span>';
                                                         }
 						echo '</div>';
 		 				echo '<div class="collapsible-body">';
-							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>中央に表示</button>&thinsp;';
+							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>中央に表示</button>&thinsp;';
                                 			echo '<a class="waves-effect waves-light btn blue right" href="#"><i class="material-icons left">check</i>回収済みにする</a>';
 						echo '</div>';
 					echo '</li>';
@@ -115,6 +93,7 @@ $stmt->execute();
 				}
 				echo '</ul>';
 				$PinData = $PinData . "]";
+				$Waypoint = $Waypoint . "]";
 			?>
 		</ul>
 
@@ -146,7 +125,9 @@ $stmt->execute();
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
 	</div>
 	<!-- デバッグ
-	<?php echo "Debug: Counter: " . $DeviceCount . " JavaScript PinData : " . $PinData; ?> -->
+	<?php echo "Debug: " . "JavaScript PinData : " . $PinData; ?> -->
+        <!-- デバッグ
+        <?php echo "Debug: " . "JavaScript PinData : " . $Waypoint; ?> -->
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
