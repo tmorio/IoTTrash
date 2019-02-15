@@ -88,7 +88,7 @@ $stmt->execute();
 		</nav>
 	</div>
 	<div class="deviceListBoard">
-                <form action="route.php" method="POST">
+                <form action="routePreCalc.php" method="POST">
         	<a class="waves-effect waves-light btn" href="./dashboard.php">
         		<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る
         	</a>
@@ -101,7 +101,7 @@ $stmt->execute();
                 </a>
                 &ensp;
                 <button id="mapGet" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">
-			ルート探索
+			現在地からのルート探索
 			<i class="material-icons right">navigation</i>
 		</button>
 
