@@ -127,7 +127,7 @@ try {
 				var searchRoute = new google.maps.DirectionsRenderer({
 					map: map,
 					preserveViewport: false,
-					draggable: true,
+					//draggable: true,
 				});
 				postInfo.route(request, function(result, status){
 					if (status == google.maps.DirectionsStatus.OK) {
@@ -138,6 +138,7 @@ try {
 			}
 
 			var nowPosition = null;
+			var customIcons = {nowLocation: {icon: 'https://mybox.moritoworks.com/img/nowPosition.png'}}
 
 			function create_marker(options){
 				var nowAreaPos =  new google.maps.Marker(options);
@@ -158,9 +159,19 @@ try {
 				navigator.geolocation.watchPosition(
 					function(position) {
 						deleteNowPosition();
+						map.panTo(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+						map.setZoom(19);
 						nowPosition = create_marker({
 							map: map,
 							position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+							icon: {
+								path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+								scale: 8,
+								rotation: position.coords.heading,
+								fillColor: '#ff0000',
+								fillOpacity: 1,
+								strokeWeight: 0
+							}
 						});
 					},
 					function(error) {
