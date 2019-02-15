@@ -95,25 +95,37 @@ $stmt->execute();
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
-                <a id="mapGet" class="waves-effect waves-light btn" href="#" disabled="disabled">
-                        <i class="material-icons left">navigation</i>選択した端末を通るルートを検索
-                </a>
+                <button id="mapGet" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">
+			ルート探索
+			<i class="material-icons right">navigation</i>
+		</button>
 
 		<div class="listOutput">
-		<ul class="collapsible">
 		<?php
+			$counter = 0;
 			foreach($stmt as $data){
+				if(empty($data['DevName'])){
+					break;
+				}
+				if($counter == 0){
+					echo '<ul class="collapsible">';
+				}
 				echo '<li><div class="collapsible-header">';
 				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
-				echo '<br>';
-				echo '<div class="listButton">';
-				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+
+                                echo '<div class="listButton">';
+				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" name="getBoxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
 				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '</div>';
 				echo '</div></li>';
+				$counter++;
 			}
+		if($counter != 0){
+			echo '</ul>';
+		}else{
+			echo '<br><span class="listTitle">回収依頼中のゴミ箱がありません。</span>';
+		}
 		?>
-		</ul>
 		</div>
 
 	</div>

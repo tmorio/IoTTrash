@@ -88,6 +88,7 @@ $stmt->execute();
 		</nav>
 	</div>
 	<div class="deviceListBoard">
+                <form action="route.php" method="POST">
         	<a class="waves-effect waves-light btn" href="./dashboard.php">
         		<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る
         	</a>
@@ -99,9 +100,10 @@ $stmt->execute();
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
-                <a id="mapGet" class="waves-effect waves-light btn" href="#" disabled="disabled">
-                        <i class="material-icons left">navigation</i>選択した端末を通るルートを検索
-                </a>
+                <button id="mapGet" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">
+			ルート探索
+			<i class="material-icons right">navigation</i>
+		</button>
 
 		<div class="listOutput">
 		<?php
@@ -117,17 +119,9 @@ $stmt->execute();
 				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 
                                 echo '<div class="listButton">';
-				if($data['ProcessStatus'] < 2) {
-					echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" value="#" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
-					echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
-					if($data['ProcessStatus'] == 0) {
-						echo '<a class="waves-effect waves-light btn red" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">highlight_off</i>依頼取消</a>';
-					}else{
-						echo '<a class="waves-effect waves-light btn red disabled"><i class="material-icons left">highlight_off</i>取消不可</a>';
-					}
-				}else{
-					echo '<a class="waves-effect waves-light btn blue" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">stop_screen_share</i>非表示にする</a>';
-				}
+				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
+				echo '<a class="waves-effect waves-light btn red" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">highlight_off</i>依頼取消</a>';
 				echo '</div>';
 				echo '</div></li>';
 				$counter++;
@@ -139,6 +133,7 @@ $stmt->execute();
 		}
 		?>
 		</div>
+		</form>
 
 	</div>
 		<!-- フッター -->

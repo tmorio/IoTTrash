@@ -73,45 +73,21 @@ $stmt->execute();
 			</div>
 		</nav>
 	</div>
-	
-
-<script type="text/javascript">
-	var Count = 0;
-	function checkValue(check){
-		var btn = document.getElementById('sendB');
-
-		if (check.checked) {
-			btn.removeAttribute('disabled');
-			Count++;
-		} else {
-			Count--;
-			if(Count == 0){
-				btn.setAttribute('disabled', 'disabled');
-			}
-		}
-	}
-</script>
 
 	<!-- 表示画面 （Google Mapみたいに2画面分割で左にリスト、右にマップ?)-->
 	<div class="mapBoard">
-	
 		<!-- ゴミ箱一覧表示 -->
 		<ul class="collection with-header trashList">
 			<li class="collection-header">
-				<form action="doBoxGet.php" method="POST">
-                                <a class="waves-effect waves-light btn" href="./dashboard.php"><i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a>
-				&nbsp;
-                                <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">loop</i>更新</a>
-				&nbsp;
-				<button id="sendB" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">回収依頼送信<i class="material-icons right">send</i></button>
+                                <a class="waves-effect waves-light btn" href="./getMenu.php"><i class="material-icons left">keyboard_arrow_left</i>依頼一覧に戻る</a>
 				<br><br>
-				<span class="infoTitle">デバイス一覧</span>
-				<br>
-				デバイス名を選択すると詳細情報を見ることができます。
+				<span class="infoTitle">目的地一覧</span><br>
+				デバイス名を選択すると操作を行えます。
 			</li>
 
 			<?php
 				$DeviceCounter = 0;
+				$ListCount = 1;
 				$PinData = "[";
 				echo '<ul class="collapsible">';
 				foreach($stmt as $data){ //データ件数だけ反復される
@@ -124,67 +100,22 @@ $stmt->execute();
 		  			echo '<li>';
 		  				echo '<div class="collapsible-header">';
 		  					echo '<div class="clearfix valign-wrapper">';
-		  						echo "" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+		  						echo $ListCount . ".&nbsp;" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
 		  					echo '</div>';
-                                                        if($data['OrderStatus'] == 1){
-                                                                echo '<span class="new badge blue" data-badge-caption="">回収依頼済み</span>';
-                                                        }else{
-								if(($data['Dis'] <= 20) && !empty($data['Time'])){
-									echo '<span class="new badge red" data-badge-caption="">回収して下さい</span>';
-								}
-							}
+                                                        if($ListCount == 1){
+                                                                echo '<span class="new badge blue" data-badge-caption="">次の目的地</span>';
+                                                        }
 						echo '</div>';
 		 				echo '<div class="collapsible-body">';
-		  					if(empty($data['Time'])){
-								echo "更新日時: 未取得";
-		  					}else{
-		  						echo "更新日時: " . $data['Time'];
-		  					}
-
-							echo '<br>';
-
-		  					if(empty($data['Temp']) || empty($data['Hum'])){
-								echo "データ取得待ち";
-		  					}else{
-		  						echo "温度: " . $data['Temp'] . "°C" . " 湿度: " . $data['Hum'] . "%";
-		  					}
-
-							echo '<br>';
-
-		  					if(!empty($data['Dis'])){
-			  					echo "空き容量: " . $data['Dis'] . " cm";
-		  					}
-							echo '<br><br>';
-							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
-
-		  					if(!empty($data['Temp'])){
-                        					if($_SESSION['userService'] != 1){
-                                					echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID='.$data['DeviceID'].'&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
-                        					}
-                  					}
-
-		  					echo '&nbsp;';
-		  					if($data['OrderStatus'] == 0){
-								if($_SESSION['userService'] != 1){
-                                					if(!empty($data['Temp'])){
-		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . $data['DeviceID'] . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
-									}
-								}
-		  					}else{
-								echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
-		  					}
-
-							if(!empty($data['LastReset'])){
-								echo '<br><br>';
-								echo '最終回収日時&thinsp;:&thinsp;' . $data['LastReset'];
-							}
+							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>中央に表示</button>&thinsp;';
+                                			echo '<a class="waves-effect waves-light btn blue right" href="#"><i class="material-icons left">check</i>回収済みにする</a>';
 						echo '</div>';
 					echo '</li>';
+					$ListCount++;
 				}
 				echo '</ul>';
 				$PinData = $PinData . "]";
 			?>
-			</form>
 		</ul>
 
 		<!-- マップ表示 -->
