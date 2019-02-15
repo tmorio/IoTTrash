@@ -41,6 +41,7 @@ require_once('./myid.php');
 </script>
 
 <?php
+echo '現在地を取得中です...しばらくお待ちください。<br><br>';
 
 if($_GET['GETOK'] != 1){
 	echo "<script>getPosition();</script>";
@@ -80,7 +81,7 @@ if($_GET['GETOK'] != 1){
 }
 
 //DEBUG
-echo "----------THIS IS DEBUG----------" . "<br><br>";
+echo "----------THIS IS DEBUG (3 SEC)----------" . "<br><br>";
 echo "POSTED DATA: ";
 print_r($_SESSION['Boxes']);
 echo "<br>";
@@ -95,15 +96,15 @@ echo "<br>";
 echo "ARRAY DATA:";
 print_r($_SESSION['PostData']);
 
-if($_GET['GETOK'] != 0){
-	$pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
-	//unset($_SESSION['Boxes']);
-	//unset($_SESSION['PostData']);
-	header($pushTo);
-}
-
-
 if(!empty($_GET['lat'])){
         echo "<br><br>SUCCESS GET POSITION!";
+}
+
+if($_GET['GETOK'] != 0){
+        $pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
+        //unset($_SESSION['Boxes']);
+        //unset($_SESSION['PostData']);
+	sleep(3);
+        header($pushTo);
 }
 ?>
