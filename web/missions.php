@@ -84,6 +84,7 @@ $stmt->execute();
 		</nav>
 	</div>
 	<div class="deviceListBoard">
+                <form action="routePreCalc.php" method="POST">
         	<a class="waves-effect waves-light btn" href="./dashboard.php">
         		<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る
         	</a>
@@ -96,7 +97,7 @@ $stmt->execute();
                 </a>
                 &ensp;
                 <button id="mapGet" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">
-			ルート探索
+			現在地からのルート探索
 			<i class="material-icons right">navigation</i>
 		</button>
 
@@ -114,7 +115,7 @@ $stmt->execute();
 				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 
                                 echo '<div class="listButton">';
-				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" name="getBoxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
 				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '</div>';
 				echo '</div></li>';
@@ -127,6 +128,7 @@ $stmt->execute();
 		}
 		?>
 		</div>
+		</form>
 
 	</div>
 		<!-- フッター -->
