@@ -104,18 +104,35 @@ try {
 			var map;
 			var marker = [];
 			var pinData = <?php echo $PinData;?>;
+
 			function initMap() {
-				map = new google.maps.Map(document.getElementById('boxMap'), {
-					center: {lat: pinData[0]['lat'], lng: pinData[0]['lng']},
-					zoom: 18
+				var request = {
+					origin: new google.maps.LatLng(<?php echo $_GET['lat'] . "," . $_GET['lng']; ?>),
+					destination: new google.maps.LatLng(<?php echo $_GET['lat'] . "," . $_GET['lng']; ?>),
+					waypoints: <?php echo $Waypoint; ?>,
+					travelMode: google.maps.DirectionsTravelMode.DRIVING,
+					drivingOptions: {
+						departureTime: new Date('<?php echo date('Y-m-d H:i:s', time()) ?>'),
+						trafficModel: google.maps.TrafficModel.BEST_GUESS
+					}
+				};
+
+                                map = new google.maps.Map(document.getElementById('boxMap'), {
+                                        center: {<?php echo "lat:" . $_GET['lat'] . ",lng:" . $_GET['lng']; ?>},
+                                        zoom: 18
+                                });
+
+				var postInfo = new google.maps.DirectionsService();
+				var searchRoute = new google.maps.DirectionsRenderer({
+					map: map,
+					preserveViewport: true,
 				});
-				for (var loopCount = 0; loopCount < pinData.length; loopCount++) {
-					markerArea = {lat: pinData[loopCount]['lat'], lng: pinData[loopCount]['lng']};
-					marker[loopCount] = new google.maps.Marker({
-						position: markerArea,
-						map: map
-					});
-				}
+				postInfo.route(request, function(result, status){
+					if (status == google.maps.DirectionsStatus.OK) {
+						searchRoute.setDirections(result);
+					}
+				});
+
 			}
 
 			function buttonClick(lat,lng) {
