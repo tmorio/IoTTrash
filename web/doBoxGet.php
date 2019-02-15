@@ -122,13 +122,16 @@ if($_GET['send'] == 1){
                 <div class="listOutput">
                 <ul class="collapsible">
                 <?php
-			 echo '<li><div class="collapsible-header">';
-                                echo '現在開発なう by森尾<br>DEBUG(OUTPUT_DATA) : ';
-				print_r($_SESSION['GetData']);
-                                echo "<br>";
 
+			foreach($_SESSION['GetData'] as $ListData){
+
+			 echo '<li><div class="collapsible-header">';
+                                //echo '現在開発なう by森尾<br>DEBUG(OUTPUT_DATA) : ';
+				//print_r($_SESSION['GetData']);
+				echo $ListData['Name'] . '&nbsp;' . '(' . $ListData['DeviceID'] . ')';
 				echo '</div>';
         	                echo '</li>';
+			}
                 ?>
                 </ul>
                 </div>
