@@ -55,6 +55,7 @@ try {
 			<li class="collection-header">
                                 <a class="waves-effect waves-light btn" href="./getMenu.php"><i class="material-icons left">keyboard_arrow_left</i>依頼一覧に戻る</a>&thinsp;
 				<button id="gpsEnable" class="btn waves-effect waves-light" disable="" onclick="GetRealTimePosition();"><i class="material-icons left">gps_fixed</i>現在地を追尾</button>
+				<button id="gpsEnableC" class="btn waves-effect waves-light" onclick="nowPositionCheck();" disabled><i class="material-icons left">navigation</i>現在地を表示</button>
 				<br><br>
 				<span class="infoTitle">目的地一覧</span><br>
 				デバイス名を選択すると操作を行えます。
@@ -138,7 +139,8 @@ try {
 			}
 
 			var nowPosition = null;
-			var customIcons = {nowLocation: {icon: 'https://mybox.moritoworks.com/img/nowPosition.png'}}
+			var nowLat = null;
+			var nowLng = null;
 
 			function create_marker(options){
 				var nowAreaPos =  new google.maps.Marker(options);
@@ -154,10 +156,14 @@ try {
 
 			function GetRealTimePosition(){
 				var btn = document.getElementById('gpsEnable');
+				var btnC = document.getElementById('gpsEnableC');
 				btn.setAttribute('disabled', 'disabled');
-				btn.innerHTML = '<i class="material-icons left">gps_fixed</i>現在地追尾中';
+				btnC.removeAttribute('disabled');
+				btn.innerHTML = '<i class="material-icons left">gps_fixed</i>追尾中';
 				navigator.geolocation.watchPosition(
 					function(position) {
+						nowLat = position.coords.latitude;
+						nowLng = position.coords.longitude;
 						deleteNowPosition();
 						map.panTo(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 						map.setZoom(19);
@@ -193,6 +199,11 @@ try {
 						btn.removeAttribute('disabled');
 					}
 				);
+			}
+
+			function nowPositionCheck(){
+				map.panTo(new google.maps.LatLng(nowLat,nowLng));
+				map.setZoom(19);
 			}
 
 			function buttonClick(lat,lng) {
