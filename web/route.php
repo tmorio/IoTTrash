@@ -58,19 +58,19 @@ try {
 				<button id="gpsEnableC" class="btn waves-effect waves-light" onclick="nowPositionCheck();" disabled><i class="material-icons left">navigation</i>現在地を表示</button>
 				<br><br>
 				<span class="infoTitle">目的地一覧</span><br>
-				デバイス名を選択すると操作を行えます。
+				マップ上のピンを選択すると回収完了操作を行えます。
 			</li>
 
 			<?php
 				$DeviceCount = count($_SESSION['PostData']);
 				$DeviceCounter = 0;
-				$ListCount = 1;
+				$postID = 0;
 				$PinData = "[";
 				$Waypoint = "[";
 				echo '<ul class="collapsible">';
 				foreach($_SESSION['PostData'] as $data){ //データ件数だけ反復される
 					//ピン緯度経度データ生成処理
-					$PinData = $PinData . "{name:'" . $data['DeviceID'] . "',lat:" . $data['Lat'] . ",lng:" . $data['Lng'] . "}";
+					$PinData = $PinData . "{name:" . '\'<p>' . $data['Name'] . '</p><br><a class="waves-effect waves-light btn modal-trigger blue right" href="#modal1" onclick="CompleteGo(' . $postID. ')"><i class="material-icons left">check</i>回収済みにする</a>'  . '\''  . ",lat:" . $data['Lat'] . ",lng:" . $data['Lng'] . "}";
 					$Waypoint = $Waypoint . "{location: new google.maps.LatLng(" . $data['Lat'] . "," . $data['Lng']  . ")}";
 					if(($DeviceCount - 1) != $DeviceCounter){
 						$PinData = $PinData . ",";
@@ -79,19 +79,12 @@ try {
 					}
 		  			echo '<li>';
 		  				echo '<div class="collapsible-header">';
-		  					echo '<div class="clearfix valign-wrapper">';
-		  						echo $ListCount . ".&nbsp;" .  $data['Name'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
-		  					echo '</div>';
-                                                        if($ListCount == 1){
-                                                                echo '<span class="new badge blue" data-badge-caption="">次の目的地</span>';
-                                                        }
-						echo '</div>';
-		 				echo '<div class="collapsible-body">';
-							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
-							echo '<a class="waves-effect waves-light btn modal-trigger blue right" href="#modal1"><i class="material-icons left">check</i>回収済みにする</a>';
-						echo '</div>';
+		  						echo $data['Name'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+								echo '<div class="listButton">';
+									echo '<a class="waves-effect waves-light btn right" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</a>';
+								echo '</div>';
 					echo '</li>';
-					$ListCount++;
+					$postID++;
 				}
 				echo '</ul>';
 				$PinData = $PinData . "]";
@@ -105,6 +98,7 @@ try {
 		<script>
 			var map;
 			var marker = [];
+			var infoWindow = [];
 			var pinData = <?php echo $PinData;?>;
 
 			function initMap() {
@@ -113,6 +107,7 @@ try {
 					destination: new google.maps.LatLng(<?php echo $_GET['lat'] . "," . $_GET['lng']; ?>),
 					waypoints: <?php echo $Waypoint; ?>,
 					travelMode: google.maps.DirectionsTravelMode.DRIVING,
+					optimizeWaypoints: true,
 					drivingOptions: {
 						departureTime: new Date('<?php echo date('Y-m-d H:i:s', time()) ?>'),
 						trafficModel: google.maps.TrafficModel.BEST_GUESS
@@ -124,20 +119,41 @@ try {
                                         zoom: 18
                                 });
 
+				for (var i = 0; i < pinData.length; i++) {
+					markerLatLng = new google.maps.LatLng({lat: pinData[i]['lat'], lng: pinData[i]['lng']});
+					marker[i] = new google.maps.Marker({
+						position: markerLatLng,
+						map: map
+					});
+
+					infoWindow[i] = new google.maps.InfoWindow({
+						content: '<div class="boxMap">' + pinData[i]['name'] + '</div>'
+					});
+
+					markerEvent(i);
+				}
+
+				function markerEvent(i) {
+					marker[i].addListener('click', function() {
+					infoWindow[i].open(map, marker[i]);
+					});
+				}
+
 				var postInfo = new google.maps.DirectionsService();
 				var searchRoute = new google.maps.DirectionsRenderer({
 					map: map,
 					preserveViewport: false,
+					suppressMarkers: true,
 					//draggable: true,
 				});
-				postInfo.route(request, function(result, status){
+				var callbackNum = postInfo.route(request, function(result, status){
 					if (status == google.maps.DirectionsStatus.OK) {
 						searchRoute.setDirections(result);
 					}
+					console.log(result);
 				});
 
 			}
-
 			var nowPosition = null;
 			var nowLat = null;
 			var nowLng = null;
@@ -209,6 +225,9 @@ try {
 			function buttonClick(lat,lng) {
 				map.panTo(new google.maps.LatLng(lat,lng));
 				map.setZoom(19);
+			}
+			function CompleteGo(devID){
+
 			}
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
