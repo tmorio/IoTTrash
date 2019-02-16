@@ -88,7 +88,7 @@ try {
 						echo '</div>';
 		 				echo '<div class="collapsible-body">';
 							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
-                                			echo '<a class="waves-effect waves-light btn blue right" href="#"><i class="material-icons left">check</i>回収済みにする</a>';
+							echo '<a class="waves-effect waves-light btn modal-trigger blue right" href="#modal1"><i class="material-icons left">check</i>回収済みにする</a>';
 						echo '</div>';
 					echo '</li>';
 					$ListCount++;
@@ -210,9 +210,21 @@ try {
 				map.panTo(new google.maps.LatLng(lat,lng));
 				map.setZoom(19);
 			}
-
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
+
+		<div id="modal1" class="modal">
+			<div class="modal-content">
+				<h4>回収確認</h4>
+				<p>選択したデバイスを回収済みにします。よろしいですか?</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#!" class="modal-close waves-effect waves-green btn-flat"><font color="green"><b>回収済みにする</b></font></a>
+				<a href="#!" class="modal-close waves-effect waves-green btn-flat"><font color="red"><b>取り消す</b></font></a>
+			</div>
+		</div>
+
+
 	</div>
 	<!-- デバッグ
 	<?php echo "Debug: " . "JavaScript PinData : " . $PinData; ?> -->
@@ -225,6 +237,9 @@ try {
                         	$(document).ready(function() {
                                 	$('.collapsible').collapsible();
                         	});
+				$(document).ready(function(){
+					$('.modal').modal();
+				});
                 	</script>
 		</footer>
 	</body>
