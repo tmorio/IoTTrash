@@ -88,7 +88,7 @@ try {
 $PostData = [];
 
 foreach($_POST['Boxes'] as $DevID){
-	$query = "SELECT * FROM OrderInfo WHERE GroupID = :GroupsID AND DeviceID = :orderNo";
+	$query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
 	$stmt = $dbh->prepare($query);
 	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
 	$stmt->bindParam(':GroupsID', $_SESSION['userGroup'], PDO::PARAM_INT);
