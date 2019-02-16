@@ -6,6 +6,7 @@ if(empty($_SESSION['userName'])){
 }
 
 require_once('./myid.php');
+require_once('./siteInfo.php');
 ?>
 <script>
 	function getPosition() {
@@ -39,10 +40,37 @@ require_once('./myid.php');
 		);
 	}
 </script>
+<!doctype html>
+<html>
+        <head>
+                <meta charset="UTF-8">
+                <title>MyBox Cloud - Missions</title>
+                <link rel="stylesheet" type="text/css" href="css/materialize.min.css">
+                <link rel="stylesheet" type="text/css" href="css/style.css?Ver=2">
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+                <script type="text/javascript" src="js/materialize.min.js"></script>
+                <script type="text/javascript" src="js/footerFixed.js"></script>
+                <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        </head>
+        <body>
 
+        <!-- ヘッダー -->
+        <div class="serviceHeader navbar-fixed">
+                <nav>
+                        <div class="nav-wrapper black-text">
+                                <!-- ロゴ -->
+                                <a href="./dashboard.php"><img class="logo-image" src="img/logo.png"></a>
+                                <ul class="right">
+                                        <!-- ユーザー名 -->
+                                        <li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
+                                        <!-- ログアウトボタン -->
+                                        <li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
+                                </ul>
+                        </div>
+                </nav>
+        </div>
 <?php
-echo '現在地を取得中です...しばらくお待ちください。<br><br>';
-
 if($_GET['GETOK'] != 1){
 	echo "<script>getPosition();</script>";
 }
@@ -79,7 +107,34 @@ if($_GET['GETOK'] != 1){
 	$_SESSION['Boxes'] = $_POST['Boxes'];
 	$_SESSION['PostData'] = $PostData;
 }
+if($_GET['GETOK'] != 0){
+        $pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
+        //unset($_SESSION['Boxes']);
+        //unset($_SESSION['PostData']);
+        sleep(3);
+        header($pushTo);
+}
+?>
+        <div class="deviceListBoard">
 
+                <div class="deleteCheck">現在地を取得中です...<br>しばらくお待ちください...</div><br><br>
+                <div class="buttonH">
+                        <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-yellow-only">
+                                        <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                                <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                        </div>
+                                </div>
+                        </div>
+			<br><br>
+
+<?php
 //DEBUG
 echo "----------THIS IS DEBUG (3 SEC)----------" . "<br><br>";
 echo "POSTED DATA: ";
@@ -88,9 +143,9 @@ echo "<br>";
 echo "YOUR POSITION (START/END POINT):";
 
 if(!empty($_GET['lat'])){
-	echo $_GET['lat'] . ", " . $_GET['lng'];
+        echo $_GET['lat'] . ", " . $_GET['lng'];
 }else{
-	echo "GETTING... PLEASE WAIT...";
+        echo "GETTING... PLEASE WAIT...";
 }
 echo "<br>";
 echo "ARRAY DATA:";
@@ -100,11 +155,13 @@ if(!empty($_GET['lat'])){
         echo "<br><br>SUCCESS GET POSITION!";
 }
 
-if($_GET['GETOK'] != 0){
-        $pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
-        //unset($_SESSION['Boxes']);
-        //unset($_SESSION['PostData']);
-	sleep(3);
-        header($pushTo);
-}
 ?>
+
+                </div>
+        </div>
+                <!-- フッター -->
+                <footer id="footer" class="footer center">
+                        <?php echo FOOTER_INFO; ?>
+                </footer>
+        </body>
+</html>

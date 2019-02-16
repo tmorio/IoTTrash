@@ -119,7 +119,7 @@ $stmt->execute();
 				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 
                                 echo '<div class="listButton">';
-				echo '<label class="waves-effect waves-light btn orange"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<label class="waves-effect waves-light btn yellow darken-3"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
 				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '<a class="waves-effect waves-light btn red" href="deleteMission.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">highlight_off</i>依頼取消</a>';
 				echo '</div>';
