@@ -7,11 +7,12 @@ if(empty($_SESSION['userName'])){
 
 require_once('./myid.php');
 require_once('./siteInfo.php');
+require_once('./routeSort.php');
 ?>
 <script>
 	function getPosition() {
 		if (navigator.geolocation) {
-			alert("端末の位置情報サービスを利用して出発地点を取得します。");
+			//alert("端末の位置情報サービスを利用して出発地点を取得します。");
 		} else {
 			alert("この端末では位置情報の取得ができません。依頼一覧に戻ります。");
 				document.location.href = "getMenu.php";
@@ -86,33 +87,39 @@ try {
 
 
 $PostData = [];
-
-foreach($_POST['Boxes'] as $DevID){
-	$query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
-	$stmt = $dbh->prepare($query);
-	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
-	$stmt->bindParam(':GroupsID', $_SESSION['userGroup'], PDO::PARAM_INT);
-	$stmt->bindParam(':orderNo', $DevID, PDO::PARAM_STR);
-	$stmt->execute();
-	$data = $stmt->fetch();
-	$InputData = array('Name'=>$data['DevName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Lat'], 'Lng'=>$data['Lng']);
-	$PostData[] = $InputData;
-	if(empty($data['DeviceID'])){
-		echo '権限がありません。';
-		exit(0);
+if($_GET['ReAC'] != 1){
+	foreach($_POST['Boxes'] as $DevID){
+		$query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :GroupsID) AND DeviceID = :orderNo";
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+		$stmt->bindParam(':GroupsID', $_SESSION['userGroup'], PDO::PARAM_INT);
+		$stmt->bindParam(':orderNo', $DevID, PDO::PARAM_STR);
+		$stmt->execute();
+		$data = $stmt->fetch();
+		$InputData = array('Name'=>$data['DevName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Lat'], 'Lng'=>$data['Lng']);
+		$PostData[] = $InputData;
+		if(empty($data['DeviceID'])){
+			echo '権限がありません。';
+			exit(0);
+		}
 	}
 }
-
-if($_GET['GETOK'] != 1){
-	$_SESSION['Boxes'] = $_POST['Boxes'];
-	$_SESSION['PostData'] = $PostData;
-}
-if($_GET['GETOK'] != 0){
-        $pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
+if($_GET['ReAC'] != 1){
+	if($_GET['GETOK'] != 1){
+		$_SESSION['Boxes'] = $_POST['Boxes'];
+		$_SESSION['PostData'] = $PostData;
+	}
+	if($_GET['GETOK'] != 0){
+	        $pushTo = "Location: route.php?lat=" . $_GET['lat'] . "&lng=" . $_GET['lng'];
         //unset($_SESSION['Boxes']);
+		$boxList = $_SESSION['PostData'];
+		$_SESSION['endLat'] = $_GET['lat'];
+		$_SESSION['endLng'] = $_GET['lng'];
         //unset($_SESSION['PostData']);
-        sleep(3);
-        header($pushTo);
+	//$_SESSION['PostData']=routeSort($boxList, $_GET['lat'], $_GET['lng']);
+        	sleep(2);
+        	header($pushTo);
+	}
 }
 ?>
         <div class="deviceListBoard">
@@ -136,23 +143,27 @@ if($_GET['GETOK'] != 0){
 
 <?php
 //DEBUG
-echo "----------THIS IS DEBUG (3 SEC)----------" . "<br><br>";
-echo "POSTED DATA: ";
-print_r($_SESSION['Boxes']);
-echo "<br>";
-echo "YOUR POSITION (START/END POINT):";
+//echo "----------THIS IS DEBUG (3 SEC)----------" . "<br><br>";
+//echo "POSTED DATA: ";
+//print_r($_SESSION['Boxes']);
+//echo "<br>";
+//echo "YOUR POSITION (START/END POINT):";
 
 if(!empty($_GET['lat'])){
-        echo $_GET['lat'] . ", " . $_GET['lng'];
+//        echo $_GET['lat'] . ", " . $_GET['lng'];
 }else{
-        echo "GETTING... PLEASE WAIT...";
+//       echo "GETTING... PLEASE WAIT...";
 }
-echo "<br>";
-echo "ARRAY DATA:";
-print_r($_SESSION['PostData']);
-
+//echo "<br>";
+//echo "ARRAY DATA:";
+//print_r($_SESSION['PostData']);
+//echo "<br>boxList<br>";
+//print_r($boxList);
+//echo"<br><br>";
+//routeSort($boxList, $_GET['lat'], $_GET['lng']);
+//echo"<br><br>";
 if(!empty($_GET['lat'])){
-        echo "<br><br>SUCCESS GET POSITION!";
+//       echo "<br><br>SUCCESS GET POSITION!";
 }
 
 ?>

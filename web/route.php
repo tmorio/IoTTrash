@@ -104,7 +104,7 @@ try {
 			function initMap() {
 				var request = {
 					origin: new google.maps.LatLng(<?php echo $_GET['lat'] . "," . $_GET['lng']; ?>),
-					destination: new google.maps.LatLng(<?php echo $_GET['lat'] . "," . $_GET['lng']; ?>),
+					destination: new google.maps.LatLng(<?php echo $_SESSION['endLat'] . "," . $_SESSION['endLng']; ?>),
 					waypoints: <?php echo $Waypoint; ?>,
 					travelMode: google.maps.DirectionsTravelMode.DRIVING,
 					optimizeWaypoints: true,
@@ -227,7 +227,8 @@ try {
 				map.setZoom(19);
 			}
 			function CompleteGo(devID){
-
+				var target = document.getElementById("postComplete");
+				target.href = "doComplete.php?id=" + devID;
 			}
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
@@ -238,7 +239,7 @@ try {
 				<p>選択したデバイスを回収済みにします。よろしいですか?</p>
 			</div>
 			<div class="modal-footer">
-				<a href="#!" class="modal-close waves-effect waves-green btn-flat"><font color="green"><b>回収済みにする</b></font></a>
+				<a href="" id="postComplete" class="modal-close waves-effect waves-green btn-flat"><font color="green"><b>回収済みにする</b></font></a>
 				<a href="#!" class="modal-close waves-effect waves-green btn-flat"><font color="red"><b>取り消す</b></font></a>
 			</div>
 		</div>
@@ -253,9 +254,6 @@ try {
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
 			<script>
-                        	$(document).ready(function() {
-                                	$('.collapsible').collapsible();
-                        	});
 				$(document).ready(function(){
 					$('.modal').modal();
 				});
