@@ -5,11 +5,6 @@ if(empty($_SESSION['userName'])){
 	header("Location: login.php");
 }
 
-if($_SESSION['userGroup'] == 1){
-        header("Location: dashboard.php");
-        exit(0);
-}
-
 require_once('./myid.php');
 require_once('./siteInfo.php');
 
@@ -90,9 +85,6 @@ $stmt->execute();
         	</a>
 		<span class="listTitle">回収管理</span>
                 <a class="waves-effect waves-light btn" href="#">
-                        <i class="material-icons left">filter_list</i>並べ替え
-                </a>
-                <a class="waves-effect waves-light btn" href="#">
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
@@ -115,7 +107,7 @@ $stmt->execute();
 				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
 
                                 echo '<div class="listButton">';
-				echo '<label class="waves-effect waves-light btn yellow darken-3" ><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<label class="waves-effect waves-light btn yellow darken-3"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
 				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '</div>';
 				echo '</div></li>';

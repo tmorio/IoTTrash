@@ -70,6 +70,15 @@ $stmt->execute();
                         }
                 }
         }
+
+
+	function enableSearch(){
+		var btn = document.getElementById('searchOn');
+		var txtA = document.getElementById('SearchWord');
+		btn.innerHTML = '<i class="material-icons left">search</i>検索実行';
+		txtA.setAttribute('type', 'text');
+	}
+
 </script>
 
 	<!-- ヘッダー -->
@@ -94,6 +103,10 @@ $stmt->execute();
         	</a>
 		<span class="listTitle">回収管理</span>
                 <a class="waves-effect waves-light btn" href="#">
+                        <i class="material-icons left">filter_list</i>並べ替え
+                </a>
+		<input id="SearchWord" type="hidden">
+                <a id="searchOn" class="waves-effect waves-light btn" onclick="enableSearch();">
                         <i class="material-icons left">search</i>検索
                 </a>
                 &ensp;
