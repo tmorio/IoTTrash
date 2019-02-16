@@ -60,14 +60,14 @@ try {
 $PostData = [];
 
 foreach($_POST['Boxes'] as $DevID){
-	$query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :GroupsID AND DeviceID = :orderNo";
+	$query = "SELECT * FROM OrderInfo WHERE Owner = :UserID OR GroupID = :GroupsID AND DeviceID = :orderNo";
 	$stmt = $dbh->prepare($query);
 	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
 	$stmt->bindParam(':GroupsID', $_SESSION['userGroup'], PDO::PARAM_INT);
 	$stmt->bindParam(':orderNo', $DevID, PDO::PARAM_STR);
 	$stmt->execute();
 	$data = $stmt->fetch();
-	$InputData = array('Name'=>$data['NickName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Latitude'], 'Lng'=>$data['Longitude']);
+	$InputData = array('Name'=>$data['NickName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Lat'], 'Lng'=>$data['Lng']);
 	$PostData[] = $InputData;
 	if(empty($data['DeviceID'])){
 		echo '権限がありません。';
