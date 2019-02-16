@@ -67,7 +67,7 @@ foreach($_POST['Boxes'] as $DevID){
 	$stmt->bindParam(':orderNo', $DevID, PDO::PARAM_STR);
 	$stmt->execute();
 	$data = $stmt->fetch();
-	$InputData = array('Name'=>$data['NickName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Lat'], 'Lng'=>$data['Lng']);
+	$InputData = array('Name'=>$data['DevName'], 'DeviceID'=>$data['DeviceID'], 'Lat'=>$data['Lat'], 'Lng'=>$data['Lng']);
 	$PostData[] = $InputData;
 	if(empty($data['DeviceID'])){
 		echo '権限がありません。';
