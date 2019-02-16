@@ -97,7 +97,7 @@ unset($_SESSION['nickname']);
                                                         <a href="boxmap.php">
                                                                 <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
                                                                         <i class="material-icons center large">local_shipping</i>
-                                                                        <h6>回収作業</h6>
+                                                                        <h6>状態確認</h6>
                                                                 </div>
                                                         </a>
                                                 </div>
@@ -106,7 +106,7 @@ unset($_SESSION['nickname']);
                                                         <a href="missions.php">
                                                                 <div class="menu-content blue-grey lighten-5 hoverable center-align z-depth-1">
                                                                         <i class="material-icons center large">record_voice_over</i>
-                                                                        <h6>依頼確認</h6>
+                                                                        <h6>依頼一覧・回収</h6>
                                                                 </div>
                                                         </a>
                                                 </div>

@@ -87,7 +87,7 @@ try {
                                                         }
 						echo '</div>';
 		 				echo '<div class="collapsible-body">';
-							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>中央に表示</button>&thinsp;';
+							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
                                 			echo '<a class="waves-effect waves-light btn blue right" href="#"><i class="material-icons left">check</i>回収済みにする</a>';
 						echo '</div>';
 					echo '</li>';
@@ -208,6 +208,7 @@ try {
 
 			function buttonClick(lat,lng) {
 				map.panTo(new google.maps.LatLng(lat,lng));
+				map.setZoom(19);
 			}
 
 		</script>

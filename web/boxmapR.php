@@ -103,7 +103,11 @@ $stmt->execute();
 				&nbsp;
                                 <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">loop</i>更新</a>
 				&nbsp;
-				<button id="sendB" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">回収依頼送信<i class="material-icons right">send</i></button>
+				<?php
+					if($_SESSION['userService'] != 1){
+						echo '<button id="sendB" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">回収依頼送信<i class="material-icons right">send</i></button>';
+					}
+				?>
 				<br><br>
 				<span class="infoTitle">デバイス一覧</span>
 				<br>
