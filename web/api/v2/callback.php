@@ -50,6 +50,25 @@ for ($i = 0; $i < 3; $i++){
 	$sensor[$i] = hexdec($sensor[$i]);
 }
 
+//THIS IS Ver3.0-Beta API
+$query = "SELECT * FROM StatusData WHERE DeviceID = :deviceid";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
+$stmt->execute();
+$firstCheck = $stmt->fetch();
+foreach($firstCheck as $data){
+	if(emtpy($data['MaxADis']){
+		$query = "UPDATE StatusData SET MaxADis = :FirstDis WHERE DeviceID = deviceid"
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':FirstDis', ($sensor[2] + 5), PDO::PARAM_INT);
+		$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
+		$stmt->execute();
+		break;
+	}
+}
+//END
+
+
 $query = "INSERT INTO History (DeviceID, Time, Sensor, Temp, Hum, Dis) VALUES (:deviceid, :intime, :sensor, :sensor1, :sensor2, :sensor3)";
 
 $stmt = $dbh->prepare($query);
