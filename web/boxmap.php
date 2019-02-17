@@ -128,7 +128,7 @@ $stmt->execute();
 						$PinData = $PinData . ",";
 						$DeviceCounter = $DeviceCounter + 1;
 					}
-					$capList[$num]=1.0*(70.0-$data['Dis'])/70.0; // ここゴミ箱の最大値が必要
+					$capList[$num]=1.0*($data['MaxADis'] - $data['Dis']) / $data['MaxADis']; // ここゴミ箱の最大値が必要
 					if(empty($data['Time'])){
 						$capList[$num]=null;
 					}
@@ -143,13 +143,21 @@ $stmt->execute();
 								if($data['OrderStatus'] == 1){
 									echo '<span class="new badge blue coltag" data-badge-caption="">回収依頼済み</span>';
 								}else{
-									if(($data['Dis'] <= 20) && !empty($data['Time'])){
-										echo '<span class="new badge red coltag" data-badge-caption="">回収して下さい</span>';
+									if(($data['Dis'] <= 20) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+										echo '<span class="new badge red coltag" data-badge-caption="">空き残量少</span>';
+									}
+									if(($data['WarSM'] == 1) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+										echo '<span class="new badge orange coltag" data-badge-caption="">臭い警告</span>';
+									}
+									if(($data['DevInfo'] == 1) && !empty($data['Time'])){
+										echo '<span class="new badge coltag" data-badge-caption="">回収完了</span>';
 									}
 								}
-								echo '<span class="new prog" id="progress'.$num.'"></span>';
-								$num++;
-							echo '</span>';
+								if(!empty($data['Dis'])){
+									echo '<span class="new prog" id="progress'.$num.'"></span>';
+									$num++;
+									echo '</span>';
+								}
 						echo '</div>';
 						echo '<div class="collapsible-body">';
 							if(empty($data['Time'])){
@@ -170,7 +178,9 @@ $stmt->execute();
 
 		  					if(!empty($data['Dis'])){
 			  					echo "空き容量: " . $data['Dis'] . " cm";
-		  					}
+		  					}else{
+								echo "空き容量: 再取得待ち";
+							}
 							echo '<br><br>';
 							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
 
