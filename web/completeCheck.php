@@ -32,7 +32,7 @@ if($_GET['del'] == 1){
                 exit(0);
         }
 
-        $query = "UPDATE StatusData SET OrderStatus = 0, LastReset = :nowTime WHERE DeviceID = :orderNo";
+        $query = "UPDATE StatusData SET DevInfo = 1, OrderStatus = 0, WarSM = 0, Dis = NULL, LastReset = :nowTime WHERE DeviceID = :orderNo";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':nowTime', $Intime, PDO::PARAM_STR);
         $stmt->bindParam(':orderNo', $_GET['OrderID'], PDO::PARAM_STR);
@@ -97,7 +97,7 @@ if($_GET['del'] == 1){
                 <ul class="collapsible">
                 <?php
 			 echo '<li><div class="collapsible-header">';
-                                echo $data['DeviceID'] ;
+                                echo $data['DevName'] . "&thinsp;(" . $data['DeviceID'] . ")" ;
                                 echo "<br>";
 
 				echo '</div>';

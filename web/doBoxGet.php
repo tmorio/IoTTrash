@@ -64,7 +64,7 @@ if($_GET['send'] == 1){
 		$stmt->execute();
 	}
 	unset($_SESSION['GetData']);
-	header("Location: boxmapR.php");
+	header("Location: boxmap.php");
 }else{
 	$PostData = [];
 	foreach($_POST['Devices'] as $DevID){
@@ -114,7 +114,7 @@ if($_GET['send'] == 1){
 		</nav>
 	</div>
 	<div class="deviceListBoard">
-                <a class="waves-effect waves-light btn" href="./boxmapR.php">
+                <a class="waves-effect waves-light btn" href="./boxmap.php">
                         <i class="material-icons left">keyboard_arrow_left</i>マップに戻る
                 </a>
                 <span class="listTitle">回収依頼確認</span>
@@ -126,8 +126,6 @@ if($_GET['send'] == 1){
 			foreach($_SESSION['GetData'] as $ListData){
 
 			 echo '<li><div class="collapsible-header">';
-                                //echo '現在開発なう by森尾<br>DEBUG(OUTPUT_DATA) : ';
-				//print_r($_SESSION['GetData']);
 				echo $ListData['Name'] . '&nbsp;' . '(' . $ListData['DeviceID'] . ')';
 				echo '</div>';
         	                echo '</li>';
@@ -137,7 +135,7 @@ if($_GET['send'] == 1){
                 </div>
                 <div class="deleteCheck">選択した端末の回収を依頼します。<br>よろしいですか?</div><br><br>
 		<div class="buttonH">
-                	<a class="waves-effect waves-light btn-large listButton" href="boxmapR.php"><i class="material-icons right">keyboard_return</i>マップに戻る</a><br><br>
+                	<a class="waves-effect waves-light btn-large listButton" href="boxmap.php"><i class="material-icons right">keyboard_return</i>マップに戻る</a><br><br>
 			<a class="waves-effect waves-light btn listButton red" href="?send=1"><i class="material-icons right">send</i>依頼する</a>
 		</div>
 

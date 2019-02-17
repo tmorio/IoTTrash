@@ -7,6 +7,7 @@ if(empty($_SESSION['userName'])){
 
 require_once('./myid.php');
 require_once('./siteInfo.php');
+require_once('./hsv2code.php');
 
 $strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
 try {
@@ -54,6 +55,7 @@ $stmt->execute();
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
+		<script type="text/javascript" src="js/progressbar.min.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	</head>
 	<body>
@@ -101,7 +103,7 @@ $stmt->execute();
 				<form action="doBoxGet.php" method="POST">
                                 <a class="waves-effect waves-light btn" href="./dashboard.php"><i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a>
 				&nbsp;
-                                <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">loop</i>更新</a>
+                                <a class="waves-effect waves-light btn" href="./boxmap.php"><i class="material-icons left">loop</i>更新</a>
 				&nbsp;
 				<?php
 					if($_SESSION['userService'] != 1){
@@ -118,6 +120,7 @@ $stmt->execute();
 				$DeviceCounter = 0;
 				$PinData = "[";
 				echo '<ul class="collapsible">';
+				$num=0;
 				foreach($stmt as $data){ //データ件数だけ反復される
 					//ピン緯度経度データ生成処理
 					$PinData = $PinData . "{name:'" . $data['DeviceID'] . "',lat:" . $data['Latitude'] . ",lng:" . $data['Longitude'] . "}";
@@ -125,25 +128,43 @@ $stmt->execute();
 						$PinData = $PinData . ",";
 						$DeviceCounter = $DeviceCounter + 1;
 					}
-		  			echo '<li>';
-		  				echo '<div class="collapsible-header">';
-		  					echo '<div class="clearfix valign-wrapper">';
-		  						echo "" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
-		  					echo '</div>';
-                                                        if($data['OrderStatus'] == 1){
-                                                                echo '<span class="new badge blue" data-badge-caption="">回収依頼済み</span>';
-                                                        }else{
-								if(($data['Dis'] <= 20) && !empty($data['Time'])){
-									echo '<span class="new badge red" data-badge-caption="">回収して下さい</span>';
+					$capList[$num]=1.0*($data['MaxADis'] - $data['Dis']) / $data['MaxADis']; // ここゴミ箱の最大値が必要
+					if(empty($data['Time'])){
+						$capList[$num]=null;
+					}
+					echo '<li>';
+						echo '<div class="collapsible-header">';
+							echo '<span>';
+								echo "" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+							echo '</span>';
+							echo '<span class="badge">';
+								//echo '<span class="prog" id="progress'.$num.'"></span>';
+								//$num++;
+								if($data['OrderStatus'] == 1){
+									echo '<span class="new badge blue coltag" data-badge-caption="">回収依頼済み</span>';
+								}else{
+									if(($data['Dis'] <= 20) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+										echo '<span class="new badge red coltag" data-badge-caption="">空き残量少</span>';
+									}
+									if(($data['WarSM'] == 1) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+										echo '<span class="new badge orange coltag" data-badge-caption="">臭い警告</span>';
+									}
+									if(($data['DevInfo'] == 1) && !empty($data['Time'])){
+										echo '<span class="new badge coltag" data-badge-caption="">回収完了</span>';
+									}
 								}
-							}
+								if(!empty($data['Dis'])){
+									echo '<span class="new prog" id="progress'.$num.'"></span>';
+									$num++;
+									echo '</span>';
+								}
 						echo '</div>';
-		 				echo '<div class="collapsible-body">';
-		  					if(empty($data['Time'])){
+						echo '<div class="collapsible-body">';
+							if(empty($data['Time'])){
 								echo "更新日時: 未取得";
-		  					}else{
-		  						echo "更新日時: " . $data['Time'];
-		  					}
+							}else{
+								echo "更新日時: " . $data['Time'];
+							}
 
 							echo '<br>';
 
@@ -157,7 +178,9 @@ $stmt->execute();
 
 		  					if(!empty($data['Dis'])){
 			  					echo "空き容量: " . $data['Dis'] . " cm";
-		  					}
+		  					}else{
+								echo "空き容量: 再取得待ち";
+							}
 							echo '<br><br>';
 							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
 
@@ -191,6 +214,37 @@ $stmt->execute();
 			</form>
 		</ul>
 
+		<script>
+		<?php
+			$num=0;
+			foreach($capList as $data){
+				if($data==null){
+					$num++;
+					continue;
+				}
+				$h=(int)map(1.0-$data, 0,1, 0,180);
+				$s=190;
+				$v=160;
+				$color=hsv2code($h,$s,$v);
+				?>
+				var progress<?=$num?> = new ProgressBar.Circle('#progress<?=$num?>',{
+					color:'#<?=$color?>',
+					fill:'#eee',
+					trailcolor:'#f75555',
+					easing:'easeOut',
+					strokeWidth:5,
+					svgStyle:{
+						width:'40px',
+						height:'40px'
+					}
+				});
+				progress<?=$num?>.setText(Math.round(<?=$data?>*100));
+				progress<?=$num?>.animate(<?=$data?>);
+		<?php 	$num++; ?>
+		<?php } ?>
+		</script>
+		
+		
 		<!-- マップ表示 -->
 		<div id="boxMap">
 		</div>

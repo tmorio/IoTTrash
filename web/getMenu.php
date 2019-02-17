@@ -98,7 +98,7 @@ $stmt->execute();
                 </a>
                 &ensp;
                 <button id="mapGet" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">
-			現在地からのルート探索
+			ルート探索 (位置情報取得権限が必要)
 			<i class="material-icons right">navigation</i>
 		</button>
 

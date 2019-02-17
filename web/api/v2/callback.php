@@ -66,8 +66,33 @@ foreach($firstCheck as $data){
 		break;
 	}
 }
-//END
 
+$query = "SELECT * FROM History WHERE DeviceID = :deviceid ORDER BY ID DESC LIMIT 2";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
+$stmt->execute();
+$SMBdata = $stmt->fetch();
+
+$FSFlag = 0;
+$SSFlag = 0;
+
+if((abs($SMBdata[0]['Temp'] - $temp) > 2) || (abs($SMBdata[0]['Hum'] - $hum) > 2){
+	$FSFlag = 1;
+}
+
+if((abs($SMBdata[0]['Temp'] - $SMBdata[1]['Temp']) > 2 || abs($SMBdata[0]['Hum'] - $SMBdata[1]['Hum']) > 2){
+	$SSFlag = 1;
+}
+
+if(($FSFlag == 1) && ($SSFlag == 1){
+	$query = "UPDATE StatusData SET WarSM = 1 WHERE DeviceID = deviceid"
+	$stmt = $dbh->prepare($query);
+	$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
+	$stmt->execute();
+	break;
+}
+
+//END
 
 $query = "INSERT INTO History (DeviceID, Time, Sensor, Temp, Hum, Dis) VALUES (:deviceid, :intime, :sensor, :sensor1, :sensor2, :sensor3)";
 
@@ -80,7 +105,7 @@ $stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_INT);
 $stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_INT);
 $stmt->execute();
 
-$query = "UPDATE StatusData SET Time = :intime, Sensor = :sensor, Temp = :sensor1, Hum = :sensor2, Dis = :sensor3 WHERE DeviceID = :deviceid";
+$query = "UPDATE StatusData SET Time = :intime, Sensor = :sensor, Temp = :sensor1, Hum = :sensor2, Dis = :sensor3, DevInfo = 0 WHERE DeviceID = :deviceid";
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 $stmt->bindParam(':intime', $Intime, PDO::PARAM_STR);
