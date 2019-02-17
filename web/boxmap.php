@@ -270,7 +270,9 @@ $stmt->execute();
 				map.panTo(new google.maps.LatLng(lat,lng));
 			}
 		</script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=
+		<?php echo MAP_API_KEY; ?>
+		&callback=initMap"></script>
 	</div>
 	<!-- デバッグ
 	<?php echo "Debug: Counter: " . $DeviceCount . " JavaScript PinData : " . $PinData; ?> -->

@@ -231,7 +231,9 @@ try {
 				target.href = "doComplete.php?id=" + devID;
 			}
 		</script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_PqH61wln7u5GE0ycuekW1ePbjTfcSJE&callback=initMap"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=
+		<?php echo MAP_API_KEY; ?>
+		&callback=initMap"></script>
 
 		<div id="modal1" class="modal">
 			<div class="modal-content">
