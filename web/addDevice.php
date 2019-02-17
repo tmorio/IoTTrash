@@ -102,8 +102,7 @@ require_once('./siteInfo.php');
 							<li>Sigfox Shield for Arduino</li>
 							-->
 							
-							<li>MyBox サービス端末</li>
-							<li>Sigfox Cloud アカウント</li>
+							<li>MyBox サービス端末 (まだ電源は入れないで下さい。)</li>
 							<br>
 							<a class="waves-effect waves-light btn" href="?step=1">
 								<i class="material-icons right">keyboard_arrow_right</i>
@@ -278,9 +277,10 @@ require_once('./siteInfo.php');
 						unset($_SESSION['nickname']);
                                                 echo '
                                                         <script>setActive(3);</script>
-														<h3>4. 完了</h3>
+							<h3>4. 完了</h3>
                                                         デバイスの登録が完了しました。<br>
-                                                        デバイスの電源を入れて、データが送信されると情報が確認できるようになります。<br>
+                                                        ゴミ箱の中が空の状態である事をご確認の上、デバイスの電源を入れて設置して下さい。<br>
+							データが送信されると情報が確認できるようになります。<br>
                                                         ※電源を入れてから最初のデータが表示されるまで、最大5分程度かかる場合が御座います。<br>
                                                         <br>
                                                         <a class="waves-effect waves-light btn" href="./addDevice.php">
