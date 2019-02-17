@@ -7,6 +7,7 @@ if(empty($_SESSION['userName'])){
 
 require_once('./myid.php');
 require_once('./siteInfo.php');
+require_once('./hsv2code.php');
 
 $strcode = array(PDO::MYSQL_ATTR_INIT_COMMAND=>"SET CHARACTER SET 'utf8mb4'");
 try {
@@ -43,54 +44,6 @@ if(!empty($_SESSION['userGroup'])){
 }
 $stmt->execute();
 ?>
-<?php
-// 0<=(h)<=360, 0<=(s,v)<=255
-// return:string
-function hsv2code($h,$s,$v){
-	$max = $v;
-	$min = ($max-(($s/255)*$max));
-	$r=0;
-	$g=0;
-	$b=0;
-	if(0<=$h && $h<60){
-		$r=$max;
-		$g=(int)(($h/60)*($max-$min)+$min);
-		$b=$min;
-	}
-	if(60<=$h && $h<120){
-		$r=(int)(((120-$h)/60)*($max-$min)+$min);
-		$g=$max;
-		$b=$min;
-	}
-	if(120<=$h && $h<180){
-		$r=$min;
-		$g=$max;
-		$b=(int)((($h-120)/60)*($max-$min)+$min);
-	}
-	if(180<=$h && $h<240){
-		$r=$min;
-		$g=(int)(((240-$h)/60)*($max-$min)+$min);
-		$b=$max;
-	}
-	if(240<=$h && $h<300){
-		$r=(int)((($h-240)/60)*($max-$min)+$min);
-		$g=$min;
-		$b=$max;
-	}
-	if(300<=$h && $h<=360){
-		$r=$max;
-		$g=$min;
-		$b=(int)(((360-$h)/60)*($max-$min)+$min);
-	}
-	//echo $h.",".$s.",".$v."<br>\n";
-	//echo $r.",".$g.",".$b."<br>\n";
-	//echo sprintf('%06x',$r*0x10000+$g*0x100+$b);
-	return sprintf('%06x',$r*0x10000+$g*0x100+$b);
-}
-function map($x, $iMin, $iMax, $oMin, $oMax){
-	return (int)(($x-$iMin)*($oMax-$oMin)/($iMax-$iMin)+$oMin);
-}
-?>
 <!doctype html>
 <html>
 	<head>
@@ -102,6 +55,7 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/footerFixed.js"></script>
+		<script type="text/javascript" src="js/progressbar.min.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	</head>
 	<body>
@@ -122,27 +76,51 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		</nav>
 	</div>
 	
+
+<script type="text/javascript">
+	var Count = 0;
+	function checkValue(check){
+		var btn = document.getElementById('sendB');
+
+		if (check.checked) {
+			btn.removeAttribute('disabled');
+			Count++;
+		} else {
+			Count--;
+			if(Count == 0){
+				btn.setAttribute('disabled', 'disabled');
+			}
+		}
+	}
+</script>
+
 	<!-- 表示画面 （Google Mapみたいに2画面分割で左にリスト、右にマップ?)-->
 	<div class="mapBoard">
 	
 		<!-- ゴミ箱一覧表示 -->
 		<ul class="collection with-header trashList">
 			<li class="collection-header">
-				<form action="doBoxget.php" method="POST">
+				<form action="doBoxGet.php" method="POST">
                                 <a class="waves-effect waves-light btn" href="./dashboard.php"><i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a>
 				&nbsp;
                                 <a class="waves-effect waves-light btn" href="./boxmap.php"><i class="material-icons left">loop</i>更新</a>
 				&nbsp;
-				<button class="btn waves-effect waves-light" type="submit" name="action">回収依頼送信<i class="material-icons right">send</i></button>
-                                &nbsp;
-                                <a class="waves-effect waves-light btn" href="./boxmapR.php"><i class="material-icons left">exit_to_app</i>新UIに切り替え</a>
+				<?php
+					if($_SESSION['userService'] != 1){
+						echo '<button id="sendB" class="btn waves-effect waves-light" type="submit" name="action" disabled="disabled">回収依頼送信<i class="material-icons right">send</i></button>';
+					}
+				?>
 				<br><br>
 				<span class="infoTitle">デバイス一覧</span>
+				<br>
+				デバイス名を選択すると詳細情報を見ることができます。
 			</li>
 
 			<?php
 				$DeviceCounter = 0;
 				$PinData = "[";
+				echo '<ul class="collapsible">';
+				$num=0;
 				foreach($stmt as $data){ //データ件数だけ反復される
 					//ピン緯度経度データ生成処理
 					$PinData = $PinData . "{name:'" . $data['DeviceID'] . "',lat:" . $data['Latitude'] . ",lng:" . $data['Longitude'] . "}";
@@ -150,81 +128,113 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 						$PinData = $PinData . ",";
 						$DeviceCounter = $DeviceCounter + 1;
 					}
-				
-				// red     green
-				// 0<=(h)<=130
-				$max=120; //cm
-				$min=0; //cm
-				$h=map($data['Dis'],$min,$max,0,130);
-				$s=130;
-				$v=255;
-				$color=hsv2code($h,$s,$v);
+					$capList[$num]=1.0*(70.0-$data['Dis'])/70.0; // ここゴミ箱の最大値が必要
+					if(empty($data['Time'])){
+						$capList[$num]=null;
+					}
+					echo '<li>';
+						echo '<div class="collapsible-header">';
+							echo '<span>';
+								echo "" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+							echo '</span>';
+							echo '<span class="badge">';
+								//echo '<span class="prog" id="progress'.$num.'"></span>';
+								//$num++;
+								if($data['OrderStatus'] == 1){
+									echo '<span class="new badge blue coltag" data-badge-caption="">回収依頼済み</span>';
+								}else{
+									if(($data['Dis'] <= 20) && !empty($data['Time'])){
+										echo '<span class="new badge red coltag" data-badge-caption="">回収して下さい</span>';
+									}
+								}
+								echo '<span class="new prog" id="progress'.$num.'"></span>';
+								$num++;
+							echo '</span>';
+						echo '</div>';
+						echo '<div class="collapsible-body">';
+							if(empty($data['Time'])){
+								echo "更新日時: 未取得";
+							}else{
+								echo "更新日時: " . $data['Time'];
+							}
 
-		  echo '<li class="DeviceInfo collection-item" style="background-color: #'.$color.';">'; //各デバイスの情報が入るブロック
-		  echo '<div class="clearfix valign-wrapper">';
-		  echo "" .  $data['NickName'] . "&nbsp;";
-		  echo "(" .  $data['DeviceID'] . ")";
-		  echo '<div class="right">';
-                  echo '<button class="waves-effect waves-light btn right marg" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
-		  if(!empty($data['Temp'])){
-			if($_SESSION['userService'] != 1){
-                  		echo '<a class="waves-effect waves-light btn right marg" href="makeGraph.php?DeviceID='.$data['DeviceID'].'&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
-			}
-		  	//echo '<a class="waves-effect waves-light btn" href="#?DeviceID='.$data['DeviceID'].'"><i class="material-icons left">check</i>回収済みにする</a>';
-		  }else{
-			if($_SESSION['userService'] != 1){
-				echo '<a class="waves-effect waves-light btn right marg disabled"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
-			}
-			//echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">check</i>回収済みにする</a>';
-		  }
-		  echo '</div></div>';
-		  echo '<hr size="1" color="#37474f" noshade>';
-		  if(empty($data['Time'])){
-			echo "更新日時: 未取得";
-		  }else{
-		  	echo "更新日時: " . $data['Time'];
-		  }
+							echo '<br>';
 
-		  echo '<div class="DeviceSensor">';
+		  					if(empty($data['Temp']) || empty($data['Hum'])){
+								echo "データ取得待ち";
+		  					}else{
+		  						echo "温度: " . $data['Temp'] . "°C" . " 湿度: " . $data['Hum'] . "%";
+		  					}
 
-		  if(empty($data['Temp']) || empty($data['Hum'])){
-			echo "データ取得待ち";
-		  }else{
-		  	echo "温度: " . $data['Temp'] . "°C" . " 湿度: " . $data['Hum'] . "%";
-		  }
-		  echo '</div>';
-		  echo '<div class="BoxAvailable">';
+							echo '<br>';
 
-		  if(!empty($data['Dis'])){
-			  echo "空き容量: " . $data['Dis'] . " cm";
-		  }
+		  					if(!empty($data['Dis'])){
+			  					echo "空き容量: " . $data['Dis'] . " cm";
+		  					}
+							echo '<br><br>';
+							echo '<button class="waves-effect waves-light btn" onclick="buttonClick('.$data['Latitude'].','.$data['Longitude'].');return false;"><i class="material-icons left">location_on</i>表示</button>&thinsp;';
 
-		  echo '</div>';
-                  if(!empty($data['Dis'])){
-                          echo "<br>";
-                  }
-		  if($data['OrderStatus'] == 0){
-			if($_SESSION['userService'] != 1){
-                                if(!empty($data['Temp'])){
-		  			echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" value="#"><span>回収対象にする</span></label>';
+		  					if(!empty($data['Temp'])){
+                        					if($_SESSION['userService'] != 1){
+                                					echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID='.$data['DeviceID'].'&from=1"><i class="material-icons left">timeline</i>分析</a>&thinsp;';
+                        					}
+                  					}
+
+		  					echo '&nbsp;';
+		  					if($data['OrderStatus'] == 0){
+								if($_SESSION['userService'] != 1){
+                                					if(!empty($data['Temp'])){
+		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . $data['DeviceID'] . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
+									}
+								}
+		  					}else{
+								echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
+		  					}
+
+							if(!empty($data['LastReset'])){
+								echo '<br><br>';
+								echo '最終回収日時&thinsp;:&thinsp;' . $data['LastReset'];
+							}
+						echo '</div>';
+					echo '</li>';
 				}
-			}
-                        if(!empty($data['LastReset'])){
-                                //echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
-                        }
-		  }else{
-			echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
-			if(!empty($data['LastReset'])){
-				//echo '&nbsp;最終回収 :&nbsp;' . $data['LastReset'];
-			}
-		  }
-		  echo '</li><br>';
-				}
+				echo '</ul>';
 				$PinData = $PinData . "]";
 			?>
 			</form>
 		</ul>
 
+		<script>
+		<?php
+			$num=0;
+			foreach($capList as $data){
+				if($data==null){
+					$num++;
+					continue;
+				}
+				$h=(int)map(1.0-$data, 0,1, 0,180);
+				$s=190;
+				$v=160;
+				$color=hsv2code($h,$s,$v);
+				?>
+				var progress<?=$num?> = new ProgressBar.Circle('#progress<?=$num?>',{
+					color:'#<?=$color?>',
+					fill:'#eee',
+					trailcolor:'#f75555',
+					easing:'easeOut',
+					strokeWidth:5,
+					svgStyle:{
+						width:'40px',
+						height:'40px'
+					}
+				});
+				progress<?=$num?>.setText(Math.round(<?=$data?>*100));
+				progress<?=$num?>.animate(<?=$data?>);
+		<?php 	$num++; ?>
+		<?php } ?>
+		</script>
+		
+		
 		<!-- マップ表示 -->
 		<div id="boxMap">
 		</div>
@@ -257,6 +267,11 @@ function map($x, $iMin, $iMax, $oMin, $oMax){
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
+			<script>
+                        	$(document).ready(function() {
+                                	$('.collapsible').collapsible();
+                        	});
+                	</script>
 		</footer>
 	</body>
 </html>

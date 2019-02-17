@@ -243,3 +243,13 @@ img.logo-image {
     padding: 10px;
 }
 
+.prog {
+	float:right;
+	margin-left:10px;
+	margin-top:-0.7rem;
+	margin-right:-10px;
+}
+
+.coltag{;
+	float:left !important;
+}
