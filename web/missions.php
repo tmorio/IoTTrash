@@ -116,7 +116,7 @@ $stmt->execute();
 		if($counter != 0){
 			echo '</ul>';
 		}else{
-			echo '<br><span class="listTitle">回収依頼中のゴミ箱がありません。</span>';
+			echo '<br><span class="listTitle">現在、回収依頼されているゴミ箱がありません。</span>';
 		}
 		?>
 		</div>
