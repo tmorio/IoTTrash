@@ -143,7 +143,7 @@ $stmt->execute();
 								if($data['OrderStatus'] == 1){
 									echo '<span class="new badge blue coltag" data-badge-caption="">回収依頼済み</span>';
 								}else{
-									if(($data['Dis'] <= 20) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+									if(((($data['MaxADis'] - $data['Dis']) / $data['MaxADis'])*100 >= 80) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
 										echo '<span class="new badge red coltag" data-badge-caption="">空き残量少</span>';
 									}
 									if(($data['WarSM'] == 1) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
