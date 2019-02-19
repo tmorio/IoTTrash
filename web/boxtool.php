@@ -53,6 +53,7 @@ unset($_SESSION['nickname']);
 					<!-- ユーザー名 -->
 					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
 					<!-- ログアウトボタン -->
+					<li><a class="waves-effect waves-light btn" href="./settings.php"><i class="material-icons left">build</i>設定</a></li>
 					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
 				</ul>
 			</div>
