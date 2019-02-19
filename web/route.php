@@ -241,8 +241,8 @@ try {
 				<p>選択したデバイスを回収済みにします。よろしいですか?</p>
 			</div>
 			<div class="modal-footer">
-				<a href="" id="postComplete" class="modal-close waves-effect waves-green btn-flat"><font color="green"><b>回収済みにする</b></font></a>
-				<a href="#!" class="modal-close waves-effect waves-green btn-flat"><font color="red"><b>取り消す</b></font></a>
+                        	<a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+                        	<a id="postComplete" class="waves-effect waves-light btn blue" href=""><i class="material-icons left">search</i>回収済みにする</a>
 			</div>
 		</div>
 
