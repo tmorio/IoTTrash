@@ -17,10 +17,22 @@ try {
 		exit;
 }
 
+if(!empty($_POST['searchKey'])){
+        $SearchWord = "%" . $_POST['searchKey'] . "%";
+}
+
 if(!empty($_SESSION['userGroup'])){
-        $query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+	if(!empty($_POST['searchKey'])){
+		$query = "SELECT * FROM StatusData WHERE (Owner = :UserID OR GroupID = :usergroup) AND ((DeviceID LIKE :searchWordA) OR (NickName LIKE :searchWordB))";
+	}else{
+        	$query = "SELECT * FROM StatusData WHERE Owner = :UserID OR GroupID = :usergroup";
+	}
 }else{
-        $query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+	if(!empty($_POST['searchKey'])){
+		$query = "SELECT * FROM StatusData WHERE Owner = :UserID AND ((DeviceID LIKE :searchWordA) OR (NickName LIKE :searchWordB))";
+	}else{
+        	$query = "SELECT * FROM StatusData WHERE Owner = :UserID";
+	}
 }
 
 $stmt = $dbh->prepare($query);
@@ -28,6 +40,12 @@ $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
 if(!empty($_SESSION['userGroup'])){
         $stmt->bindParam(':usergroup', $_SESSION['userGroup'], PDO::PARAM_INT);
 }
+
+if(!empty($_POST['searchKey'])){
+        $stmt->bindParam(':searchWordA', $SearchWord, PDO::PARAM_STR);
+        $stmt->bindParam(':searchWordB', $SearchWord, PDO::PARAM_STR);
+}
+
 $stmt->execute();
 
 ?>
@@ -63,16 +81,30 @@ $stmt->execute();
         	<a class="waves-effect waves-light btn" href="./boxtool.php">
         		<i class="material-icons left">keyboard_arrow_left</i>デバイス管理に戻る
         	</a>
-                <span class="listTitle">編集・削除</span>
+                <?php
+                        echo '<span class="listTitle">';
+                        if(!empty($_POST['searchKey'])){
+                                echo "検索結果&nbsp;:&nbsp;" . htmlspecialchars($_POST['searchKey'], ENT_QUOTES, 'UTF-8');
+                        }else{
+                                echo "編集・削除";
+                        }
+                        echo '</span>';
+
+                ?>
                 <a class="waves-effect waves-light btn" href="./addDevice.php">
                         <i class="material-icons left">add</i>デバイス追加
                 </a>
                 <a class="waves-effect waves-light btn" href="deviceList.php">
                         <i class="material-icons left">equalizer</i>一覧・分析
                 </a>
-                <a class="waves-effect waves-light btn" href="#">
+                <a class="waves-effect waves-light btn modal-trigger" href="#modal1">
                         <i class="material-icons left">search</i>検索
                 </a>
+                <?php
+                        if(!empty($_POST['searchKey'])){
+                                echo '<a class="waves-effect waves-light btn modal-trigger red" href="editDevice.php"><i class="material-icons left">clear_all</i>全デバイスを表示</a>';
+                        }
+                ?>
 
 		<?php if($_GET['Error'] == 1){ echo '<br><br><span class="editError">（編集エラー）入力されたデバイスIDが6文字ではありません。</span>';} ?>
                 <div class="listOutput">
@@ -114,7 +146,24 @@ $stmt->execute();
                 ?>
                 </ul>
                 </div>
-
+        <div id="modal1" class="modal">
+                <form action="editDevice.php" method="POST">
+                <div class="modal-content">
+                        <h4>デバイス検索</h4>
+                        <p>検索したいキーワードを入力して下さい。 (デバイス名やデバイスID)</p>
+                        <div class="row">
+                                <div class="input-field col s12">
+                                        <input id="searchKey" name="searchKey" type="text" class="validate" required>
+                                        <label for="searchKey">検索キーワード</label>
+                                </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                        <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+                        <button type="submit" class="waves-effect waves-light btn" href=""><i class="material-icons left">search</i>検索</button>
+                </div>
+                </form>
+        </div>
 	</div>
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
@@ -124,6 +173,9 @@ $stmt->execute();
 			$(document).ready(function() {
 				$('.collapsible').collapsible();
 			});
+                        $(document).ready(function(){
+                        	$('.modal').modal();
+                        });
 		</script>
 	</body>
 </html>

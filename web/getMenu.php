@@ -111,13 +111,22 @@ $stmt->execute();
         	<a class="waves-effect waves-light btn" href="./dashboard.php">
         		<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る
         	</a>
-		<span class="listTitle">回収管理</span>
+		<?php
+			echo '<span class="listTitle">';
+			if(!empty($_POST['searchKey'])){
+				echo "検索結果&nbsp;:&nbsp;" . htmlspecialchars($_POST['searchKey'], ENT_QUOTES, 'UTF-8');
+			}else{
+				echo '回収管理';
+			}
+			echo '</span>';
+
+		?>
                 <a class="waves-effect waves-light btn modal-trigger" href="#modal1">
                         <i class="material-icons left">search</i>検索
                 </a>
                 <?php 
                         if(!empty($_POST['searchKey'])){
-                                echo '<a class="waves-effect waves-light btn modal-trigger" href="getMenu.php"><i class="material-icons left">clear_all</i>全デバイスを表示</a>';
+                                echo '<a class="waves-effect waves-light btn modal-trigger red" href="getMenu.php"><i class="material-icons left">clear_all</i>全デバイスを表示</a>';
                         }
                 ?>
                 &ensp;
@@ -150,7 +159,11 @@ $stmt->execute();
 		if($counter != 0){
 			echo '</ul>';
 		}else{
-			echo '<br><span class="listTitle">回収依頼中のゴミ箱がありません。</span>';
+			if(!empty($_POST['searchKey'])){
+				echo '<br><span class="listTitle">キーワードに合うデバイスは回収依頼されていません。</span>';
+			}else{
+				echo '<br><span class="listTitle">回収依頼中のゴミ箱がありません。</span>';
+			}
 		}
 		?>
 		</div>

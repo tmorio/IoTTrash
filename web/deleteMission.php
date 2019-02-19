@@ -5,6 +5,10 @@ if(empty($_SESSION['userName'])){
 	header("Location: login.php");
 }
 
+if($_SESSION['userService'] == 1){
+        header("Location: missions.php");
+}
+
 require_once('./myid.php');
 require_once('./siteInfo.php');
 
