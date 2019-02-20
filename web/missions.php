@@ -22,10 +22,6 @@ try {
 		exit;
 }
 
-if(!empty($_POST['searchKey'])){
-	$SearchWord = "%" . $_POST['searchKey'] . "%";
-}
-
 if(!empty($_SESSION['userGroup'])){
 	if(!empty($_POST['searchKey'])){
 		$query = "SELECT * FROM OrderInfo WHERE (Owner = :UserID OR GroupID = :usergroup) AND ((DeviceID LIKE :searchWordA) OR (DevName LIKE :searchWordB))";
@@ -47,6 +43,7 @@ if(!empty($_SESSION['userGroup'])){
 }
 
 if(!empty($_POST['searchKey'])){
+	$SearchWord = "%" . $_POST['searchKey'] . "%";
 	$stmt->bindParam(':searchWordA', $SearchWord, PDO::PARAM_STR);
 	$stmt->bindParam(':searchWordB', $SearchWord, PDO::PARAM_STR);
 
