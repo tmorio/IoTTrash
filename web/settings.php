@@ -118,7 +118,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 						<form action="doSetting.php?Setup=notice" method="POST">
 							<h4>サービス関連</h4>
 							<label>
-								<input type="checkbox" name="serviceNotice[]" class="filled-in" value="1"';
+								<input type="checkbox" name="Notice[MX]" class="filled-in" value="1"';
 
 					if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
 
@@ -127,7 +127,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 							</label>
                                                         <br>
                                                         <label>
-                                                                <input type="checkbox"  name="serviceNotice[]" class="filled-in" value="1"';
+                                                                <input type="checkbox"  name="Notice[SM]" class="filled-in" value="1"';
 
 					if($Rsettings['SMNotice'] == 1){echo ' checked="checked"';}
 
@@ -136,7 +136,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
                                                         </label>
 							<br>
                                                         <label>
-                                                                <input type="checkbox"  name="serviceNotice[]" class="filled-in" value="1"';
+                                                                <input type="checkbox"  name="Notice[GS]" class="filled-in" value="1"';
 
 					if($Rsettings['GetSendNotice'] == 1){echo ' checked="checked"';}
 

@@ -91,9 +91,9 @@ EOM;
 		break;
 
         case notice:
-		$MXSet = $_POST['serviceNotice'][0];
-		$SMSet = $_POST['serviceNotice'][1];
-		$GSSet = $_POST['serviceNotice'][2];
+		$MXSet = intval($_POST['Notice']['MX']);
+		$SMSet = intval($_POST['Notice']['SM']);
+		$GSSet = intval($_POST['Notice']['GS']);
                 $query = "UPDATE UserSetting SET MaxNotice = :MaxSetting, SMNotice = :SMSetting, GetSendNotice = :GSetting WHERE UserID = :UserID";
                 $stmt = $dbh->prepare($query);
 		$stmt->bindParam(':MaxSetting', $MXSet, PDO::PARAM_INT);
@@ -101,6 +101,7 @@ EOM;
 		$stmt->bindParam(':GSetting', $GSSet, PDO::PARAM_INT);
                 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
                 $stmt->execute();
+//		var_dump($_POST['Notice']);
 		header("Location: ./settings.php?page=notice&mes=2");
 		exit(0);
                 break;
