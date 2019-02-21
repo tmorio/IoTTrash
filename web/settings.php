@@ -23,6 +23,12 @@ $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_STR);
 $stmt->bindParam(':Username', $_SESSION['userName'], PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetch();
+
+$query = "SELECT * FROM UserSetting WHERE UserID = :UserID";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_STR);
+$stmt->execute();
+$Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 <!doctype html>
 <html>
@@ -75,19 +81,19 @@ $result = $stmt->fetch();
 		<!-- 設定表示 -->
 		<div class="settingInfo">
 		<?php
+			switch($_GET['mes']){
+				case 1:
+					echo 'パスワードが違います。';
+                                        break;
+                                case 2:
+                                        echo '設定を更新しました。';
+                                        break;
+                                case 3:
+                                        echo '設定を更新しました。メールアドレスの変更を完了するには、届いたメールにあるURLを30分以内にクリックしてください。';
+                                        break;
+                        }
 			switch($_GET['page']){
 				default;
-					switch($_GET['mes']){
-						case 2:
-							echo '設定を更新しました。';
-							break;
-						case 1:
-							echo 'パスワードが違います。';
-							break;
-						case 3:
-							echo '設定を更新しました。メールアドレスの変更を完了するには、届いたメールにあるURLを30分以内にクリックしてください。';
-							break;
-					}
 					echo '
 						<h3>アカウント設定</h3><br>
                 				<form action="doSetting.php?Setup=account" method="POST">
@@ -109,24 +115,39 @@ $result = $stmt->fetch();
 				case notice:
 					echo '
 						<h3>通知設定</h3><br>
-						<form action="#" method="POST">
+						<form action="doSetting.php?Setup=notice" method="POST">
 							<h4>サービス関連</h4>
 							<label>
-								<input type="checkbox" name="serviceNotice" class="filled-in" checked="checked" />
+								<input type="checkbox" name="serviceNotice[]" class="filled-in" value="1"';
+
+					if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
+
+					echo '			/>
 								<span>満杯になりそうな時に通知</span>
 							</label>
                                                         <br>
                                                         <label>
-                                                                <input type="checkbox"  name="serviceNotice" class="filled-in" checked="checked" />
+                                                                <input type="checkbox"  name="serviceNotice[]" class="filled-in" value="1"';
+
+					if($Rsettings['SMNotice'] == 1){echo ' checked="checked"';}
+
+					echo '			 />
                                                                 <span>異臭の発生予測を通知</span>
                                                         </label>
 							<br>
                                                         <label>
-                                                                <input type="checkbox"  name="serviceNotice" class="filled-in" checked="checked" />
+                                                                <input type="checkbox"  name="serviceNotice[]" class="filled-in" value="1"';
+
+					if($Rsettings['GetSendNotice'] == 1){echo ' checked="checked"';}
+
+					echo '/>
                                                                 <span>回収作業が完了した時に通知</span>
-                                                        </label>
+                                                        </label><br><br>
+							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>変更を適用する</button>
 						</form>
 					';
+					//echo '---This is Debug---<br><br>';
+					//var_dump($Rsettings);
 					break;
 			}
 		?>

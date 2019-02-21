@@ -13,18 +13,18 @@ try {
                 exit;
 }
 
-$query = "SELECT * FROM Users WHERE ID = :UserID AND Name = :Username";
-$stmt = $dbh->prepare($query);
-$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_STR);
-$stmt->bindParam(':Username', $_SESSION['userName'], PDO::PARAM_STR);
-$stmt->execute();
-$result = $stmt->fetch();
-
 switch($_GET['Setup']){
 	default:
 		exit(0);
 		break;
 	case account:
+		$query = "SELECT * FROM Users WHERE ID = :UserID AND Name = :Username";
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_STR);
+		$stmt->bindParam(':Username', $_SESSION['userName'], PDO::PARAM_STR);
+		$stmt->execute();
+		$result = $stmt->fetch();
+
 		if (password_verify($_POST['nowPassword'], $result['Password'])){
                         if(!empty($_POST['newPassword'])){
 				$stmt = $dbh->prepare("UPDATE Users SET Password = ? WHERE ID = ? AND Name = ?");
@@ -89,4 +89,19 @@ EOM;
 			header("Location: ./settings.php?mes=1");
 		}
 		break;
+
+        case notice:
+		$MXSet = $_POST['serviceNotice'][0];
+		$SMSet = $_POST['serviceNotice'][1];
+		$GSSet = $_POST['serviceNotice'][2];
+                $query = "UPDATE UserSetting SET MaxNotice = :MaxSetting, SMNotice = :SMSetting, GetSendNotice = :GSetting WHERE UserID = :UserID";
+                $stmt = $dbh->prepare($query);
+		$stmt->bindParam(':MaxSetting', $MXSet, PDO::PARAM_INT);
+		$stmt->bindParam(':SMSetting', $SMSet, PDO::PARAM_INT);
+		$stmt->bindParam(':GSetting', $GSSet, PDO::PARAM_INT);
+                $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+		header("Location: ./settings.php?page=notice&mes=2");
+		exit(0);
+                break;
 }
