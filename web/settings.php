@@ -112,17 +112,17 @@ $result = $stmt->fetch();
 						<form action="#" method="POST">
 							<h4>サービス関連</h4>
 							<label>
-								<input type="checkbox" class="filled-in" checked="checked" />
+								<input type="checkbox" name="serviceNotice" class="filled-in" checked="checked" />
 								<span>満杯になりそうな時に通知</span>
 							</label>
                                                         <br>
                                                         <label>
-                                                                <input type="checkbox" class="filled-in" checked="checked" />
+                                                                <input type="checkbox"  name="serviceNotice class="filled-in" checked="checked" />
                                                                 <span>異臭の発生予測を通知</span>
                                                         </label>
 							<br>
                                                         <label>
-                                                                <input type="checkbox" class="filled-in" checked="checked" />
+                                                                <input type="checkbox"  name="serviceNotice class="filled-in" checked="checked" />
                                                                 <span>回収作業が完了した時に通知</span>
                                                         </label>
 						</form>
