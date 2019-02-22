@@ -146,7 +146,7 @@ $stmt->execute();
 									if(($data['Dis'] <= 20) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
 										echo '<span class="new badge red coltag" data-badge-caption="">空き残量少</span>';
 									}
-									if(($data['WarSM'] == 1) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
+									if(($data['WarSM'] == 1) && !empty($data['Time']) && !empty($data['Dis'])){
 										echo '<span class="new badge orange coltag" data-badge-caption="">臭い警告</span>';
 									}
 									if(($data['DevInfo'] == 1) && !empty($data['Time']) && empty($data['Dis'])){
