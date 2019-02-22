@@ -149,7 +149,7 @@ $stmt->execute();
 									if(($data['WarSM'] == 1) && !empty($data['Time']) && ($data['DevInfo'] != 1)){
 										echo '<span class="new badge orange coltag" data-badge-caption="">臭い警告</span>';
 									}
-									if(($data['DevInfo'] == 1) && !empty($data['Time'])){
+									if(($data['DevInfo'] == 1) && !empty($data['Time']) && empty($data['Dis'])){
 										echo '<span class="new badge coltag" data-badge-caption="">回収完了</span>';
 									}
 								}
