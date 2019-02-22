@@ -54,8 +54,9 @@ void setup()
   Serial.println("-----------------------------");
   Serial.println("Client >> Hello MyBox Client!");
   Serial.println("Client >> Starting System...");
-
-  delay(2000);
+  delay(500);
+  Serial.println("Client >> Please setting to trashbox...(Wait for 30 second)");
+  delay(3000);
 }
 
   
