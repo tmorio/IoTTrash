@@ -44,6 +44,64 @@ $stmt = $dbh->prepare($query);
 $stmt->bindParam(':orderNo', $_SESSION['PostData'][$doID]['DeviceID'], PDO::PARAM_STR);
 $stmt->execute();
 
+//unset($_SESSION['PostData'][$doID]);
+//$_SESSION['PostData'] = array_values($_SESSION['PostData']);
+
+$query = "SELECT * FROM StatusData WHERE DeviceID = :deviceid";
+$stmt = $dbh->prepare($query);
+$stmt->bindParam(':deviceid', $_SESSION['PostData'][$doID]['DeviceID'], PDO::PARAM_STR);
+$stmt->execute();
+$getInfo = $stmt->fetchAll();
+
+var_dump($getInfo);
+
+foreach($getInfo as $setting){
+	$DevName = $setting['NickName'];
+        $DevID = $setting['DeviceID'];
+        $UserIDInfo = $setting['Owner'];
+        $query = "SELECT * FROM UserSetting WHERE UserID = :userid";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':userid', $UserIDInfo, PDO::PARAM_INT);
+        $stmt->execute();
+        $GSset = $stmt->fetch(PDO::FETCH_ASSOC);
+	if($GSset['GetSendNotice'] == 1){
+        	$query = "SELECT * FROM Users WHERE ID = :userid";
+        	$stmt = $dbh->prepare($query);
+        	$stmt->bindParam(':userid', $UserIDInfo, PDO::PARAM_INT);
+        	$stmt->execute();
+        	$UserSet = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        	$toMail = $UserSet['mailAddress'];
+        	$returnMail = 'mybox@moritoworks.com';
+        	$name = "MyBox Cloud";
+        	$mail = 'mybox@moritoworks.com';
+        	$subject = "回収完了のお知らせ";
+
+$body = <<< EOM
+以下のゴミ箱の回収が完了されました。
+
+回収完了日時 : {$Intime}
+デバイス名/ID : {$DevName} ({$DevID})
+
+サービスへのログインは以下から行えます。
+https://mybox.moritoworks.com/login.php
+
+なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
+何卒ご了承ください。
+------------------------------
+MyBox Cloud
+
+Developed by IoT oyama Team.
+------------------------------
+
+EOM;
+         	mb_language('ja');
+         	mb_internal_encoding('UTF-8');
+         	$header = 'From: ' . mb_encode_mimeheader($name). ' <' . $mail. '>';
+         	mb_send_mail($toMail, $subject, $body, $header, '-f'. $returnMail);
+	}
+}
+
 unset($_SESSION['PostData'][$doID]);
 $_SESSION['PostData'] = array_values($_SESSION['PostData']);
 

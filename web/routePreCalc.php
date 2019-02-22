@@ -15,7 +15,7 @@ require_once('./routeSort.php');
 			//alert("端末の位置情報サービスを利用して出発地点を取得します。");
 		} else {
 			alert("この端末では位置情報の取得ができません。依頼一覧に戻ります。");
-				document.location.href = "getMenu.php";
+			document.location.href = "getMenu.php";
 		}
 
 		navigator.geolocation.getCurrentPosition(
@@ -37,6 +37,7 @@ require_once('./routeSort.php');
 						alert("原因不明エラーが発生しました。(Error Code:"+error.code+")");
 						break;
  				}
+				document.location.href = "getMenu.php";
 			}
 		);
 	}

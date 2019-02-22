@@ -193,12 +193,14 @@ $stmt->execute();
 		  					echo '&nbsp;';
 		  					if($data['OrderStatus'] == 0){
 								if($_SESSION['userService'] != 1){
-                                					if(!empty($data['Temp'])){
+                                					if(!empty($data['Temp']) && !empty($data['Dis'])){
 		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . $data['DeviceID'] . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
+									}else{
+										echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>データ取得待ち</span></label>';
 									}
 								}
 		  					}else{
-								echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
+									echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>回収依頼済み</span></label>';
 		  					}
 
 							if(!empty($data['LastReset'])){

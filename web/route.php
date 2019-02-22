@@ -78,11 +78,13 @@ try {
 						$DeviceCounter = $DeviceCounter + 1;
 					}
 		  			echo '<li>';
-		  				echo '<div class="collapsible-header">';
+						if(!empty($data['Name'])){
+		  						echo '<div class="collapsible-header">';
 		  						echo $data['Name'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
 								echo '<div class="listButton">';
 									echo '<a class="waves-effect waves-light btn right" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</a>';
 								echo '</div>';
+						}
 					echo '</li>';
 					$postID++;
 				}
@@ -242,7 +244,7 @@ try {
 			</div>
 			<div class="modal-footer">
                         	<a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
-                        	<a id="postComplete" class="waves-effect waves-light btn blue" href=""><i class="material-icons left">search</i>回収済みにする</a>
+                        	<a id="postComplete" class="waves-effect waves-light btn blue" href=""><i class="material-icons left">check</i>回収済みにする</a>
 			</div>
 		</div>
 
