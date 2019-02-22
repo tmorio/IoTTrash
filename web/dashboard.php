@@ -32,23 +32,7 @@ unset($_SESSION['nickname']);
 	</head>
 
 	<body class="grey lighten-5">
-		<!-- ヘッダー -->
-		<div class="serviceHeader navbar-fixed">
-			<nav>
-				<div class="nav-wrapper black-text">
-					<!-- ロゴ -->
-					<img class="logo-image" src="img/logo.png">
-					
-					<ul class="right">
-						<!-- ユーザー名 -->
-						<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
-						<!-- 設定,ログアウトボタン -->
-                                                <li><a class="waves-effect waves-light btn" href="./settings.php"><i class="material-icons left">build</i>設定</a></li>
-						<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
-					</ul>
-				</div>
-			</nav>
-		</div>
+		<?php require_once('./header.php'); ?>
 		<!-- メニュー -->
 		<div class="dashDisplay">
 		<?php

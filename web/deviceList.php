@@ -61,22 +61,7 @@ $stmt->execute();
 		<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	</head>
 	<body>
-
-	<!-- ヘッダー -->
-	<div class="serviceHeader navbar-fixed">
-		<nav>
-			<div class="nav-wrapper black-text">
-				<!-- ロゴ -->
-				<a href="./dashboard.php"><img class="logo-image" src="img/logo.png"></a>
-				<ul class="right">
-					<!-- ユーザー名 -->
-					<li>ようこそ、<?php print $_SESSION['userName']; ?>さん</li>
-					<!-- ログアウトボタン -->
-					<li><a class="waves-effect waves-light btn" href="./logout.php"><i class="material-icons left">vpn_key</i>ログアウト</a></li>
-				</ul>
-			</div>
-		</nav>
-	</div>
+	<?php require_once('./header.php'); ?>
 	<div class="deviceListBoard">
         	<a class="waves-effect waves-light btn" href="./boxtool.php">
         		<i class="material-icons left">keyboard_arrow_left</i>デバイス管理に戻る
