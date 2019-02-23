@@ -54,7 +54,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 				<i class="material-icons left">keyboard_arrow_left</i>ホームに戻る</a></div>
 			<div class="collection-header"><h5>サービス設定</h5></div>
 			<a href="?page=account" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">account_circle</i>アカウント設定</a>
-			<a href="?page=notice" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知</a>
+			<a href="?page=notice" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知・自動化</a>
 			<?php
 			if($_SESSION['userService'] == 0){
 				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>';
@@ -99,9 +99,9 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 					break;
 				case notice:
 					echo '
-						<h3>通知設定</h3><br>
+						<h3>通知・自動化設定</h3><br>
 						<form action="doSetting.php?Setup=notice" method="POST">
-							<h4>サービス関連</h4>
+							<h4>通知設定</h4>
 							<label>
 								<input type="checkbox" name="Notice[MX]" class="filled-in" value="1"';
 
@@ -127,7 +127,27 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 
 					echo '/>
                                                                 <span>回収作業が完了した時に通知</span>
-                                                        </label><br><br>
+                                                        </label><br>
+
+							<h4>自動化設定</h4>
+							<label>
+                                                                <input type="checkbox" name="Notice[ATMS]" class="filled-in" value="1"';
+
+                                        if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
+
+                                        echo '                  />
+                                                                <span>空き容量が少なくなったら自動で回収依頼を行う</span>
+                                                        </label>
+							<br>
+							<label>
+                                                                <input type="checkbox" name="Notice[ATSS]" class="filled-in" value="1"';
+
+                                        if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
+
+                                        echo '                  />
+                                                                <span>臭いが発生すると予測したら自動で回収依頼を行う</span>
+                                                        </label>
+							<br><br>
 							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>変更を適用する</button>
 						</form>
 					';
