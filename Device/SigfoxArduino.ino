@@ -130,6 +130,7 @@ void loop()
         }
       //Serial.println(successCount);
       delay(900000); 
+      //delay(30000); //当日用
     }
 
 }
