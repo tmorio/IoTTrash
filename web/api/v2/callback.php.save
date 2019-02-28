@@ -123,22 +123,20 @@ EOM;
 
 			//ここに自動化の処理
 			if($MXset['AutoSendMin'] == 1){
-				if($setting['OrderStatus'] != 1){
+		                $query = "INSERT INTO OrderInfo (Owner, DeviceID, DevName, GroupID, Lat, Lng) VALUES (:ownerID, :DeviceID, :DevName, :GroupID, :LatNo, :LngNo)";
+		                $stmt = $dbh->prepare($query);
+		                $stmt->bindParam(':ownerID', $setting['Owner'], PDO::PARAM_INT);
+		                $stmt->bindParam(':DeviceID', $DevID['DeviceID'], PDO::PARAM_STR);
+		                $stmt->bindParam(':DevName', $DevID['Name'], PDO::PARAM_STR);
+		                $stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+		                $stmt->bindParam(':LatNo', $DevID['Lat'], PDO::PARAM_STR);
+		                $stmt->bindParam(':LngNo', $DevID['Lng'], PDO::PARAM_STR);
+		                $stmt->execute();
 
-                			$query = "INSERT INTO OrderInfo (Owner, DeviceID, DevName, GroupID, Lat, Lng) VALUES (:ownerID, :DeviceID, :DevName, :GroupID, :LatNo, :LngNo)";
-                			$stmt = $dbh->prepare($query);
-                			$stmt->bindParam(':ownerID', $setting['Owner'], PDO::PARAM_INT);
-                			$stmt->bindParam(':DeviceID', $setting['DeviceID'], PDO::PARAM_STR);
-                			$stmt->bindParam(':DevName', $setting['NickName'], PDO::PARAM_STR);
-                			$stmt->bindParam(':GroupID', $setting['GroupID'], PDO::PARAM_INT);
-                			$stmt->bindParam(':LatNo', $setting['Latitude'], PDO::PARAM_STR);
-                			$stmt->bindParam(':LngNo', $setting['Longitude'], PDO::PARAM_STR);
-                			$stmt->execute();
-
-                			$query = "UPDATE StatusData SET OrderStatus = 1 WHERE DeviceID = :orderNo";
-                			$stmt = $dbh->prepare($query);
-                			$stmt->bindParam(':orderNo', $setting['DeviceID'], PDO::PARAM_STR);
-                			$stmt->execute();
+		                $query = "UPDATE StatusData SET OrderStatus = 1 WHERE DeviceID = :orderNo";
+		                $stmt = $dbh->prepare($query);
+		                $stmt->bindParam(':orderNo', $DevID['DeviceID'], PDO::PARAM_STR);
+		                $stmt->execute();
 
 			}
 
@@ -221,26 +219,6 @@ EOM;
                                 mb_internal_encoding('UTF-8');
                                 $header = 'From: ' . mb_encode_mimeheader($name). ' <' . $mail. '>';
                                 mb_send_mail($toMail, $subject, $body, $header, '-f'. $returnMail);
-
-                        }
-                        //ここに自動化の処理
-                        if($MXset['AutoSendSM'] == 1){
-                                if($setting['OrderStatus'] != 1){
-
-                                        $query = "INSERT INTO OrderInfo (Owner, DeviceID, DevName, GroupID, Lat, Lng) VALUES (:ownerID, :DeviceID, :DevName, :GroupID, :LatNo, :LngNo)";
-                                        $stmt = $dbh->prepare($query);
-                                        $stmt->bindParam(':ownerID', $setting['Owner'], PDO::PARAM_INT);
-                                        $stmt->bindParam(':DeviceID', $setting['DeviceID'], PDO::PARAM_STR);
-                                        $stmt->bindParam(':DevName', $setting['NickName'], PDO::PARAM_STR);
-                                        $stmt->bindParam(':GroupID', $setting['GroupID'], PDO::PARAM_INT);
-                                        $stmt->bindParam(':LatNo', $setting['Latitude'], PDO::PARAM_STR);
-                                        $stmt->bindParam(':LngNo', $setting['Longitude'], PDO::PARAM_STR);
-                                        $stmt->execute();
-
-                                        $query = "UPDATE StatusData SET OrderStatus = 1 WHERE DeviceID = :orderNo";
-                                        $stmt = $dbh->prepare($query);
-                                        $stmt->bindParam(':orderNo', $setting['DeviceID'], PDO::PARAM_STR);
-                                        $stmt->execute();
 
                         }
 		}

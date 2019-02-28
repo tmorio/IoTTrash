@@ -133,7 +133,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 							<label>
                                                                 <input type="checkbox" name="Notice[ATMS]" class="filled-in" value="1"';
 
-                                        if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
+                                        if($Rsettings['AutoSendMin'] == 1){echo ' checked="checked"';}
 
                                         echo '                  />
                                                                 <span>空き容量が少なくなったら自動で回収依頼を行う</span>
@@ -142,7 +142,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 							<label>
                                                                 <input type="checkbox" name="Notice[ATSS]" class="filled-in" value="1"';
 
-                                        if($Rsettings['MaxNotice'] == 1){echo ' checked="checked"';}
+                                        if($Rsettings['AutoSendSM'] == 1){echo ' checked="checked"';}
 
                                         echo '                  />
                                                                 <span>臭いが発生すると予測したら自動で回収依頼を行う</span>
