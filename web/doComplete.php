@@ -1,4 +1,4 @@
-<?php
+[B<?php
 session_start();
 
 if(empty($_SESSION['userName'])){
@@ -78,7 +78,7 @@ foreach($getInfo as $setting){
         	$subject = "回収完了のお知らせ";
 
 $body = <<< EOM
-以下のゴミ箱の回収が完了されました。
+以下のゴミ箱の回収が完了しました。
 
 回収完了日時 : {$Intime}
 デバイス名/ID : {$DevName} ({$DevID})
