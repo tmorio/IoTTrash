@@ -57,7 +57,6 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 			<a href="?page=notice" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知・自動化</a>
 			<?php
 			if($_SESSION['userService'] == 0){
-				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">local_shipping</i>回収サービス</a>';
 				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>グループ・権限</a>';
 			}
 			?>
