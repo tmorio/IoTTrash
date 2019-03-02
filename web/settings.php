@@ -57,7 +57,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 			<a href="?page=notice" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">email</i>通知・自動化</a>
 			<?php
 			if($_SESSION['userService'] == 0){
-				echo '<a href="#" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>グループ・権限</a>';
+				echo '<a href="?page=group" class="collection-item blue-grey-text text-darken-4"><i class="material-icons left">group</i>組織設定</a>';
 			}
 			?>
 		</div>
@@ -153,13 +153,48 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 					//echo '---This is Debug---<br><br>';
 					//var_dump($Rsettings);
 					break;
+				case group:
+					echo '<h3>組織管理</h3>';
+					if(empty($result['GroupID'])){
+						echo '現在組織に所属していません。<br>組織のセットアップは以下から行えます。<br>※組織への参加は組織の管理者から招待または、招待コードの入力が必要です。<br><br>';
+						echo '<h5>組織の管理者になる</h5><a class="waves-effect waves-light btn modal-trigger" href="#addGroup"><i class="material-icons left">group_add</i>組織を作成する</a>';
+						echo '<h5>招待コードで組織に参加する</h5><a class="waves-effect waves-light btn modal-trigger" href="#joinGroup"><i class="material-icons left">exit_to_app</i>組織に参加する</a>';
+					}
 			}
 		?>
 		</div>
 	</div>
+
+        <div id="addGroup" class="modal">
+                <div class="modal-content">
+                         <h4>組織の作成</h4>
+                         <p>組織名を入力してください。</p>
+                </div>
+                <div class="modal-footer">
+                         <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+                         <a id="postComplete" class="waves-effect waves-light btn blue" href="#"><i class="material-icons left">check</i>組織の作成</a>
+                </div>
+        </div>
+
+        <div id="joinGroup" class="modal">
+                <div class="modal-content">
+                         <h4>組織に参加</h4>
+                         <p>参加するための招待コードを入力してください。</p>
+                </div>
+                <div class="modal-footer">
+                         <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+                         <a id="postComplete" class="waves-effect waves-light btn blue" href="#"><i class="material-icons left">check</i>組織に参加</a>
+                </div>
+        </div>
+
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
+			<script>
+				$(document).ready(function(){
+					$('.modal').modal();
+				});
+			</script>
 		</footer>
 	</body>
 </html>
