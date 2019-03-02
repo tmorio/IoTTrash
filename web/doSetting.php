@@ -57,7 +57,7 @@ switch($_GET['Setup']){
 				$name = "MyBox Cloud";
 				$mail = 'mybox@moritoworks.com';
 				$subject = "メールアドレスを確認して下さい。";
-				$url = "https://mybox.moritoworks.com/verify.php?token=".$verifyCode;
+				$url = "https://" . SERVER_DOMAIN . "/verify.php?token=".$verifyCode;
 
 
 $body = <<< EOM

@@ -76,6 +76,7 @@ foreach($getInfo as $setting){
         	$name = "MyBox Cloud";
         	$mail = 'mybox@moritoworks.com';
         	$subject = "回収完了のお知らせ";
+		$mydomain = SERVER_DOMAIN;
 
 $body = <<< EOM
 以下のゴミ箱の回収が完了しました。
@@ -84,7 +85,7 @@ $body = <<< EOM
 デバイス名/ID : {$DevName} ({$DevID})
 
 サービスへのログインは以下から行えます。
-https://mybox.moritoworks.com/login.php
+https://{$mydomain}/login.php
 
 なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
 何卒ご了承ください。

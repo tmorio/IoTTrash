@@ -154,7 +154,7 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 					//var_dump($Rsettings);
 					break;
 				case group:
-					echo '<h3>組織管理</h3>';
+					echo '<h3>組織設定</h3>';
 					if(empty($result['GroupID'])){
 						echo '現在組織に所属していません。<br>組織のセットアップは以下から行えます。<br>※組織への参加は組織の管理者から招待または、招待コードの入力が必要です。<br><br>';
 						echo '<h5>組織の管理者になる</h5><a class="waves-effect waves-light btn modal-trigger" href="#addGroup"><i class="material-icons left">group_add</i>組織を作成する</a>';

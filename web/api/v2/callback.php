@@ -92,7 +92,7 @@ foreach($firstCheck as $data){
                                 $name = "MyBox Cloud";
                                 $mail = 'mybox@moritoworks.com';
                                 $subject = "空き残量が少なくなっています";
-
+				$mydomain = SERVER_DOMAIN;
 
 $body = <<< EOM
 以下のゴミ箱の空き容量が20%以下となりました。
@@ -102,7 +102,7 @@ $body = <<< EOM
 デバイス名/ID : {$DevName} ({$DevID})
 
 サービスへのログインは以下から行えます。
-https://mybox.moritoworks.com/login.php
+https://{$mydomain}/login.php
 
 なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
 何卒ご了承ください。
@@ -195,7 +195,7 @@ EOM;
                                 $name = "MyBox Cloud";
                                 $mail = 'mybox@moritoworks.com';
                                 $subject = "臭いに関する注意のお知らせ";
-
+				$mydomain = SERVER_DOMAIN;
 
 $body = <<< EOM
 以下のゴミ箱から不快な臭いを発生することを予測しました。
@@ -205,7 +205,7 @@ $body = <<< EOM
 デバイス名/ID : {$DevName} ({$DevID})
 
 サービスへのログインは以下から行えます。
-https://mybox.moritoworks.com/login.php
+https://{$mydomain}/login.php
 
 なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
 何卒ご了承ください。
