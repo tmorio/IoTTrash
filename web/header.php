@@ -2,7 +2,7 @@
 	<nav>
 		<div class="nav-wrapper black-text">
 			<!-- ロゴ -->
-			<img class="logo-image" src="img/logo.png">
+			<a href="dashboard.php"><img class="logo-image" src="img/logo.png"></a>
 			<ul class="right">
 				<!-- ユーザー名 -->
 				<div class="chip dropdown-trigger" data-target="UserMenu">

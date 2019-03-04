@@ -166,25 +166,33 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 	</div>
 
         <div id="addGroup" class="modal">
-                <div class="modal-content">
-                         <h4>組織の作成</h4>
-                         <p>組織名を入力してください。</p>
-                </div>
-                <div class="modal-footer">
-                         <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
-                         <a id="postComplete" class="waves-effect waves-light btn blue" href="#"><i class="material-icons left">check</i>組織の作成</a>
-                </div>
+		<form action="doSetting.php?Setup=group" method="POST">
+                	<div class="modal-content">
+                        	 <h4>組織の作成</h4>
+                        	 <p>組織名を入力してください。</p>
+				 <br>組織名<br>
+				 <input type="text" name="newGroup" id="newGroup" required>
+                	</div>
+                	<div class="modal-footer">
+                        	 <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+				 <button class="btn waves-effect waves-light btn blue" type="submit"><i class="material-icons right">check</i>組織の作成</button>
+                	</div>
+		</form>
         </div>
 
         <div id="joinGroup" class="modal">
-                <div class="modal-content">
-                         <h4>組織に参加</h4>
-                         <p>参加するための招待コードを入力してください。</p>
-                </div>
-                <div class="modal-footer">
-                         <a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
-                         <a id="postComplete" class="waves-effect waves-light btn blue" href="#"><i class="material-icons left">check</i>組織に参加</a>
-                </div>
+		<form action="doSetting.php?Setup=group&ctl=1" method="POST">
+                	<div class="modal-content">
+                        	<h4>組織に参加</h4>
+                        	<p>参加するための招待コードを入力してください。</p>
+				<br>招待コード<br>
+				<input type="text" name="newGroup" id="newGroup" required>
+                	</div>
+                	<div class="modal-footer">
+                        	<a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
+				<button class="btn waves-effect waves-light btn blue" type="submit"><i class="material-icons right">check</i>組織に参加</button>
+                	</div>
+		</form>
         </div>
 
 		<!-- フッター -->
