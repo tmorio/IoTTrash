@@ -57,7 +57,7 @@ $stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 $stmt->execute();
 $firstCheck = $stmt->fetchAll();
 foreach($firstCheck as $data){
-	if(emtpy($data['MaxADis']){
+	if(emtpy($data['MaxADis'])){
 		$query = "UPDATE StatusData SET MaxADis = :FirstDis WHERE DeviceID = :deviceid";
 		$stmt = $dbh->prepare($query);
 		$stmt->bindParam(':FirstDis', ($sensor[2] + 5), PDO::PARAM_INT);
@@ -154,15 +154,15 @@ EOM;
 	$FSFlag = 0;
 	$SSFlag = 0;
 
-	if((abs($SMBdata[0]['Temp'] - $temp) > 2) || (abs($SMBdata[0]['Hum'] - $hum) > 2){
+	if((abs($SMBdata[0]['Temp'] - $temp) > 2) || (abs($SMBdata[0]['Hum'] - $hum) > 2)){
         	$FSFlag = 1;
 	}
 
-	if((abs($SMBdata[0]['Temp'] - $SMBdata[1]['Temp']) > 2 || abs($SMBdata[0]['Hum'] - $SMBdata[1]['Hum']) > 2){
+	if((abs($SMBdata[0]['Temp'] - $SMBdata[1]['Temp']) > 2) || (abs($SMBdata[0]['Hum'] - $SMBdata[1]['Hum']) > 2)){
         	$SSFlag = 1;
 	}
 
-	if(($FSFlag == 1) && ($SSFlag == 1){
+	if(($FSFlag == 1) && ($SSFlag == 1)){
         	$query = "UPDATE StatusData SET WarSM = 1 WHERE DeviceID = :deviceid";
         	$stmt = $dbh->prepare($query);
         	$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
@@ -241,6 +241,7 @@ EOM;
                                         $stmt = $dbh->prepare($query);
                                         $stmt->bindParam(':orderNo', $setting['DeviceID'], PDO::PARAM_STR);
                                         $stmt->execute();
+				}
 
                         }
 		}
