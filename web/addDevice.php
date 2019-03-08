@@ -5,6 +5,7 @@ if(empty($_SESSION['userName'])){
 	header("Location: login.php");
 }
 
+require_once('./myid.php');
 require_once('./siteInfo.php');
 
 ?>

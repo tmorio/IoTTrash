@@ -109,4 +109,11 @@ EOM;
 		header("Location: ./settings.php?page=notice&mes=2");
 		exit(0);
                 break;
+	case group:
+		if($_GET['ctl'] == 1){
+
+		}else{
+
+		}
+		break;
 }
