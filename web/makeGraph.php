@@ -104,7 +104,7 @@ $result = $stmt->fetch();
 			</ul>
 			<br><br>
 			<?php
-                                echo "<h5>" . $result['NickName'] . "</h5><br>縦:空き容量[cm]&nbsp;横:時間";
+                                echo "<h5>" . htmlspecialchars($result['NickName'], ENT_QUOTES, 'UTF-8') . "</h5><br>縦:空き容量[cm]&nbsp;横:時間";
                                 echo '<br><br>';
 
                                 switch($_GET['time']){

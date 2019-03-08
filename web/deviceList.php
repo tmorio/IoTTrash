@@ -96,8 +96,8 @@ $stmt->execute();
 		<?php
 			foreach($stmt as $data){
 				echo '<li><div class="collapsible-header">';
-				echo $data['NickName'] ;
-				echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
+				echo htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8');
+				echo "&nbsp;(" .  htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")<br>";
 
 				if(empty($data['Time'])){
 					echo "更新日時: 未取得";
@@ -106,7 +106,7 @@ $stmt->execute();
 				}
                                 echo '<div class="listButton">';
 				if(!empty($data['Time'])){
-                                	echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . $data['DeviceID'] . '"><i class="material-icons left">timeline</i>グラフ表示</a>';
+                                	echo '<a class="waves-effect waves-light btn" href="makeGraph.php?DeviceID=' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '"><i class="material-icons left">timeline</i>グラフ表示</a>';
 				}else{
 					echo '<a class="waves-effect waves-light btn disabled"><i class="material-icons left">timeline</i>グラフ表示</a>';
 				}

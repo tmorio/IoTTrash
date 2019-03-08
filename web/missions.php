@@ -124,11 +124,11 @@ $stmt->execute();
 					echo '<ul class="collapsible">';
 				}
 				echo '<li><div class="collapsible-header">';
-				echo $data['DevName'] . '&nbsp;(' . $data['DeviceID'] . ')';
+				echo htmlspecialchars($data['DevName'], ENT_QUOTES, 'UTF-8') . '&nbsp;(' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ')';
 
                                 echo '<div class="listButton">';
-				echo '<label class="waves-effect waves-light btn yellow darken-3"><input type="checkbox" name="Boxes[]" value="' . $data['DeviceID'] .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
-				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . $data['DeviceID'] . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
+				echo '<label class="waves-effect waves-light btn yellow darken-3"><input type="checkbox" name="Boxes[]" value="' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') .  '" onclick="checkValue(this)"><span>回収する</span></label>&nbsp;';
+				echo '<a class="waves-effect waves-light btn" href="completeCheck.php?OrderID=' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '"><i class="material-icons left">check</i>完了済みにする</a>&nbsp;';
 				echo '</div>';
 				echo '</div></li>';
 				$counter++;

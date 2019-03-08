@@ -83,7 +83,7 @@ if($_GET['del'] == 1){
                 <ul class="collapsible">
                 <?php
 			 echo '<li><div class="collapsible-header">';
-                                echo $data['DevName'] . "&thinsp;(" . $data['DeviceID'] . ")" ;
+                                echo htmlspecialchars($data['DevName'], ENT_QUOTES, 'UTF-8') . "&thinsp;(" . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")" ;
                                 echo "<br>";
 
 				echo '</div>';

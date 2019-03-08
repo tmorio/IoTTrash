@@ -78,8 +78,8 @@ if($_GET['del'] == 1){
                 <ul class="collapsible">
                 <?php
 			 echo '<li><div class="collapsible-header">';
-                         echo "デバイス名: " .  $data['NickName'] ;
-                         echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
+                         echo "デバイス名: " .  htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8');
+                         echo "&nbsp;(" .  htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")<br>";
 
                          if(empty($data['Time'])){
                          	echo "更新日時: 未取得";
@@ -94,7 +94,7 @@ if($_GET['del'] == 1){
                 <div class="deleteCheck">削除するとこのデバイスのデータ履歴も削除されます。<br>本当に削除しますか?</div><br><br>
 		<div class="buttonH">
                 	<a class="waves-effect waves-light btn-large listButton" href="editDevice.php"><i class="material-icons right">keyboard_return</i>編集・削除ページへ戻る</a><br><br><br>
-                	<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=<?php echo $_GET['Device']; ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
+                	<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=<?php echo htmlspecialchars($_GET['Device'], ENT_QUOTES, 'UTF-8'); ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
 		</div>
 
 

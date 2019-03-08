@@ -120,7 +120,7 @@ $stmt->execute();
 					echo '<li>';
 						echo '<div class="collapsible-header">';
 							echo '<span>';
-								echo "" .  $data['NickName'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+								echo "" .  htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8') . "&nbsp;" . "(" .  htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")";
 							echo '</span>';
 							echo '<span class="badge">';
 								//echo '<span class="prog" id="progress'.$num.'"></span>';
@@ -179,7 +179,7 @@ $stmt->execute();
 		  					if($data['OrderStatus'] == 0){
 								if($_SESSION['userService'] != 1){
                                 					if(!empty($data['Temp']) && !empty($data['Dis'])){
-		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . $data['DeviceID'] . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
+		  								echo '<label class="waves-effect waves-light btn cyan lighten-1"><input type="checkbox" name="Devices[]" value="' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '" onclick="checkValue(this)"><span>回収対象にする</span></label>';
 									}else{
 										echo '<label class="waves-effect waves-light btn blue"><input type="checkbox" checked="checked" disabled="disabled"><span>データ取得待ち</span></label>';
 									}
@@ -261,8 +261,6 @@ $stmt->execute();
 		<?php echo MAP_API_KEY; ?>
 		&callback=initMap"></script>
 	</div>
-	<!-- デバッグ
-	<?php echo "Debug: Counter: " . $DeviceCount . " JavaScript PinData : " . $PinData; ?> -->
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>

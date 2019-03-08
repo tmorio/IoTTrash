@@ -7,7 +7,7 @@
 				<!-- ユーザー名 -->
 				<div class="chip dropdown-trigger" data-target="UserMenu">
 					<img src="img/default.jpg" alt="Contact Person">
-					&nbsp;<?php print $_SESSION['userName']; ?>&nbsp;&nbsp;
+					&nbsp;<?php print htmlspecialchars($_SESSION['userName'], ENT_QUOTES, 'UTF-8'); ?>&nbsp;&nbsp;
 				</div>
 				<ul id='UserMenu' class='dropdown-content'>
 					<li><a href="./settings.php">設定</a></li>

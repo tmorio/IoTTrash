@@ -78,8 +78,8 @@ if($_GET['del'] == 1){
                 <?php
 
 			echo '<li><div class="collapsible-header">';
-                        echo "デバイス名: " .  $data['NickName'] ;
-                        echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
+                        echo "デバイス名: " .  htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8');
+                        echo "&nbsp;(" .  htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")<br>";
 
                         if(empty($data['Time'])){
                         	echo "更新日時: 未取得";
@@ -95,8 +95,8 @@ if($_GET['del'] == 1){
 		<div class="buttonH">
 		<?php
 		echo '
-                	<a class="waves-effect waves-light btn-large listButton" href="makeGraph.php?DeviceID=' . $_GET['DeviceID'] . '"><i class="material-icons right">keyboard_return</i>データグラフへ戻る</a><br><br><br>
-                	<a class="waves-effect waves-light btn listButton red" href="deleteHistory.php?DeviceID=' . $_GET['DeviceID'] . '&del=1"><i class="material-icons right">delete</i>削除する</a>
+                	<a class="waves-effect waves-light btn-large listButton" href="makeGraph.php?DeviceID=' . htmlspecialchars($_GET['DeviceID'], ENT_QUOTES, 'UTF-8') . '"><i class="material-icons right">keyboard_return</i>データグラフへ戻る</a><br><br><br>
+                	<a class="waves-effect waves-light btn listButton red" href="deleteHistory.php?DeviceID=' . htmlspecialchars($_GET['DeviceID'], ENT_QUOTES, 'UTF-8') . '&del=1"><i class="material-icons right">delete</i>削除する</a>
 		';
 		?>
 		</div>

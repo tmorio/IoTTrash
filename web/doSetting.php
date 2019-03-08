@@ -105,7 +105,6 @@ EOM;
 		$stmt->bindParam(':ASSMSetting', $ATSSSet, PDO::PARAM_INT);
                 $stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
                 $stmt->execute();
-//		var_dump($_POST['Notice']);
 		header("Location: ./settings.php?page=notice&mes=2");
 		exit(0);
                 break;

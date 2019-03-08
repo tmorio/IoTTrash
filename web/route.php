@@ -55,7 +55,7 @@ try {
 				echo '<ul class="collapsible">';
 				foreach($_SESSION['PostData'] as $data){ //データ件数だけ反復される
 					//ピン緯度経度データ生成処理
-					$PinData = $PinData . "{name:" . '\'<p>' . $data['Name'] . '</p><br><a class="waves-effect waves-light btn modal-trigger blue right" href="#modal1" onclick="CompleteGo(' . $postID. ')"><i class="material-icons left">check</i>回収済みにする</a>'  . '\''  . ",lat:" . $data['Lat'] . ",lng:" . $data['Lng'] . "}";
+					$PinData = $PinData . "{name:" . '\'<p>' . htmlspecialchars($data['Name'], ENT_QUOTES, 'UTF-8') . '</p><br><a class="waves-effect waves-light btn modal-trigger blue right" href="#modal1" onclick="CompleteGo(' . $postID. ')"><i class="material-icons left">check</i>回収済みにする</a>'  . '\''  . ",lat:" . $data['Lat'] . ",lng:" . $data['Lng'] . "}";
 					$Waypoint = $Waypoint . "{location: new google.maps.LatLng(" . $data['Lat'] . "," . $data['Lng']  . ")}";
 					if(($DeviceCount - 1) != $DeviceCounter){
 						$PinData = $PinData . ",";
@@ -65,7 +65,7 @@ try {
 		  			echo '<li>';
 						if(!empty($data['Name'])){
 		  						echo '<div class="collapsible-header">';
-		  						echo $data['Name'] . "&nbsp;" . "(" .  $data['DeviceID'] . ")";
+		  						echo htmlspecialchars($data['Name'], ENT_QUOTES, 'UTF-8') . "&nbsp;" . "(" . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")";
 								echo '<div class="listButton">';
 									echo '<a class="waves-effect waves-light btn right" onclick="buttonClick('.$data['Lat'].','.$data['Lng'].');return false;"><i class="material-icons left">location_on</i>表示</a>';
 								echo '</div>';

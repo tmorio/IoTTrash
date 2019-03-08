@@ -112,7 +112,7 @@ if($_GET['send'] == 1){
 			foreach($_SESSION['GetData'] as $ListData){
 
 			 echo '<li><div class="collapsible-header">';
-				echo $ListData['Name'] . '&nbsp;' . '(' . $ListData['DeviceID'] . ')';
+				echo htmlspecialchars($ListData['Name'], ENT_QUOTES, 'UTF-8') . '&nbsp;' . '(' . htmlspecialchars($ListData['DeviceID'], ENT_QUOTES, 'UTF-8') . ')';
 				echo '</div>';
         	                echo '</li>';
 			}

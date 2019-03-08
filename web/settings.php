@@ -82,11 +82,11 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 						<h3>アカウント設定</h3><br>
                 				<form action="doSetting.php?Setup=account" method="POST">
                         				MyBox ID (ログインID)<br>
-                        	        		<input type="text" name="newUserID" id="newUserID" pattern="^[0-9A-Za-z]+$" value="' . $result['UserID'] . '" required>
+                        	        		<input type="text" name="newUserID" id="newUserID" pattern="^[0-9A-Za-z]+$" value="' . htmlspecialchars($result['UserID'], ENT_QUOTES, 'UTF-8') . '" required>
                                 			名前<br>
-                                			<input type="text" name="newUsername" id="newUsername"  value="' . $result['Name'] . '" required>
+                                			<input type="text" name="newUsername" id="newUsername"  value="' . htmlspecialchars($result['Name'], ENT_QUOTES, 'UTF-8') . '" required>
                                                         メールアドレス<br>
-                                                        <input type="email" name="newmail" id="newmail"  value="' . $result['mailAddress'] . '" required>
+                                                        <input type="email" name="newmail" id="newmail"  value="' . htmlspecialchars($result['mailAddress'], ENT_QUOTES, 'UTF-8') . '" required>
                                                         新しいパスワード (変更する場合は入力して下さい)<br>
                                                         <input type="password" name="newPassword" id="newPassword">
                                 			<br><br><br>
@@ -150,8 +150,6 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>変更を適用する</button>
 						</form>
 					';
-					//echo '---This is Debug---<br><br>';
-					//var_dump($Rsettings);
 					break;
 				case group:
 					echo '<h3>組織設定</h3>';

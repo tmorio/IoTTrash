@@ -97,8 +97,8 @@ $stmt->execute();
 
                         foreach($stmt as $data){
                                 echo '<li><div class="collapsible-header">';
-                                echo $data['NickName'] ;
-                                echo "&nbsp;(" .  $data['DeviceID'] . ")<br>";
+                                echo htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8');
+                                echo "&nbsp;(" .  htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")<br>";
 
                                 if(empty($data['Time'])){
                                         echo "更新日時: 未取得";
@@ -112,14 +112,14 @@ $stmt->execute();
                                 echo '<div class="collapsible-body listDetail">
 					<span class="editDevice">デバイス情報の編集</span><br><br>
 					<div>
-						<form action="devEdit.php?Device=' . $data['DeviceID'] . '" method="POST">
+						<form action="devEdit.php?Device=' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '" method="POST">
 							デバイス名<br>
-							<input type="text" name="NickName" id="NickName" value="' . $data['NickName'] . '" required>
+							<input type="text" name="NickName" id="NickName" value="' . htmlspecialchars($data['NickName'], ENT_QUOTES, 'UTF-8') . '" required>
 							デバイスID<br>
-							<input type="text" name="DeviceID" id="DeviceID" pattern="^[0-9A-Za-z]+$" value="' . $data['DeviceID'] . '" required>
+							<input type="text" name="DeviceID" id="DeviceID" pattern="^[0-9A-Za-z]+$" value="' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '" required>
 							<br><br>
 							<button class="btn waves-effect waves-light" type="submit"><i class="material-icons right">check</i>編集を適用する</button>
-							<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=' . $data['DeviceID'] . '"><i class="material-icons right">delete</i>削除</a>
+							<a class="waves-effect waves-light btn listButton red" href="delete.php?Device=' . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . '"><i class="material-icons right">delete</i>削除</a>
 						</form>
 					</div>
 				';

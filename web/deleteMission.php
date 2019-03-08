@@ -84,7 +84,7 @@ if($_GET['del'] == 1){
                 <ul class="collapsible">
                 <?php
 			 echo '<li><div class="collapsible-header">';
-                                echo $data['DevName'] . "&thinsp;(" . $data['DeviceID'] . ")" ;
+                                echo htmlspecialchars($data['DevName'], ENT_QUOTES, 'UTF-8') . "&thinsp;(" . htmlspecialchars($data['DeviceID'], ENT_QUOTES, 'UTF-8') . ")" ;
                                 echo "<br>";
 
 				echo '</div>';
@@ -101,7 +101,7 @@ if($_GET['del'] == 1){
 					echo '<a class="waves-effect waves-light btn-large listButton" href="getMenu.php"><i class="material-icons right">keyboard_return</i>依頼一覧へ戻る</a><br><br><br>';
 				}
 			?>
-                	<a class="waves-effect waves-light btn listButton red" href="deleteMission.php?OrderID=<?php echo $_GET['OrderID']; ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
+                	<a class="waves-effect waves-light btn listButton red" href="deleteMission.php?OrderID=<?php echo htmlspecialchars($_GET['OrderID'], ENT_QUOTES, 'UTF-8'); ?>&del=1"><i class="material-icons right">delete</i>削除する</a>
 		</div>
 
 
