@@ -153,10 +153,135 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
 					break;
 				case group:
 					echo '<h3>組織設定</h3>';
-					if(empty($result['GroupID'])){
-						echo '現在組織に所属していません。<br>組織のセットアップは以下から行えます。<br>※組織への参加は組織の管理者から招待または、招待コードの入力が必要です。<br><br>';
+					if(empty($_SESSION['userGroup'])){
+						echo '現在組織に所属していません。<br>組織のセットアップは以下から行えます。<br>※組織への参加は組織管理者から招待メールを送信して頂く必要があります。<br><br>';
 						echo '<h5>組織の管理者になる</h5><a class="waves-effect waves-light btn modal-trigger" href="#addGroup"><i class="material-icons left">group_add</i>組織を作成する</a>';
-						echo '<h5>招待コードで組織に参加する</h5><a class="waves-effect waves-light btn modal-trigger" href="#joinGroup"><i class="material-icons left">exit_to_app</i>組織に参加する</a>';
+					}else{
+						$query = "SELECT * FROM Groups WHERE ID = :GroupID";
+						$stmt = $dbh->prepare($query);
+						$stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+						$stmt->execute();
+						$groupResult = $stmt->fetch();
+
+						$query = "SELECT * FROM Users WHERE GroupID = :GroupID";
+						$stmt = $dbh->prepare($query);
+						$stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+						$stmt->execute();
+
+						echo '<h5>' . $groupResult['GroupName'] . 'のメンバー</h5>';
+
+						if($groupResult['AdminID'] == $_SESSION['userNo']){
+							echo '<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">group_add</i>メンバーを追加</a>';
+							echo '&nbsp;<a class="waves-effect waves-light btn" href="#"><i class="material-icons left">edit</i>招待の管理</a>';
+							echo '<br><br>';
+						}
+
+						echo '<ul class="collection">';
+
+                                                $query = "SELECT * FROM Users WHERE GroupID = :GroupID AND ID = :AdminID";
+                                                $stmt = $dbh->prepare($query);
+						$stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+                                                $stmt->bindParam(':AdminID', $groupResult['AdminID'], PDO::PARAM_INT);
+                                                $stmt->execute();
+                                                $adminInfo = $stmt->fetch();
+
+						echo '<li class="collection-item avatar">';
+						if(empty($adminInfo['PhotoID'])){
+							echo '<img src="img/default.jpg" alt="" class="circle">';
+						}else{
+							echo '<img src="img/users/' . $adminInfo['PhotoID'] . '.jpg" alt="" class="circle">';
+						}
+
+						echo '<span class="title">' . htmlspecialchars($adminInfo['Name'], ENT_QUOTES, 'UTF-8') . '</span>';
+						echo '<p>組織管理者</p>';
+						echo '</li>';
+
+						unset($adminInfo);
+
+						$query = "SELECT * FROM Users WHERE (GroupID = :GroupID AND Service = 0) AND ID != :AdminID";
+						$stmt = $dbh->prepare($query);
+						$stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+						$stmt->bindParam(':AdminID', $groupResult['AdminID'], PDO::PARAM_INT);
+						$stmt->execute();
+
+						foreach($stmt as $uData){
+							echo '<li class="collection-item avatar">';
+
+							if(empty($uData['PhotoID'])){
+								echo '<img src="img/default.jpg" alt="" class="circle">';
+							}else{
+								echo '<img src="img/users/' . $uData['PhotoID'] . '.jpg" alt="" class="circle">';
+							}
+
+							echo '<span class="title">' . htmlspecialchars($uData['Name'], ENT_QUOTES, 'UTF-8') . '</span>';
+
+							if($groupResult['AdminID'] == $_SESSION['userNo']){
+								echo '<span class="right">';
+								echo '<a class="waves-effect waves-light btn modal-trigger blue" href="#"><i class="material-icons left">edit</i>権限設定</a>';
+								echo '&nbsp;';
+								echo '<a class="waves-effect waves-light btn modal-trigger red" href="#"><i class="material-icons left">close</i>削除</a>';
+								echo '</span>';
+							}
+
+							echo '<p>';
+
+							switch($uData['Service']){
+								default:
+									echo '一般 - オペレーター';
+									break;
+								case 1:
+									echo '一般 - 回収担当者';
+									break;
+							}
+
+
+							echo '</li>';
+
+						}
+
+                                                $query = "SELECT * FROM Users WHERE (GroupID = :GroupID AND Service = 1) AND ID != :AdminID";
+                                                $stmt = $dbh->prepare($query);
+                                                $stmt->bindParam(':GroupID', $_SESSION['userGroup'], PDO::PARAM_INT);
+                                                $stmt->bindParam(':AdminID', $groupResult['AdminID'], PDO::PARAM_INT);
+                                                $stmt->execute();
+
+                                                foreach($stmt as $uData){
+                                                        echo '<li class="collection-item avatar">';
+
+                                                        if(empty($uData['PhotoID'])){
+                                                                echo '<img src="img/default.jpg" alt="" class="circle">';
+                                                        }else{
+                                                                echo '<img src="img/users/' . $uData['PhotoID'] . '.jpg" alt="" class="circle">';
+                                                        }
+
+                                                        echo '<span class="title">' . htmlspecialchars($uData['Name'], ENT_QUOTES, 'UTF-8') . '</span>';
+
+                                                        if($groupResult['AdminID'] == $_SESSION['userNo']){
+                                                                echo '<span class="right">';
+                                                                echo '<a class="waves-effect waves-light btn modal-trigger blue" href="#"><i class="material-icons left">edit</i>権限設定</a>';
+                                                                echo '&nbsp;';
+                                                                echo '<a class="waves-effect waves-light btn modal-trigger red" href="#"><i class="material-icons left">close</i>削除</a>';
+                                                                echo '</span>';
+                                                        }
+
+                                                        echo '<p>';
+
+                                                        switch($uData['Service']){
+                                                                default:
+                                                                        echo '一般 - オペレーター';
+                                                                        break;
+                                                                case 1:
+                                                                        echo '一般 - 回収担当者';
+                                                                        break;
+                                                        }
+
+
+                                                        echo '</li>';
+
+                                                }
+
+						echo '</ul>';
+
 					}
 			}
 		?>
@@ -177,22 +302,6 @@ $Rsettings = $stmt->fetch(PDO::FETCH_ASSOC);
                 	</div>
 		</form>
         </div>
-
-        <div id="joinGroup" class="modal">
-		<form action="doSetting.php?Setup=group&ctl=1" method="POST">
-                	<div class="modal-content">
-                        	<h4>組織に参加</h4>
-                        	<p>参加するための招待コードを入力してください。</p>
-				<br>招待コード<br>
-				<input type="text" name="newGroup" id="newGroup" required>
-                	</div>
-                	<div class="modal-footer">
-                        	<a class="waves-effect waves-light modal-close btn red"><i class="material-icons left">close</i>キャンセル</a>
-				<button class="btn waves-effect waves-light btn blue" type="submit"><i class="material-icons right">check</i>組織に参加</button>
-                	</div>
-		</form>
-        </div>
-
 		<!-- フッター -->
 		<footer id="footer" class="footer center">
                         <?php echo FOOTER_INFO; ?>
