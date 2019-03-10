@@ -52,6 +52,8 @@ $distance = $data['distance'];
 $Intime = date('Y-m-d H:i:s', $data['time']);
 $sensor = str_split($data['data'], 4);
 
+$FirstDis = $distance + 5;
+
 for ($i = 0; $i < 3; $i++) {
 	$sensor[$i] = hexdec($sensor[$i]);
 }
@@ -68,7 +70,7 @@ foreach($firstCheck as $data) {
 	if (empty($data['MaxADis'])) {
 		$query = "UPDATE StatusData SET MaxADis = :FirstDis WHERE DeviceID = :deviceid";
 		$stmt = $dbh->prepare($query);
-		$stmt->bindParam(':FirstDis', ($sensor[2] + 5) , PDO::PARAM_INT);
+		$stmt->bindParam(':FirstDis', $FirstDis , PDO::PARAM_INT);
 		$stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 		$stmt->execute();
 	}
@@ -248,17 +250,17 @@ $stmt = $dbh->prepare($query);
 $stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 $stmt->bindParam(':intime', $Intime, PDO::PARAM_STR);
 $stmt->bindParam(':sensor', $sensorAll, PDO::PARAM_STR);
-$stmt->bindParam(':sensor1', $sensor[0], PDO::PARAM_INT);
-$stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_INT);
-$stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_INT);
+$stmt->bindParam(':sensor1', $temp, PDO::PARAM_INT);
+$stmt->bindParam(':sensor2', $hum, PDO::PARAM_INT);
+$stmt->bindParam(':sensor3', $distance, PDO::PARAM_INT);
 $stmt->execute();
 $query = "UPDATE StatusData SET Time = :intime, Sensor = :sensor, Temp = :sensor1, Hum = :sensor2, Dis = :sensor3, DevInfo = 0 WHERE DeviceID = :deviceid";
 $stmt = $dbh->prepare($query);
 $stmt->bindParam(':deviceid', $deviceid, PDO::PARAM_STR);
 $stmt->bindParam(':intime', $Intime, PDO::PARAM_STR);
 $stmt->bindParam(':sensor', $sensorAll, PDO::PARAM_STR);
-$stmt->bindParam(':sensor1', $sensor[0], PDO::PARAM_INT);
-$stmt->bindParam(':sensor2', $sensor[1], PDO::PARAM_INT);
-$stmt->bindParam(':sensor3', $sensor[2], PDO::PARAM_INT);
+$stmt->bindParam(':sensor1', $temp, PDO::PARAM_INT);
+$stmt->bindParam(':sensor2', $hum, PDO::PARAM_INT);
+$stmt->bindParam(':sensor3', $distance, PDO::PARAM_INT);
 $stmt->execute();
 ?>
