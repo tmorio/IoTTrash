@@ -20,7 +20,6 @@ unset($_SESSION['nickname']);
 	<head>
 		<meta charset="UTF-8">
 		<title>MyBox Cloud - Dashboard</title>
-		
 		<!-- <meta name="viewport" content="width=device-with, initial-scale=1"> -->
 		<link rel="stylesheet" type="text/css" href="css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css?">

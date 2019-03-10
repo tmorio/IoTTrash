@@ -32,6 +32,7 @@ if (isset($_POST["login"])) {
                         	$_SESSION['userGroup'] = $result['GroupID'];
 		        	$_SESSION['userName'] = $result['Name'];
 				$_SESSION['userService'] = $result['Service'];
+				$_SESSION['PhotoID'] = $result['PhotoID'];
 				session_regenerate_id(true);
 				header("Location: dashboard.php");
 			}else{
@@ -102,26 +103,17 @@ if (isset($_POST["login"])) {
 							<div class="input-field col s12 m12">
 								<i class="material-icons prefix">person</i>
 								<input type="text" id="userid" name="userid" class="validate" value="<?php
-									if (!empty($_POST["userid"])) {echo  htmlspecialchars($_POST["userid"], ENT_QUOTES);} ?>">
+									if (!empty($_POST["userid"])) {echo  htmlspecialchars($_POST["userid"], ENT_QUOTES);} ?>" required>
 								<label for="userid" class="active">MyBox ID</label>
 							</div>
 							<div class="input-field col s12 m12">
 								<i class="material-icons prefix">vpn_key</i>
-								<input type="password" id="password" name="password" value="">
+								<input type="password" id="password" name="password" value="" required>
 								<label for="password" class="active">Password</label>
 								<br>
 							</div>
 							<button class="btn waves-effect waves-light" type="submit" id="login" name="login">ログイン</button>
 						</div>
-					</div>
-				</form>
-
-				<br>
-				<form action="createID.php" class="col s12 m12 card blue-grey lighten-5">
-					<div class="card-content grey-text text-darken-4">
-						<span class="card-title">初めての方はこちら</span>
-						<button type="submit" class="btn waves-effect waves-light">アカウント作成</button>
-						<br>
 					</div>
 				</form>
 			</div>

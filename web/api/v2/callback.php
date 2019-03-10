@@ -153,11 +153,11 @@ EOM;
 		$SMBdata = $stmt->fetch();
 		$FSFlag = 0;
 		$SSFlag = 0;
-		if ((abs($SMBdata[0]['Temp'] - $temp) > 2) || (abs($SMBdata[0]['Hum'] - $hum) > 2)) {
+		if ((abs($SMBdata[0]['Temp'] - $temp) > 3) || (abs($SMBdata[0]['Hum'] - $hum) > 3)) {
 			$FSFlag = 1;
 		}
 
-		if ((abs($SMBdata[0]['Temp'] - $SMBdata[1]['Temp']) > 2) || (abs($SMBdata[0]['Hum'] - $SMBdata[1]['Hum']) > 2)) {
+		if ((abs($SMBdata[0]['Temp'] - $SMBdata[1]['Temp']) > 3) || (abs($SMBdata[0]['Hum'] - $SMBdata[1]['Hum']) > 3)) {
 			$SSFlag = 1;
 		}
 

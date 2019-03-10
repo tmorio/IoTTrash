@@ -195,12 +195,12 @@ require_once('./siteInfo.php');
 								<div class="cp_iptxt">
 									<input type="text" id="deviceID" name="deviceID" pattern="^[0-9A-Za-z]+$" placeholder="Sigfox デバイスID (例:00AA00)" value="';
 										if (!empty($_POST["deviceID"])) {echo htmlspecialchars($_POST["deviceID"], ENT_QUOTES);}
-										echo '">
+										echo '" required>
 								</div>
 								<div class="cp_iptxt">
 									<input type="text" id="nickname" name="nickname" placeholder="デバイスの表示名 (例:A公園前)" value="';
 										if (!empty($_POST["nickname"])) {echo htmlspecialchars($_POST["nickname"], ENT_QUOTES);}
-										echo '">
+										echo '" required>
 								</div>
 								
 								<h4>位置情報</h4>
@@ -256,7 +256,7 @@ require_once('./siteInfo.php');
 						$stmt->bindParam(':longitude', $_SESSION['lng'], PDO::PARAM_STR);
 						$stmt->bindParam(':nickname', $_SESSION['nickname'], PDO::PARAM_STR);
 						$stmt->execute();
-						
+
 						unset($_SESSION['lat']);
 						unset($_SESSION['lng']);
 						unset($_SESSION['getStatus']);

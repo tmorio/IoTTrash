@@ -7,7 +7,6 @@ if(empty($_SESSION['userName'])){
 
 require_once('./myid.php');
 require_once('./siteInfo.php');
-require_once('./routeSort.php');
 ?>
 <script>
 	function getPosition() {
@@ -103,7 +102,6 @@ if($_GET['ReAC'] != 1){
 		$_SESSION['endLng'] = $_GET['lng'];
         //unset($_SESSION['PostData']);
 	//$_SESSION['PostData']=routeSort($boxList, $_GET['lat'], $_GET['lng']);
-        	sleep(2);
         	header($pushTo);
 	}
 }
@@ -126,33 +124,6 @@ if($_GET['ReAC'] != 1){
                                 </div>
                         </div>
 			<br><br>
-
-<?php
-//DEBUG
-//echo "----------THIS IS DEBUG (3 SEC)----------" . "<br><br>";
-//echo "POSTED DATA: ";
-//print_r($_SESSION['Boxes']);
-//echo "<br>";
-//echo "YOUR POSITION (START/END POINT):";
-
-if(!empty($_GET['lat'])){
-//        echo $_GET['lat'] . ", " . $_GET['lng'];
-}else{
-//       echo "GETTING... PLEASE WAIT...";
-}
-//echo "<br>";
-//echo "ARRAY DATA:";
-//print_r($_SESSION['PostData']);
-//echo "<br>boxList<br>";
-//print_r($boxList);
-//echo"<br><br>";
-//routeSort($boxList, $_GET['lat'], $_GET['lng']);
-//echo"<br><br>";
-if(!empty($_GET['lat'])){
-//       echo "<br><br>SUCCESS GET POSITION!";
-}
-
-?>
 
                 </div>
         </div>

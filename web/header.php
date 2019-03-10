@@ -6,7 +6,13 @@
 			<ul class="right">
 				<!-- ユーザー名 -->
 				<div class="chip dropdown-trigger" data-target="UserMenu">
-					<img src="img/default.jpg" alt="Contact Person">
+					<?php
+					if(!empty($_SESSION['PhotoID'])){
+						echo '<img src="img/users/' . $_SESSION['PhotoID'] . '.jpg" alt="Contact Person">';
+					}else{
+						echo '<img src="img/default.jpg" alt="Contact Person">';
+					}
+					?>
 					&nbsp;<?php print htmlspecialchars($_SESSION['userName'], ENT_QUOTES, 'UTF-8'); ?>&nbsp;&nbsp;
 				</div>
 				<ul id='UserMenu' class='dropdown-content'>

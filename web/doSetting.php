@@ -108,11 +108,161 @@ EOM;
 		header("Location: ./settings.php?page=notice&mes=2");
 		exit(0);
                 break;
-	case group:
-		if($_GET['ctl'] == 1){
+	case addGroup:
+		$query = "INSERT INTO Groups (GroupName, AdminID) VALUES (:gName, :adminID)";
+		$stmt = $dbh->prepare($query);
+                $stmt->bindParam(':gName', $_POST['newGroup'], PDO::PARAM_STR);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
 
+                $query = "SELECT * FROM Groups WHERE AdminID = :adminID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+		$result = $stmt->fetch();
+
+		if(!empty($result['ID'])){
+			$_SESSION['userGroup'] = $result['ID'];
+
+                	$query = "UPDATE Users SET GroupID = :SetGroup WHERE ID = :UserID";
+                	$stmt = $dbh->prepare($query);
+			$stmt->bindParam(':SetGroup', $result['ID'], PDO::PARAM_INT);
+                	$stmt->bindParam(':UserID', $_SESSION['userNo'], PDO::PARAM_INT);
+                	$stmt->execute();
+			echo '<script>alert("組織の作成に成功しました。管理ページに移動します。");</script>';
 		}else{
-
+			echo '<script>alert("組織の作成に失敗しました。(E002:Post/Info Update Failed)");</script>';
 		}
+		header("Location: ./settings.php?page=group");
 		break;
+	case permission:
+                $query = "SELECT * FROM Groups WHERE AdminID = :adminID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+                $adminResult = $stmt->fetch();
+
+                $query = "SELECT * FROM Users WHERE ID = :UserID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':UserID', $_GET['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                $userResult = $stmt->fetch();
+
+		if((empty($adminResult['ID'])) || ($adminResult['ID'] != $userResult['GroupID'])){
+			echo '権限がありません。';
+                	exit(0);
+		}
+
+		switch($_GET['type']){
+			case 1:
+				$query = "UPDATE Users SET Service = 1 WHERE ID = :UserID";
+				break;
+			default:
+				$query = "UPDATE Users SET Service = 0 WHERE ID = :UserID";
+				break;
+		}
+		$stmt = $dbh->prepare($query);
+		$stmt->bindParam(':UserID', $_GET['id'], PDO::PARAM_INT);
+		$stmt->execute();
+		header("Location: ./settings.php?page=group");
+		break;
+	case delFG:
+                $query = "SELECT * FROM Groups WHERE AdminID = :adminID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+                $adminResult = $stmt->fetch();
+
+                $query = "SELECT * FROM Users WHERE ID = :UserID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':UserID', $_GET['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                $userResult = $stmt->fetch();
+
+                if((empty($adminResult['ID'])) || ($adminResult['ID'] != $userResult['GroupID'])){
+                        echo '権限がありません。';
+                        exit(0);
+                }
+		$query = "UPDATE Users SET GroupID = NULL, Service = 0 WHERE ID = :UserID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':UserID', $_GET['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                header("Location: ./settings.php?page=group");
+		break;
+	case addUser:
+                $query = "SELECT * FROM Groups WHERE AdminID = :adminID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+                $groupResult = $stmt->fetch();
+
+                if(empty($groupResult['ID'])){
+                        echo '権限がありません。';
+                        exit(0);
+                }
+
+		$expire = date('Y-m-d H:i:s', (time() + 86400));
+                $verifyCode = hash('sha256',uniqid(rand(),1));
+                $query = "INSERT INTO GroupCode (GroupID, AuthCode, expireTime, Email) VALUES (:groupID, :authcode, :expireTime, :userEmail)";
+		$stmt = $dbh->prepare($query);
+                $stmt->bindParam(':groupID', $groupResult['ID'], PDO::PARAM_INT);
+                $stmt->bindParam(':authcode', $verifyCode, PDO::PARAM_STR);
+                $stmt->bindParam(':expireTime', $expire, PDO::PARAM_STR);
+                $stmt->bindParam(':userEmail', $_POST['newUserMail'], PDO::PARAM_STR);
+                $stmt->execute();
+
+                $toMail = $_POST['newUserMail'];
+                $returnMail = 'mybox@moritoworks.com';
+                $name = "MyBox Cloud";
+                $mail = 'mybox@moritoworks.com';
+                $subject = "組織に招待されました";
+                $url = "https://" . SERVER_DOMAIN . "/verify.php?type=group&token=".$verifyCode;
+		$GroupName = $groupResult['GroupName'];
+
+$body = <<< EOM
+次の組織への招待がありました。
+
+組織名:{$GroupName}
+
+組織に参加する場合は以下のリンクから手続きを行ってください。
+{$url}
+
+
+なお、このメールは送信専用のメールアドレスで送信しているため、返信頂いても対応することができません。
+何卒ご了承ください。
+------------------------------
+MyBox Cloud
+
+Developed by IoT oyama Team.
+------------------------------
+
+EOM;
+
+                mb_language('ja');
+                mb_internal_encoding('UTF-8');
+                $header = 'From: ' . mb_encode_mimeheader($name). ' <' . $mail. '>';
+                mb_send_mail($toMail, $subject, $body, $header, '-f'. $returnMail);
+                header("Location: ./settings.php?page=group&tab=invite");
+                exit(0);
+		break;
+	case delInvite:
+                $query = "SELECT * FROM Groups WHERE AdminID = :adminID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':adminID', $_SESSION['userNo'], PDO::PARAM_INT);
+                $stmt->execute();
+                $groupResult = $stmt->fetch();
+
+                if(empty($groupResult['ID'])){
+                        echo '権限がありません。';
+                        exit(0);
+                }
+		$query = "DELETE FROM GroupCode WHERE ID = :inviteID AND GroupID = :groupID";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':inviteID', $_GET['id'], PDO::PARAM_INT);
+		$stmt->bindParam(':groupID', $groupResult['ID'], PDO::PARAM_INT);
+                $stmt->execute();
+
+		header("Location: /settings.php?page=group&tab=invite");
+		break;
+
 }
