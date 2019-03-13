@@ -113,9 +113,12 @@ $stmt->execute();
 						$PinData = $PinData . ",";
 						$DeviceCounter = $DeviceCounter + 1;
 					}
-					$capList[$num]=1.0*($data['MaxADis'] - $data['Dis']) / $data['MaxADis']; // ここゴミ箱の最大値が必要
+					$capList[$num] = ($data['MaxADis'] - $data['Dis']) / $data['MaxADis']; // ここゴミ箱の最大値が必要
 					if(empty($data['Time'])){
 						$capList[$num]=null;
+					}
+					if($capList[$num]<0){
+						$capList[$num]=1.0;
 					}
 					echo '<li>';
 						echo '<div class="collapsible-header">';
