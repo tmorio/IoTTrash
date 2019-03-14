@@ -7,3 +7,5 @@
 当日のプレゼンテーションは[エレクトロニクス研究所公式サイト プレスリリース](https://eleken.jp/archives/2600)からご確認頂けます。  
 ## ぶっちゃけどうなの
 まだ細かな調整が必要だったりするので、pull requestやissue飛ばしてくれると助かります。
+## ライセンス及び、ライブラリ利用に伴う表示
+[LICENSE](https://github.com/tmorio/IoTTrash/blob/master/LICENSE)をご確認下さい。
